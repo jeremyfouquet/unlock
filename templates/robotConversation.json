@@ -1,0 +1,17 @@
+{
+    "A":"Bonjour je suis le Game Master !",
+    "B":"Je vous souhaite la bienvenue dans la partie !",
+    "C":"Si vous souhaitez avoir un indice sur une carte tapez \"indice\" suivi du numéro de la carte. Exemple: indice 0",
+    "D":"Désolé je n'ai pas trouvé la carte portant le n°",
+    "0":"Bureau :\nSi vous voyez des chiffres, rentrez les dans le champ \"Recherche d'indice\" un peu plus haut ⬆.\nPuis validez en cliquant sur la touche \"ENTRER\" du clavier !\nAvez vous aussi essayé de cliquer sur le symbole 🔄 dans le coin supérieur droit de la carte ?",
+    "11":"Une Clé :\nCela doit servir à ouvrir quelque chose",
+    "16":"Un fil :\nCela doit servir à relier quelque chose",
+    "21":"La porte de sortie :\nIl y a un digicode sur la porte ! Pourquoi \"EXIT\" est-il aussi coloré ?",
+    "25":"Courant éléctrique :\nJ'ai l'impression que quelque chose s'est allumé !",
+    "35":"Un coffre :\nC'est fermé à clé !",
+    "42":"Un écran :\nIl faut trouver comment rallumer le courant",
+    "46":"Un coffre :\nTiens tiens il y a quelque chose dedans, voyons voir de quoi il s'agit grace au champs \"Recherche d'indice\" !",
+    "67":"Un écran :\nIl s'agit probablement du code pour sortir !",
+    "69":"Une grille :\nOn doit pouvoir accrocher quelque chose sur ces picots !",
+    "85":"Une Machine :\nJ'ai déjà vu cette grille quelque part mais où ?"
+}
