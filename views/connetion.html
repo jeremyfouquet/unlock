@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+    <meta charset="utf-8">
+    <title>Unlock</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./styles/global.css" rel="stylesheet" type="text/css">
+    <link href="./styles/connection.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <div id="connection-section" class="text-center">
+            <ng-container *ngIf="getPlayer() === undefined; else elseBlockInstructions">
+              <form [formGroup]="connectionForm" (ngSubmit)="connection()">
+                <label class="h3 font-weight-normal">
+                  Rejoindre une partie
+                </label>
+                <div class="form-group">
+                  <input formControlName="pseudo" type="text" class="form-control mb-3 mt-3" placeholder="Entrez votre pseudo" autofocus>
+                </div>
+                <div class="form-group">
+                  <fieldset
+                  class="mb-3 mt-3">
+                    <legend class="font-weight-normal">
+                      Choisir un avatar
+                    </legend>
+                    <label *ngFor="let nameImg of avatars;">
+                      <input
+                        formControlName="avatar"
+                        type="radio"
+                        name="avatar"
+                        [value]="nameImg"
+                      />
+                      <img [src]="'./assets/avatar/'+nameImg"class="avatar">
+                    </label>
+                  </fieldset>
+                </div>
+                <div class="position-relative">
+                  <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="isSubmitConnection">Valider</button>
+                  <div *ngIf="isSubmitConnection" class="position-absolute w-100 white">
+                      <div *ngIf="connectionForm.controls['pseudo'].errors">selectionnez un pseudo</div>
+                      <div *ngIf="connectionForm.controls['avatar'].errors">selectionnez un avatar</div>
+                  </div>
+                </div>
+              </form>
+            </ng-container>
+            <ng-template #elseBlockInstructions>
+              <div id="instructions">
+                <div>{{chrono | getChrono}}</div>
+                <h3>Equipe</h3>
+                <div class="team">
+                  <app-player *ngFor="let player of team" [player]="player"></app-player>
+                </div>
+
+                <div class="btn-container" *ngIf="chrono === 0">
+                  <ng-container *ngIf="!getPlayer().start; else elseBlockWaiting">
+                    <button type="submit" class="btn btn-primary mr-1" (click)="start()">Valider</button>
+                    <button class="btn btn-secondary" (click)="back()">Retour</button>
+                  </ng-container>
+                  <ng-template #elseBlockWaiting>
+                    <div>
+                      <h3>En attente des autres joueurs</h3>
+                      <div class="spinner-border" role="status">
+                        <span class="visually-hidden">loading...</span>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </ng-template>
+        </div>
+        <!-- SCRIPTS -->
+        <script src="./jquery/jquery.min.js"></script>
+        <script src="./popper.js/umd/popper.min.js"></script>
+        <script src="./bootstrap/js/bootstrap.min.js"></script>
+    </body>
+</html>

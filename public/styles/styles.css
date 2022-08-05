@@ -1,0 +1,57 @@
+/* COLORS */
+.white {
+    color: #FFFFFF;
+}
+.lightgrey {
+    color: #D1D1D1;
+}
+.grey {
+    color: #434244;
+}
+.red {
+    color: #F26548;
+}
+.blue {
+    color: #23b5ef;
+}
+.darkblue {
+    color: #4785ef;
+}
+/* BACKGROUNDS */
+.bg-blue {
+    background-color: #23b5ef;
+}
+.bg-lightgrey {
+    background-color: #D1D1D1;
+}
+html, body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+span {
+    font-size: 10px;
+}
+.title {
+    margin-bottom: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+.text-justify {
+    text-align: justify;
+}
+.team {
+    display: flex;
+    min-width: 10rem;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.avatar {
+    width: 40px;
+}
+.btn-container {
+    display: flex;
+    justify-content: space-between;
+}
