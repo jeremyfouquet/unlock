@@ -13,23 +13,23 @@ app.use('/popper.js', express.static(path.join(__dirname, 'node_modules/popper.j
 app.use('/bootstrap/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
 app.use(express.static('public'));
 
-
+//ROUTES
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views/index.html'));
+  res.sendFile(path.join(__dirname, 'views/home.html'));
+});
+app.get('/connection/:index', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views/connection.html'));
 });
 
 http.listen(port, () =>
     console.log(`listening on port : http://localhost:${port}`)
 );
-app.get('/connection', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views/connection.html'));
-});
 
 
 // DATABASE :
-const players = require(path.join(__dirname + '/templates/players.json'));
-const rooms = require(path.join(__dirname + '/templates/rooms.json'));
-const robotConversation = require(path.join(__dirname + '/templates/robotConversation.json'));
+const players = require(path.join(__dirname + '/public/datas/players.json'));
+const rooms = require(path.join(__dirname + '/public/datas/rooms.json'));
+const robotConversation = require(path.join(__dirname + '/public/datas/robotConversation.json'));
 
 io.on('connection', (socket) => {
     console.log(`a user connected whith id : ${socket.id}`);
