@@ -1,7 +1,11 @@
-#connection-section {
+/* #connection-section {
     display: flex;
     height: 100vh;
     background-color: #23b5ef;
     align-items: center;
     justify-content: center;
+} */
+.connection {
+    text-align: center;
+    margin-bottom: 3rem;
 }

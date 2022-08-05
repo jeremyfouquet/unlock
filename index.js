@@ -17,8 +17,20 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/home.html'));
 });
-app.get('/connection/:index', (req, res) => {
+app.all('/connection/:id', (req, res, next) => {
+  req.game = require(path.join(__dirname + '/public/datas/games.json'))[req.params.id];
+  if(req.game) {
+    next();
+  } else {
+    next(new Error('cannot find game ' + req.params.id));
+  }
+});
+app.get('/connection/:id', (req, res) => {
+  console.log(req.game);
   res.sendFile(path.join(__dirname, 'views/connection.html'));
+});
+app.get('*', function(req, res){
+  res.sendFile(path.join(__dirname, 'views/404.html'));
 });
 
 http.listen(port, () =>

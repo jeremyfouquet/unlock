@@ -6,11 +6,3 @@
     margin-right: .75rem;
     margin-left: .75rem;
 }
-.featurette-divider {
-    margin: 0 0 3rem 0; /* Space out the Bootstrap <hr> more */
-    opacity: .75;
-}
-.btn:hover {
-    background-color: #434244;
-    color: #D1D1D1;
-}

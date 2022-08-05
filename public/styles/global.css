@@ -57,3 +57,11 @@ body {
 h2 {
     color: #000000;
 }
+footer {
+    border-top: 1px solid #D1D1D1;
+    padding: 3rem 0 0 0;
+}
+.btn.bg-lightgrey:hover {
+    background-color: #434244;
+    color: #D1D1D1;
+}
