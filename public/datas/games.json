@@ -39,7 +39,7 @@
             "type": "combinable",
             "combinable": {
               "numClue": 16,
-              "numCombine": 25,
+              "numCombine": 85,
               "couleur": "blue"
             }
         },

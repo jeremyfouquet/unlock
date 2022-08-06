@@ -19,12 +19,12 @@
     margin-bottom: 3rem;
 }
 .carousel-caption {
-    /* bottom: 3rem; */
+    top: 1rem;
     z-index: 10;
 }
 .carousel-item {
-    height: 24rem;
+    height: 32rem;
 }
-.img-instructions {
-    height: 200px;
+.row img {
+    height: fit-content;
 }
