@@ -65,6 +65,14 @@ footer {
     background-color: #434244;
     color: #D1D1D1;
 }
+.btn.bg-grey:not(:hover) {
+    color: #D1D1D1;
+}
 .avatar {
     width: 40px;
+}
+#team {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }

@@ -207,7 +207,7 @@ function createOrGetRoom(socket, rooms, players, chronoRoom, gameInfo, robotConv
 function intervalChrono(socket, rooms, players, roomId, minusChrono) {
   const idInterval = setInterval(() => {
     const roomIndex = getRoomIndex(rooms, roomId);
-    if (rooms[roomIndex].chrono >= 0) {
+    if (rooms[roomIndex] && rooms[roomIndex].chrono >= 0) {
       if(minusChrono) rooms[roomIndex].chrono--;
       const chrono = rooms[roomIndex].chrono > 0 ? rooms[roomIndex].chrono : 0;
       socket.emit('getChronoRoom', chrono);

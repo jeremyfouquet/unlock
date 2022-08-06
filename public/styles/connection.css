@@ -28,3 +28,6 @@
 .row img {
     height: fit-content;
 }
+#btn-container .bg-lightgrey {
+    margin-right: 3rem;
+}

@@ -68,15 +68,14 @@
             <button id="start" class="btn bg-lightgrey" type="submit">Valider</button>
           </form>
           <div id="instructions" class="connection">
-            <div class="mb-3">
+            <div class="mb-3 row justify-content-around">
               <h3>Equipe</h3>
-              <div class="team">
-                <app-player *ngFor="let player of team" [player]="player"></app-player>
+              <div id="team" class="col-lg-4">
               </div>
-              <div id="chrono">{{chrono | getChrono}}</div>
+              <div id="chrono"></div>
               <div id="btn-container">
-                <button type="submit" class="btn bg-lightgrey mr-1" onsubmit="start()">Jouer &raquo;</button>
-                <button type="submit" class="btn bg-red" onsubmit="back()">Retour</button>
+                <button type="submit" class="btn bg-lightgrey" onsubmit="start()">Jouer &raquo;</button>
+                <button type="submit" class="btn bg-grey" onsubmit="back()">Retour</button>
               </div>
               <div id="waiting">
                 <h3>En attente des autres joueurs</h3>
@@ -151,7 +150,7 @@
                   <div class="container">
                     <div class="carousel-caption">
                       <h1>Le chrono</h1>
-                      <p>Il faut finir le jeux avant la fin du chronomètre. Si le celui-ci tombe à zéro la partie est terminé et perdu. Attention certaines mauvaises actions peuvent vous donner une pénalité de temps de 1 minutes !</p>
+                      <p>Il faut finir le jeu avant la fin du chronomètre. Si le celui-ci tombe à zéro la partie est terminé et perdu. Attention certaines mauvaises actions peuvent vous donner une pénalité de temps de 1 minutes !</p>
                       <div class="row justify-content-around">
                         <img src="/assets/instruction5.png" alt="notice d'utilisation des cartes" class="col-3">
                       </div>
