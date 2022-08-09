@@ -1,4 +1,3 @@
-const socket = io();
 let player = {
     id: '',
     pseudo: '',
@@ -7,120 +6,82 @@ let player = {
     start: false
 };
 
-let room = {
-    id: '',
-    chrono: 0,
-    game: {},
-    startGame: false,
-    notes: []
-};
-
-let team = [];
-
-let chrono;
-
-let pseudo = $('#pseudo')[0];
-
-let avatar = document.querySelector('input[name="avatars"]:checked');
-
 $('#connection-form input[name="avatars"]').on('change', function(e) {
     avatar = e.target;
 });
 
-$('#connection-form').on('submit', function (e) {
-    e.preventDefault();
-    player.id = socket.id;
-    player.pseudo = pseudo.value;
-    player.avatar = avatar.value;
+function connection(event, socketClient) {
+    event.preventDefault();
+    player.id = socketClient.id;
+    player.pseudo = $('#pseudo')[0].value;
+    player.avatar = document.querySelector('input[name="avatars"]:checked').value;
     $('#connection-form').hide();
     $('#instructions').show();
-    changePlayer(player.pseudo, player.avatar);
-});
-socket.on('getPlayerId', (playerId) => {
-    player.id = playerId;
-});
-socket.on('getRoom', (newRoom, newTeam) => {
-    const currentPlayer = getCurrentPlayer(newTeam, player.id);
-    if(currentPlayer) {
-        const chrono = room.chrono;
-        room = newRoom;
-        if(chrono === 0) changeChrono();
-    }
-});
-socket.on('getChronoRoom', (newChrono) => {
-    room.chrono = newChrono;
-    if(room.chrono > 0) changeChrono();
-    else {
-        $('#chrono').hide();
-        $('#btn-container').show();
-    }
-});
-socket.on('refreshTeam', (newTeam) => {
-    team = newTeam;
-    const currentPlayer = getCurrentPlayer(team, player.id);
-    if(!currentPlayer) room = {
-        id: '',
-        chrono: 0,
-        game: {},
-        startGame: false,
-        notes: []
-    };
-});
-socket.on('getTeam', (newTeam) => {
-    const currentPlayer = getCurrentPlayer(newTeam, player.id);
-    if (currentPlayer) {
-        if(!team[1] && room.chrono <= 0) {
-            socket.emit('back', player.roomId);
-        } else {
-            team = newTeam;
-            team.forEach(newPlayer => {
-                changeTeam(newPlayer);
-            });
-        }
-    }
-});
-socket.on('updateRoomChrono', (newChrono, newTeam) => {
-    const currentPlayer = getCurrentPlayer(newTeam, player.id);
-    if(currentPlayer) {
-        room.game.chrono = newChrono;
-    }
-});
-function changePlayer(newPseudo, newAvatar, newChrono) {
-    socket.emit('changePlayerAndGetRoom', newPseudo, newAvatar, newChrono);
+    socketClient.emit('addOrUpdatePlayer', player);
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const gameIndex = urlParams.get('game');
+    socketClient.emit('createOrJoinRoom', gameIndex);
 };
-function getCurrentPlayer(newTeam, playerId) {
-    const currentPlayer = newTeam.filter(player => player.id === playerId)[0];
-    return currentPlayer;
+function setRoomId(roomId) {
+    player.roomId = roomId;
 }
-
-function changeChrono() {
-    const chronoTraget = $('#chrono')[0];
-    chronoTraget.innerHTML = getChrono(room.chrono);
+function changeChronoRoom(roomChrono) {
+    const chronoTraget = $('#chronoRoom')[0];
+    chronoTraget.innerHTML = getChrono(roomChrono);
 }
-
 function getChrono(newChrono) {
     const d = Number(newChrono);
-    var m = Math.floor(d % 3600 / 60);
-    var s = Math.floor(d % 3600 % 60);
-    var mDisplay = m;
-    var sDisplay = s;
-    return mDisplay+':'+sDisplay;
+    let m = Math.floor(d % 3600 / 60);
+    let s = Math.floor(d % 3600 % 60);
+    let mDisplay = m < 10 ? `0${m}` : `${m}`;
+    let sDisplay = s < 10 ? `0${s}` : `${s}`;
+    return `${mDisplay}:${sDisplay}`;
 }
-
-function changeTeam(newPlayer) {
-    const element = $(`#${newPlayer.id}`);
-    if(!element[0]) {
-        const teamTraget = $('#team')[0];
-        const div = document.createElement("div");
-        div.setAttribute('id', newPlayer.id);
-        const img = document.createElement("img");
-        img.setAttribute('src', `/assets/${newPlayer.avatar}`);
-        img.setAttribute('alt', 'avatar');
-        img.setAttribute('class', 'avatar');
-        const p = document.createElement("p");
-        p.innerHTML = newPlayer.pseudo
-        div.appendChild(img);
-        div.appendChild(p);
-        teamTraget.appendChild(div);
-    }
+function changeTeam(newTeam) {
+    newTeam.forEach(newPlayer => {
+        const element = $(`#${newPlayer.id}`);
+        if(!element[0]) {
+            const teamTraget = $('#team')[0];
+            const div = document.createElement("div");
+            div.setAttribute('id', newPlayer.id);
+            const img = document.createElement("img");
+            img.setAttribute('src', `/assets/${newPlayer.avatar}`);
+            img.setAttribute('alt', 'avatar');
+            img.setAttribute('class', 'avatar');
+            const p = document.createElement("p");
+            p.innerHTML = newPlayer.pseudo
+            div.appendChild(img);
+            div.appendChild(p);
+            teamTraget.appendChild(div);
+        }
+    });
+    const divToRemove = [];
+    $('#team > div').each(function (e) {
+        const id = $('#team')[0].children[e].id;
+        const playerFinded = newTeam.filter(p => p.id === id)[0];
+        if(!playerFinded) divToRemove.push(id);
+    });
+    divToRemove.forEach(id => {
+        $('div').remove(`#${id}`);
+    });
+}
+function showBtn() {
+    $('#chronoRoom').hide();
+    $('#btn-container').show();
+}
+function start(socketClient) {
+    $('#btn-container').hide();
+    $('#waiting').show();
+    socketClient.emit('start', player.roomId);
+}
+function back(socketClient) {
+    socketClient.emit('back', player.roomId);
+}
+function refreshView() {
+    $('#waiting').hide();
+    $('#btn-container').hide();
+    $('#chronoRoom').show();
+    $('#instructions').hide();
+    $('#connection-form').show();
 }

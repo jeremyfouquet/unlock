@@ -19,12 +19,20 @@
                 <img src="/assets/logo.svg" alt="logo" width="30" height="24" class="d-inline-block align-text-top">
                 Unlock
             </span>
+            <div id="navbar-info">
+              <div id="chronoGame" class="me-2">ghghgh</div>
+              <form id="clue-form" class="d-flex me-2" role="search" onsubmit="searchClue(event, socket)">
+                <input class="form-control me-2" type="number" placeholder="Indice" name="clue" required>
+                <button class="btn bg-lightgrey" type="submit">Chercher</button>
+              </form>
+              <a class="btn bg-grey" href="/">Quitter</a>
+            </div>
           </div>
         </nav>
       </header>
       <main class="bg-blue container">
         <div class="row justify-content-around">
-          <form id="connection-form" class="connection col-lg-4">
+          <form id="connection-form" class="connection col-lg-4" onsubmit="connection(event, socket)">
             <h2>Rejoindre une partie</h2>
             <div class="form-group mb-3 mt-3">
               <h4 for="pseudo" class="form-label">Choisir un pseudo</h4>
@@ -72,10 +80,10 @@
               <h3>Equipe</h3>
               <div id="team" class="col-lg-4">
               </div>
-              <div id="chrono"></div>
+              <div id="chronoRoom"></div>
               <div id="btn-container">
-                <button type="submit" class="btn bg-lightgrey" onsubmit="start()">Jouer &raquo;</button>
-                <button type="submit" class="btn bg-grey" onsubmit="back()">Retour</button>
+                <button type="submit" class="btn bg-lightgrey" onclick="start(socket)">Jouer &raquo;</button>
+                <button type="submit" class="btn bg-grey" onclick="back(socket)">Retour</button>
               </div>
               <div id="waiting">
                 <h3>En attente des autres joueurs</h3>
@@ -168,6 +176,58 @@
               </button>
             </div>
           </div>
+          <div id="room-section" class="row-container">
+            <div
+            id="left"
+            class="d-flex justify-content-center align-items-center flex-wrap col-lg-10 col-9">
+              <div *ngIf="room.game.ended; else elseClue">
+                <p *ngIf="room.game.chrono > 0; else elseLoose">Bravo vous avez réussi à sortir en {{room.game.chrono| getChrono}} minutes !</p>
+                <ng-template #elseLoose>
+                  <p>Domage ! Le temps est écoulé !</p>
+                </ng-template>
+              </div>
+              <ng-template
+              #elseClue>
+                <ng-container *ngFor="let clue of room.game.clues">
+                  <app-clue
+                  [clue]="clue"
+                  [codeForm]="codeForm"
+                  [codePlaceholder]="codePlaceholder"
+                  (error)="errorClue($event)"
+                  (combinaison)="addClue($event)"
+                  (rechercheCode)="searchCode()"></app-clue>
+                </ng-container>
+              </ng-template>
+            </div>
+            <div
+            id="right"
+            class="text-center col-lg-2 col-3">
+              <form id="chatForm" [formGroup]="chatForm" (ngSubmit)="sendMessage()">
+                <h3 class="title">Equipe</h3>
+                <div
+                class="team">
+                  <app-player *ngFor="let player of team" [player]="player"></app-player>
+                </div>
+                <div
+                id="chat-container">
+                  <h3 class="title">Chat</h3>
+                  <div
+                  id="chat">
+                    <div
+                    *ngFor="let note of room.notes | arraySort"
+                    class="d-flex justify-content-start text-justify m-2">
+                      <div class="d-flex flex-column">
+                        <img [src]="'assets/avatar/'+note.avatar" alt="Avatar">
+                        <!-- <span>{{note.date | date:'shortTime'}}</span> -->
+                      </div>
+                      <p class=" m-0">{{note.message}}</p>
+                    </div>
+                  </div>
+                </div>
+                <input type="text" id="message" class="form-control" placeholder="Entrez votre message ..." formControlName="message">
+              </form>
+            </div>
+          </div>
         </div>
       </main>
       <footer>
@@ -180,6 +240,8 @@
       <script src="/popper.js/umd/popper.min.js"></script>
       <script src="/bootstrap/js/bootstrap.min.js"></script>
       <script src="/socket.io/socket.io.js"></script>
+      <script src="/controllers/socketClient.js"></script>
       <script src="/controllers/connection.js"></script>
+      <script src="/controllers/game.js"></script>
     </body>
 </html>

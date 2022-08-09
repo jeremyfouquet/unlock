@@ -6,6 +6,7 @@ const io = require('socket.io')(http, {
 });
 const port = process.env.PORT || 3000;
 const path = require('path');
+const url = require('url');
 
 app.use('/bootstrap/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
 app.use('/jquery', express.static(path.join(__dirname, 'node_modules/jquery/dist')));
@@ -17,16 +18,17 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/home.html'));
 });
-app.all('/connection/:id', (req, res, next) => {
-  req.game = require(path.join(__dirname + '/public/datas/games.json'))[req.params.id];
-  if(req.game) {
+app.all('/connection/?', (req, res, next) => {
+  const query = url.parse(req.url,true).query;
+  const game = games[query.game];
+  if(game) {
     next();
   } else {
-    next(new Error('cannot find game ' + req.params.id));
+    res.sendFile(path.join(__dirname, 'views/404.html'));
+    // next(new Error('cannot find game ' + req.params.id));
   }
 });
-app.get('/connection/:id', (req, res) => {
-  this.game = req.game;
+app.get('/connection/?', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/connection.html'));
 });
 app.get('*', function(req, res){
@@ -36,25 +38,45 @@ app.get('*', function(req, res){
 http.listen(port, () =>
     console.log(`listening on port : http://localhost:${port}`)
 );
-// DATA
-let gameInfo = {};
 
 // DATABASE :
+const games = require(path.join(__dirname + '/public/datas/games.json'));
 const players = require(path.join(__dirname + '/public/datas/players.json'));
 const rooms = require(path.join(__dirname + '/public/datas/rooms.json'));
 const robotConversation = require(path.join(__dirname + '/public/datas/robotConversation.json'));
 
 io.on('connection', (socket) => {
     console.log(`a user connected whith id : ${socket.id}`);
-    const chronoRoom = 20;
+    const chronoRoom = 5;
     //CONNECTION
-    addPlayer(socket, players);
-    socket.on('changePlayerAndGetRoom', (pseudo, avatar) => {
-      const index = getPlayerIndex(players, socket.id);
-      players[index].pseudo = pseudo;
-      players[index].avatar = avatar;
-      createOrGetRoom(socket, rooms, players, chronoRoom, gameInfo, robotConversation);
+    // add new player or update existed player into players
+    socket.on('addOrUpdatePlayer', (player) => {
+      const playerIndex = getPlayerIndex(players, player.id)
+      if(!players[playerIndex]) players.push(player);
+      else players[playerIndex] = player;
     });
+    // create new room or get existed room waiting for new players
+    socket.on('createOrJoinRoom', (gameIndex) => {
+      let game = {};
+      Object.assign(game, games[gameIndex]);
+      let room = rooms.filter(room => room.chrono > 0 && !room.startGame && getTeam(players, room.id).length < 4 && room.game.name === game.name)[0];
+      let roomId = room ? room.id : null;
+      let firstPlayer = false;
+      if(!roomId) {
+        roomId = newId();
+        firstPlayer = true;
+        createRoom(roomId, chronoRoom, game, robotConversation, rooms);
+        const roomIndex = getRoomIndex(rooms, roomId);
+        room = rooms[roomIndex];
+      }
+      const indexPlayer = getPlayerIndex(players, socket.id);
+      players[indexPlayer].roomId = roomId;
+      const team = getTeam(players, roomId);
+      socket.emit('setRoom', room);
+      io.emit('getTeam', team);
+      intervalChrono(socket, rooms, players, roomId, firstPlayer)
+    });
+
     socket.on('back', (roomId) => {
       let team = getTeam(players, roomId);
       if(team[1]) {
@@ -99,7 +121,7 @@ io.on('connection', (socket) => {
         rooms[roomIndex].game.clues.push(rooms[roomIndex].game.deck[clueIndex]);
         rooms[roomIndex].game.deck.splice(clueIndex, 1);
         const team = getTeam(players, roomId);
-        io.emit('getRoom', rooms[roomIndex], team);
+        io.emit('updateClues', rooms[roomIndex].game, team);
       }
     });
     socket.on('winGame', (roomId) => {
@@ -117,98 +139,75 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
-      const index = getPlayerIndex(players, socket.id);
-      const roomId = players[index].roomId;
-      removePlayer(players, index);
-      const team = getTeam(players, roomId);
-      if(team[0]) {
-        io.emit('getTeam', team);
-        teamReady(team, rooms, roomId);
+      const playerIndex = getPlayerIndex(players, socket.id);
+      if(players[playerIndex]) {
+        const roomId = players[playerIndex].roomId;
+        removePlayer(players, playerIndex, rooms);
+        const team = getTeam(players, roomId);
+        const roomIndex = getRoomIndex(rooms, roomId);
+        if(team[0] && rooms[roomIndex] && !rooms[roomIndex].startGame) {
+          io.emit('getTeam', team);
+          teamReady(team, rooms, roomId);
+        }
       }
       console.log(`a user discconnected whith id : ${socket.id}`);
     });
 
 });
 
-// CONNECTION
+// FOR THE CONNECTION TEMPLATE
+// return player's index from players
 function getPlayerIndex(players, id) {
   const index = players.findIndex(player => player.id === id);
   return index;
 }
+// return room's index from rooms
 function getRoomIndex(rooms, id) {
   const index = rooms.findIndex(room => room.id === id);
   return index;
 }
+// return player's array with same room's id
 function getTeam(players, id) {
   const team = players.filter(player => player.roomId === id);
   return team;
 }
-function addPlayer(socket, players) {
-  const player = {
-      id: socket.id,
-      pseudo: '',
-      avatar: '',
-      roomId: '',
-      start: false
+// return id
+function newId() {
+  return Math.random().toString(36).substring(2, 9);
+}
+// create room into rooms
+function createRoom(roomId, chronoRoom, game, robotConversation, rooms) {
+  const room = {
+    id: roomId,
+    chrono: chronoRoom,
+    game: game,
+    startGame: false,
+    notes: [
+      {
+        message: robotConversation["A"],
+        avatar: 'robot.svg',
+        date: new Date().getTime()
+      },
+      {
+        message: robotConversation["B"],
+        avatar: 'robot.svg',
+        date: new Date().getTime()+1
+      },
+      {
+        message: robotConversation["C"],
+        avatar: 'robot.svg',
+        date: new Date().getTime()+2
+      }
+    ]
   }
-  const index = getPlayerIndex(players, player.id)
-  if(!players[index]) players.push(player);
-  socket.emit('getPlayerId', player.id);
+  rooms.push(room);
 }
-function refreshPlayer(socket, players) {
-  const index = getPlayerIndex(players, socket.id);
-  players[index].roomId = '';
-  players[index].start = false;
-  socket.emit('refreshTeam', []);
-}
-function removePlayer(players, index) {
-  players.splice(index, 1);
-}
-function createOrGetRoom(socket, rooms, players, chronoRoom, gameInfo, robotConversation) {
-  const room = rooms.filter(room => room.chrono > 0 && getTeam(players, room.id).length < 4 && !room.startGame)[0];
-  let roomId = room ? room.id : null;
-  let minusChrono = false;
-  if(!roomId) {
-    minusChrono = true;
-    roomId = newId();
-    const room = {
-      id: roomId,
-      chrono: chronoRoom,
-      game: gameInfo,
-      startGame: false,
-      notes: [
-        {
-          message: robotConversation["A"],
-          avatar: 'robot.svg',
-          date: new Date().getTime()
-        },
-        {
-          message: robotConversation["B"],
-          avatar: 'robot.svg',
-          date: new Date().getTime()+1
-        },
-        {
-          message: robotConversation["C"],
-          avatar: 'robot.svg',
-          date: new Date().getTime()+2
-        }
-      ]
-    }
-    rooms.push(room);
-  }
-  const indexPlayer = getPlayerIndex(players, socket.id);
-  players[indexPlayer].roomId = roomId;
-  const roomIndex = getRoomIndex(rooms, roomId);
-  const team = getTeam(players, roomId);
-  socket.emit('getRoom', rooms[roomIndex], team);
-  io.emit('getTeam', team);
-  intervalChrono(socket, rooms, players, roomId, minusChrono)
-}
-function intervalChrono(socket, rooms, players, roomId, minusChrono) {
+// refresh chrono each seconde from room and go to back function if only one player at the end of chrono
+function intervalChrono(socket, rooms, players, roomId, firstPlayer) {
   const idInterval = setInterval(() => {
     const roomIndex = getRoomIndex(rooms, roomId);
     if (rooms[roomIndex] && rooms[roomIndex].chrono >= 0) {
-      if(minusChrono) rooms[roomIndex].chrono--;
+      if(firstPlayer) rooms[roomIndex].chrono--;
       const chrono = rooms[roomIndex].chrono > 0 ? rooms[roomIndex].chrono : 0;
       socket.emit('getChronoRoom', chrono);
       const team = getTeam(players, roomId);
@@ -218,13 +217,33 @@ function intervalChrono(socket, rooms, players, roomId, minusChrono) {
     } else clearInterval(idInterval);
   }, 1000);
 }
-function back(socket, players, rooms, index) {
+// go to refreshPlayer and removeRoom functions
+function back(socket, players, rooms, roomIndex) {
   refreshPlayer(socket, players);
-  removeRoom(rooms, index);
+  removeRoom(rooms, roomIndex);
 }
+// set roomId param to '' and start param to false then emit team's array to empty array for the current player
+function refreshPlayer(socket, players) {
+  const index = getPlayerIndex(players, socket.id);
+  players[index].roomId = '';
+  players[index].start = false;
+  socket.emit('refreshData', [], players[index]);
+}
+// remove the room at the index param
 function removeRoom(rooms, index) {
   rooms.splice(index, 1);
 }
+// remove the player at the index param and if it was the last player from the room remove the room
+function removePlayer(players, index, rooms) {
+  const roomId = players[index].roomId;
+  players.splice(index, 1);
+  const team = getTeam(players, roomId);
+  if(!team[0]) {
+    const roomIndex = getRoomIndex(rooms, roomId);
+    removeRoom(rooms, roomIndex);
+  }
+}
+// if > 2 players into team and each player is ready so set startGame param for current room to true and emit new room before go to intervalRoom function
 function teamReady(team, rooms, roomId) {
   if(team[1] && team.length === team.filter(player => player.start).length) {
     const roomIndex = getRoomIndex(rooms, roomId);
@@ -233,20 +252,19 @@ function teamReady(team, rooms, roomId) {
     intervalRoom(rooms, roomId, team);
   }
 }
-function newId() {
-  return Math.random().toString(36).substring(2, 9);
-}
 
-//ROOM
+// FOR THE ROOM TEMPLATE
+// refresh chrono each seconde from room.game and emit this
 function intervalRoom(rooms, roomId, team) {
   const idIntervalChrono = setInterval(() => {
     const roomIndex = getRoomIndex(rooms, roomId);
-    if (rooms[roomIndex].game.chrono > 0 && rooms[roomIndex].game.ended !== true) {
+    if (rooms[roomIndex] && rooms[roomIndex].game.chrono > 0 && rooms[roomIndex].game.ended !== true) {
       rooms[roomIndex].game.chrono--;
       io.emit('updateRoomChrono', rooms[roomIndex].game.chrono, team);
     } else clearInterval(idIntervalChrono);
   }, 1000);
 }
+
 function getClueIndex(clues, id) {
   const index = clues.findIndex(clue => clue.id === id);
   return index;

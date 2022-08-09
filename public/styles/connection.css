@@ -5,8 +5,8 @@
 .form-check, .form-check-input, .form-check-label {
     cursor: pointer;
 }
-#instructions, #btn-container, #waiting {
-    display: none
+#instructions, #btn-container, #waiting, #room-section, #navbar-info {
+    display: none;
 }
 .bd-placeholder-img {
     font-size: 1.125rem;
@@ -30,4 +30,16 @@
 }
 #btn-container .bg-lightgrey {
     margin-right: 3rem;
+}
+.avatar {
+    width: 40px;
+}
+#team {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+#navbar-info {
+    justify-content: center;
+    align-items: center;
 }
