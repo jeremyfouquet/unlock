@@ -22,9 +22,9 @@
     top: 1rem;
     z-index: 10;
 }
-.carousel-item {
+/* .carousel-item {
     height: 32rem;
-}
+} */
 .row img {
     height: fit-content;
 }
@@ -42,4 +42,14 @@
 #navbar-info {
     justify-content: center;
     align-items: center;
+}
+@media (max-width: 575.98px) {
+    .carousel-container {
+        padding: 1rem 3rem 3rem 3rem;
+    }
+}
+@media (min-width: 576px) {
+    .carousel-container {
+        padding: 1rem 7rem 3rem 7rem;
+    }
 }
