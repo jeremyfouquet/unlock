@@ -114,7 +114,7 @@ io.on('connection', (socket) => {
       const roomIndex = getRoomIndex(rooms, roomId);
       const clueIndex = getClueIndex(rooms[roomIndex].game.deck, clueNum);
       if(clueIndex !== -1) {
-        rooms[roomIndex].game.deck[clueIndex].defausse.forEach(num => {
+        rooms[roomIndex].game.deck[clueIndex].discrard.forEach(num => {
           const clueToDefausseIndex = getClueIndex(rooms[roomIndex].game.clues, num);
           if(clueToDefausseIndex !== -1) rooms[roomIndex].game.clues.splice(clueToDefausseIndex, 1);
         })

@@ -46,6 +46,6 @@ socket.on('updateClues', (newGame, newTeam) => {
     const currentPlayer = newTeam.filter(p => p.id === socket.id)[0];
     if (currentPlayer) {
         room.game = newGame;
-        refreshClues(room.game.clues);
+        changeClues(room.game.clues);
     }
 });

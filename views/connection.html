@@ -5,7 +5,7 @@
     <title>Unlock</title>
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/styles/global.css" rel="stylesheet" type="text/css">
@@ -162,56 +162,96 @@
             </div>
           </div>
           <div id="room-section" class="row-container">
-            <div
-            id="left"
-            class="d-flex justify-content-center align-items-center flex-wrap col-lg-10 col-9">
-              <div *ngIf="room.game.ended; else elseClue">
-                <p *ngIf="room.game.chrono > 0; else elseLoose">Bravo vous avez réussi à sortir en {{room.game.chrono| getChrono}} minutes !</p>
-                <ng-template #elseLoose>
-                  <p>Domage ! Le temps est écoulé !</p>
-                </ng-template>
-              </div>
-              <ng-template
-              #elseClue>
-                <ng-container *ngFor="let clue of room.game.clues">
-                  <app-clue
-                  [clue]="clue"
-                  [codeForm]="codeForm"
-                  [codePlaceholder]="codePlaceholder"
-                  (error)="errorClue($event)"
-                  (combinaison)="addClue($event)"
-                  (rechercheCode)="searchCode()"></app-clue>
-                </ng-container>
-              </ng-template>
+            <div id="end-message">
+              <!-- <p>Bravo vous avez réussi à sortir en {{room.game.chrono| getChrono}} minutes !</p>
+              <p>Domage ! Le temps est écoulé !</p> -->
             </div>
-            <div
-            id="right"
-            class="text-center col-lg-2 col-3">
-              <form id="chatForm" [formGroup]="chatForm" (ngSubmit)="sendMessage()">
-                <h3 class="title">Equipe</h3>
-                <div
-                class="team">
-                  <app-player *ngFor="let player of team" [player]="player"></app-player>
+            <div id="cards">
+              <div id="12" class="card return">
+                <div class="face recto">
+                  <div [ngClass]="'card-title'" [className]="clue.type === Type.combinable ? redOrBlue(clue) : 'bc-white'">
+                    <h3>{{clue.name}} {{clue.id}}</h3>
+                    <span (click)="retourne = !retourne">🔁</span>
+                  </div>
+                  <img class="card-img-top" [src]="'assets/'+clue.img" alt="Card image cap">
                 </div>
-                <div
-                id="chat-container">
-                  <h3 class="title">Chat</h3>
-                  <div
-                  id="chat">
-                    <div
-                    *ngFor="let note of room.notes | arraySort"
-                    class="d-flex justify-content-start text-justify m-2">
-                      <div class="d-flex flex-column">
-                        <img [src]="'assets/avatar/'+note.avatar" alt="Avatar">
-                        <!-- <span>{{note.date | date:'shortTime'}}</span> -->
+                <div class="face verso">
+                  <div [ngClass]="'carte-titre'" [className]="clue.type === Type.combinable ? redOrBlue(clue) : 'bc-white'">
+                    <h3>{{clue.name}} {{clue.id}}</h3>
+                    <span (click)="retourne = !retourne">🔁</span>
+                  </div>
+                  <div *ngIf="!activer; else elseBlock" class="card-body">
+                    <p>{{clue.description}}</p>
+                    <form *ngIf="clue.type === Type.combinable" [formGroup]="combinaisonForm" (ngSubmit)="testerCombinaison()">
+                        <label for="combinaison" class="h3 font-weight-normal">Combiner</label>
+                        <input type="number" id="combinaison" class="form-control" placeholder="Entrez un numéro" formControlName="combinaison">
+                    </form>
+                    <button *ngIf="clue.type === Type.machine && clue.machine?.active" class="btn btn-primary" (click)="utiliser()">Utiliser</button>
+                    <form *ngIf="clue.type === Type.code" id="codeForm" [formGroup]="codeForm" (ngSubmit)="rechercheCode.emit()">
+                      <div id="desactiveInput"></div>
+                      <input type="number" id="code" class="form-control" [placeholder]="codePlaceholder" formControlName="code">
+                      <div id="clavier">
+                        <div
+                        class="d-flex flex-lg-nowrap justify-content-around">
+                            <div *ngFor="let v of [1, 2, 3]" class="touch" (click)="registerCode(v)"><h3>{{v}}</h3></div>
+                        </div>
+                        <div
+                        class="d-flex flex-lg-nowrap justify-content-around">
+                        <div *ngFor="let v of [4, 5, 6]" class="touch" (click)="registerCode(v)"><h3>{{v}}</h3></div>
+                        </div>
+                        <div
+                        class="d-flex flex-lg-nowrap justify-content-around">
+                        <div *ngFor="let v of [7, 8, 9]" class="touch" (click)="registerCode(v)"><h3>{{v}}</h3></div>
+                        </div>
+                        <div
+                        class="d-flex flex-lg-nowrap justify-content-around">
+                            <div class="touch" (click)="registerCode(0)"><h3>0</h3></div>
+                        </div>
+                        <div
+                        class="d-flex flex-lg-nowrap justify-content-around">
+                            <div class="btn btn-secondary mr-1" (click)="codeForm.reset()">Cancel</div>
+                            <button type="submit" class="btn btn-primary mr-1">Valider</button>
+                        </div>
                       </div>
-                      <p class=" m-0">{{note.message}}</p>
+                    </form>
+                  </div>
+                  <form [formGroup]="machineForm" (ngSubmit)="testerMachine()">
+                      <p>Séléctionnez une réponse</p>
+                      <div *ngFor="let choix of clue.machine?.choix" class="form-check">
+                          <input [id]=choix class="form-check-input" type="radio" [value]="choix" formControlName="choix">
+                          <label class="form-check-label" [for]="choix">
+                              <img class="card-img-top" style="width: 4rem;" [src]="'assets/'+choix" alt="form image">
+                          </label>
+                      </div>
+                      <button type="submit" class="btn btn-primary mr-1">Valider</button>
+                      <button class="btn btn-secondary mr-1" (click)="retour()">Retour</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <!-- <form id="chatForm" [formGroup]="chatForm" (ngSubmit)="sendMessage()">
+              <h3 class="title">Equipe</h3>
+              <div
+              class="team">
+                <app-player *ngFor="let player of team" [player]="player"></app-player>
+              </div>
+              <div
+              id="chat-container">
+                <h3 class="title">Chat</h3>
+                <div
+                id="chat">
+                  <div
+                  *ngFor="let note of room.notes | arraySort"
+                  class="d-flex justify-content-start text-justify m-2">
+                    <div class="d-flex flex-column">
+                      <img [src]="'assets/avatar/'+note.avatar" alt="Avatar">
                     </div>
+                    <p class=" m-0">{{note.message}}</p>
                   </div>
                 </div>
-                <input type="text" id="message" class="form-control" placeholder="Entrez votre message ..." formControlName="message">
-              </form>
-            </div>
+              </div>
+              <input type="text" id="message" class="form-control" placeholder="Entrez votre message ..." formControlName="message">
+            </form> -->
           </div>
         </div>
       </main>
