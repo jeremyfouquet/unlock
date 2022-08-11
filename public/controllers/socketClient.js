@@ -19,7 +19,7 @@ socket.on('getRoom', (newRoom, newTeam) => {
     const currentPlayer = newTeam.filter(p => p.id === socket.id)[0];
     if(currentPlayer) {
         room = newRoom;
-        if(room.startGame) startGame();
+        if(room.startGame) startGame(socket);
     }
 });
 socket.on('getChronoRoom', (newChrono) => {
@@ -32,8 +32,6 @@ socket.on('refreshData', (newTeam, newPlayer) => {
     team = newTeam;
     room = {}
     refreshView();
-    // const currentPlayer = newTeam.filter(p => p.id === socket.id)[0];
-    // if(!currentPlayer) room = {};
 });
 socket.on('updateRoomChrono', (newChrono, newTeam) => {
     const currentPlayer = newTeam.filter(p => p.id === socket.id)[0];
@@ -46,6 +44,6 @@ socket.on('updateClues', (newGame, newTeam) => {
     const currentPlayer = newTeam.filter(p => p.id === socket.id)[0];
     if (currentPlayer) {
         room.game = newGame;
-        changeClues(room.game.clues);
+        changeClues(room.game.clues, socket);
     }
 });

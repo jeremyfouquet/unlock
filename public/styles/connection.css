@@ -5,7 +5,7 @@
 .form-check, .form-check-input, .form-check-label {
     cursor: pointer;
 }
-#instructions, #btn-container, #waiting, #room-section, #navbar-info {
+#instructions, #btn-container, #waiting, #room-section, #navbar-info, form.card-body {
     display: none;
 }
 .bd-placeholder-img {
@@ -22,9 +22,6 @@
     top: 1rem;
     z-index: 10;
 }
-/* .carousel-item {
-    height: 32rem;
-} */
 .row img {
     height: fit-content;
 }
@@ -43,13 +40,85 @@
     justify-content: center;
     align-items: center;
 }
+#cards {
+    justify-content: space-around;
+    text-align: center;
+}
+.card {
+    background-color: transparent;
+    border: 0.5rem solid transparent;
+    transform-style: preserve-3d;
+    position: relative;
+    transition: transform 1s;
+}
+.card-title {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.card-title, .card-title h4 {
+    margin: 0;
+}
+.return {
+    transform: rotateY(180deg);
+}
+.face{
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    backface-visibility: hidden;
+    height: 100%;
+    border-radius: 5px;
+    width: 100%;
+}
+.card-img-top {
+    border-radius: 0;
+    margin: auto;
+}
+.recto{
+    z-index: 0;
+}
+.verso{
+    z-index: 1;
+    transform: rotateY(180deg);
+}
+.face span {
+    position: absolute;
+    top: 0.1rem;
+    right: 0.4rem;
+    cursor: pointer;
+}
+.card-body p {
+    text-align: justify;
+}
+form.card-body .card-img-top {
+    width: 4rem;
+}
+
+/* responsive design */
+
+/* < sm */
 @media (max-width: 575.98px) {
     .carousel-container {
         padding: 1rem 3rem 3rem 3rem;
     }
 }
+/* >= sm */
 @media (min-width: 576px) {
     .carousel-container {
         padding: 1rem 7rem 3rem 7rem;
+    }
+}
+/* < xl */
+@media (max-width: 1199.98px) {
+    .card {
+        height: 360px;
+    }
+}
+/* >= xl */
+@media (min-width: 992px) {
+    .card {
+        height: 400px;
     }
 }

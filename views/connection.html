@@ -20,7 +20,7 @@
                 Unlock
             </span>
             <div id="navbar-info">
-              <div id="chronoGame" class="me-2">ghghgh</div>
+              <div id="chronoGame" class="me-2"></div>
               <form id="clue-form" class="d-flex me-2" role="search" onsubmit="searchClue(event, socket)">
                 <input class="form-control me-2" type="number" placeholder="Indice" name="clue" required>
                 <button class="btn bg-lightgrey" type="submit">Chercher</button>
@@ -77,7 +77,7 @@
           </form>
           <div id="instructions" class="connection">
             <div class="mb-3 row justify-content-around">
-              <h3>Equipe</h3>
+              <h2>Equipe</h2>
               <div id="team" class="col-lg-4">
               </div>
               <div id="chronoRoom"></div>
@@ -86,7 +86,7 @@
                 <button type="submit" class="btn bg-grey" onclick="back(socket)">Retour</button>
               </div>
               <div id="waiting">
-                <h3>En attente des autres joueurs</h3>
+                <h4>En attente des autres joueurs</h4>
                 <div class="spinner-border" role="status">
                   <span class="visually-hidden">loading...</span>
                 </div>
@@ -166,7 +166,7 @@
               <!-- <p>Bravo vous avez réussi à sortir en {{room.game.chrono| getChrono}} minutes !</p>
               <p>Domage ! Le temps est écoulé !</p> -->
             </div>
-            <div id="cards">
+            <div id="cards" class="row">
               <div id="12" class="card return">
                 <div class="face recto">
                   <div [ngClass]="'card-title'" [className]="clue.type === Type.combinable ? redOrBlue(clue) : 'bc-white'">
@@ -176,17 +176,19 @@
                   <img class="card-img-top" [src]="'assets/'+clue.img" alt="Card image cap">
                 </div>
                 <div class="face verso">
-                  <div [ngClass]="'carte-titre'" [className]="clue.type === Type.combinable ? redOrBlue(clue) : 'bc-white'">
+                  <div [ngClass]="'card-title'" [className]="clue.type === Type.combinable ? redOrBlue(clue) : 'bc-white'">
                     <h3>{{clue.name}} {{clue.id}}</h3>
                     <span (click)="retourne = !retourne">🔁</span>
                   </div>
                   <div *ngIf="!activer; else elseBlock" class="card-body">
                     <p>{{clue.description}}</p>
                     <form *ngIf="clue.type === Type.combinable" [formGroup]="combinaisonForm" (ngSubmit)="testerCombinaison()">
-                        <label for="combinaison" class="h3 font-weight-normal">Combiner</label>
-                        <input type="number" id="combinaison" class="form-control" placeholder="Entrez un numéro" formControlName="combinaison">
+                      <h4 for="combination" class="form-label">Combiner</h4>
+                      <input id="combination" type="number" class="form-control" placeholder="Entrez un numéro" minLength="1" maxLength="3" required>
+
+                      <!-- <label for="combinaison" class="h3 font-weight-normal">Combiner</label>
+                        <input type="number" id="combinaison" class="form-control" placeholder="Entrez un numéro" formControlName="combinaison"> -->
                     </form>
-                    <button *ngIf="clue.type === Type.machine && clue.machine?.active" class="btn btn-primary" (click)="utiliser()">Utiliser</button>
                     <form *ngIf="clue.type === Type.code" id="codeForm" [formGroup]="codeForm" (ngSubmit)="rechercheCode.emit()">
                       <div id="desactiveInput"></div>
                       <input type="number" id="code" class="form-control" [placeholder]="codePlaceholder" formControlName="code">
@@ -214,8 +216,9 @@
                         </div>
                       </div>
                     </form>
+                    <button *ngIf="clue.type === Type.machine && clue.machine?.active" class="btn btn-primary" (click)="utiliser()">Utiliser</button>
                   </div>
-                  <form [formGroup]="machineForm" (ngSubmit)="testerMachine()">
+                  <form class="form-code" [formGroup]="machineForm" (ngSubmit)="testerMachine()">
                       <p>Séléctionnez une réponse</p>
                       <div *ngFor="let choix of clue.machine?.choix" class="form-check">
                           <input [id]=choix class="form-check-input" type="radio" [value]="choix" formControlName="choix">

@@ -57,15 +57,23 @@ io.on('connection', (socket) => {
     });
     // create new room or get existed room waiting for new players
     socket.on('createOrJoinRoom', (gameIndex) => {
-      let game = {};
-      Object.assign(game, games[gameIndex]);
-      let room = rooms.filter(room => room.chrono > 0 && !room.startGame && getTeam(players, room.id).length < 4 && room.game.name === game.name)[0];
+      const gameInfo = {
+        name : games[gameIndex].name,
+        chronoStart: games[gameIndex].chronoStart,
+        chrono : games[gameIndex].chrono,
+        clues : JSON.parse(JSON.stringify(games[gameIndex].clues)),
+        deck : JSON.parse(JSON.stringify(games[gameIndex].deck)),
+        code: games[gameIndex].code,
+        ended: games[gameIndex].ended
+      }
+      // Object.assign({}, games[gameIndex]);
+      let room = rooms.filter(room => room.chrono > 0 && !room.startGame && getTeam(players, room.id).length < 4 && room.game.name === gameInfo.name)[0];
       let roomId = room ? room.id : null;
       let firstPlayer = false;
       if(!roomId) {
         roomId = newId();
         firstPlayer = true;
-        createRoom(roomId, chronoRoom, game, robotConversation, rooms);
+        createRoom(roomId, chronoRoom, gameInfo, robotConversation, rooms);
         const roomIndex = getRoomIndex(rooms, roomId);
         room = rooms[roomIndex];
       }
@@ -98,23 +106,11 @@ io.on('connection', (socket) => {
     });
 
     //ROOM
-    socket.on('penalty', (time, roomId) => {
-      const roomIndex = getRoomIndex(rooms, roomId);
-      if (rooms[roomIndex].game.chrono - time < 0) {
-        rooms[roomIndex].game.chrono = 0;
-      } else {
-        rooms[roomIndex].game.chrono-=time;
-      }
-      if(rooms[roomIndex].game.chrono <= 0) {
-        const team = getTeam(players, roomId);
-        io.emit('updateRoomChrono', rooms[roomIndex].game.chrono, team);
-      }
-    });
     socket.on('addClue', (clueNum, roomId) => {
       const roomIndex = getRoomIndex(rooms, roomId);
       const clueIndex = getClueIndex(rooms[roomIndex].game.deck, clueNum);
       if(clueIndex !== -1) {
-        rooms[roomIndex].game.deck[clueIndex].discrard.forEach(num => {
+        rooms[roomIndex].game.deck[clueIndex].discard.forEach(num => {
           const clueToDefausseIndex = getClueIndex(rooms[roomIndex].game.clues, num);
           if(clueToDefausseIndex !== -1) rooms[roomIndex].game.clues.splice(clueToDefausseIndex, 1);
         })
@@ -122,6 +118,19 @@ io.on('connection', (socket) => {
         rooms[roomIndex].game.deck.splice(clueIndex, 1);
         const team = getTeam(players, roomId);
         io.emit('updateClues', rooms[roomIndex].game, team);
+      }
+    });
+    socket.on('penalty', (time, roomId) => {
+      const roomIndex = getRoomIndex(rooms, roomId);
+      if (rooms[roomIndex].game.chrono - time < 0) {
+        rooms[roomIndex].game.chrono = 0;
+      } else {
+        rooms[roomIndex].game.chrono-=time;
+      }
+      // todo robot said something
+      if(rooms[roomIndex].game.chrono <= 0) {
+        const team = getTeam(players, roomId);
+        io.emit('updateRoomChrono', rooms[roomIndex].game.chrono, team);
       }
     });
     socket.on('winGame', (roomId) => {
@@ -176,11 +185,11 @@ function newId() {
   return Math.random().toString(36).substring(2, 9);
 }
 // create room into rooms
-function createRoom(roomId, chronoRoom, game, robotConversation, rooms) {
+function createRoom(roomId, chronoRoom, gameInfo, robotConversation, rooms) {
   const room = {
     id: roomId,
     chrono: chronoRoom,
-    game: game,
+    game: gameInfo,
     startGame: false,
     notes: [
       {

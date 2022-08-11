@@ -26,7 +26,7 @@
             "combinable": {
               "numClue": 11,
               "numCombine": 46,
-              "color": "bc-blue"
+              "color": "bg-darkblue"
             }
         },
         {
@@ -40,7 +40,7 @@
             "combinable": {
               "numClue": 16,
               "numCombine": 85,
-              "color": "bc-blue"
+              "color": "bg-darkblue"
             }
         },
         {
@@ -63,7 +63,7 @@
             "combinable": {
             "numClue": 25,
             "numCombine": 67,
-            "color": "bc-blue"
+            "color": "bg-darkblue"
             }
         },
         {
@@ -77,7 +77,7 @@
             "combinable": {
               "numClue": 35,
               "numCombine": 46,
-              "color": "bc-red"
+              "color": "bg-red"
             }
         },
         {
@@ -91,7 +91,7 @@
             "combinable": {
               "numClue": 42,
               "numCombine": 67,
-              "color": "bc-red"
+              "color": "bg-red"
             }
         },
         {
@@ -123,7 +123,7 @@
           "combinable": {
             "numClue": 69,
             "numCombine": 85,
-            "color": "bc-red"
+            "color": "bg-red"
           }
         },
         {
@@ -137,7 +137,7 @@
             "machine": {
               "reponse": "choix3.png",
               "replaceClue": 25,
-              "choix": ["choix1.png", "choix2.png", "choix3.png"],
+              "choice": ["choix1.png", "choix2.png", "choix3.png"],
               "active": true
             }
         }
