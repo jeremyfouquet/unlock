@@ -46,7 +46,7 @@
         {
             "id": 21,
             "name": "La Porte de sortie",
-            "description": "Elle est commandée par un digicode. Pour sortir et terminer le tutoriel, vous devez entrer un code à 4 chiffres à l'aide du digicode ci-dessous. Cherchez dans la pièce.",
+            "description": "Vous devez entrer ci-dessous un digicode à 4 chiffres. Cherchez dans la pièce.",
             "img": "porte.png",
             "discard": [],
             "numsClues": [],

@@ -47,3 +47,10 @@ socket.on('updateClues', (newGame, newTeam) => {
         changeClues(room.game.clues, socket);
     }
 });
+socket.on('updateRoomEnded', (newEnded, newTeam) => {
+    const currentPlayer = newTeam.filter(p => p.id === socket.id)[0];
+    if(currentPlayer) {
+        room.game.ended = newEnded;
+        endedGame();
+    }
+});

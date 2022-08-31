@@ -5,7 +5,7 @@
 .form-check-input, .form-check-label {
     cursor: pointer;
 }
-#instructions, #btn-container, #waiting, #room-section, #navbar-info, form.card-body {
+#instructions, #btn-container, #waiting, #room-section, #navbar-info, form.card-body, #end-message {
     display: none;
 }
 .bd-placeholder-img {
@@ -91,9 +91,32 @@
 }
 .card-body p {
     text-align: justify;
+    margin-bottom: 0.2rem;
 }
 form.card-body .card-img-top {
     width: 4rem;
+}
+#desactiveInput {
+    height: 40px;
+    width: 285px;
+    z-index: 1;
+    float: right;
+    position: absolute;
+}
+#keyboard {
+    border-radius: 5px;
+    padding: 0.5rem;
+}
+#keyboard .key {
+    border-radius: 10px;
+    border: 2px double #D1D1D1;
+    width: 30%;
+    margin-bottom: 0.2rem;
+    cursor: pointer;
+}
+#end-message {
+    text-align: center;
+    margin-bottom: 3rem;
 }
 
 /* responsive design */

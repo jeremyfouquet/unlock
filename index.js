@@ -84,7 +84,6 @@ io.on('connection', (socket) => {
       io.emit('getTeam', team);
       intervalChrono(socket, rooms, players, roomId, firstPlayer)
     });
-
     socket.on('back', (roomId) => {
       let team = getTeam(players, roomId);
       if(team[1]) {
@@ -137,7 +136,7 @@ io.on('connection', (socket) => {
       const roomIndex = getRoomIndex(rooms, roomId);
       rooms[roomIndex].game.ended = true;
       const team = getTeam(players, roomId);
-      io.emit('getRoom', rooms[roomIndex], team);
+      io.emit('updateRoomEnded', rooms[roomIndex].game.ended, team);
     });
     socket.on('message', (note, roomId) => {
       const roomIndex = getRoomIndex(rooms, roomId);

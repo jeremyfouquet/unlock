@@ -56,6 +56,9 @@ body {
 h2 {
     color: #000000;
 }
+h5 {
+    margin: 0;
+}
 footer {
     border-top: 1px solid #D1D1D1;
     padding: 3rem 0 0 0;

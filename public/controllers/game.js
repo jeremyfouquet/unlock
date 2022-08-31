@@ -46,14 +46,14 @@ function changeClues(clues, socketClient) {
             const cards = $('#cards')[0];
             const card = document.createElement("div");
             card.setAttribute('id', `clue${clue.id}`);
-            card.setAttribute('class', 'card col-lg-3 col-md-4 col-sm-6 col-7');
+            card.setAttribute('class', 'card col-xl-3 col-lg-4 col-md-5 col-sm-6 col-7');
             // RECTO CARD
             const recto = document.createElement("div");
             recto.setAttribute('class', 'face recto bg-lightgrey');
             const title = document.createElement("div");
             const bc = clue.type === 'combinable' ? clue.combinable.color : 'bg-white';
             title.setAttribute('class', `card-title ${bc}`);
-            const h4 = document.createElement("h4");
+            const h4 = document.createElement("h5");
             h4.innerHTML = `${clue.name} ${clue.id}`;
             const span = document.createElement("span");
             span.innerHTML = '🔁';
@@ -99,10 +99,10 @@ function changeClues(clues, socketClient) {
                 hcombine.innerHTML = 'Combiner';
                 const inputcombine = document.createElement("input");
                 inputcombine.setAttribute('class', 'form-control');
-                inputcombine.setAttribute('type', 'number');
+                inputcombine.setAttribute('type', 'text');
                 inputcombine.setAttribute('placeholder', 'Entrez un numéro');
-                inputcombine.setAttribute('minLength', '1');
-                inputcombine.setAttribute('maxLength', '3');
+                inputcombine.setAttribute('required', true);
+                inputcombine.setAttribute('pattern', '[0-9]{1,3}');
                 formcombine.addEventListener('submit', function handleSubmit(event){
                     event.preventDefault();
                     const inputValue = parseInt(inputcombine.value);
@@ -128,40 +128,9 @@ function changeClues(clues, socketClient) {
                     $(`#clue${clue.id} form.card-body`).show();
                 });
                 body.appendChild(button);
-                const formcode = document.createElement("form");
-                formcode.setAttribute('class', 'card-body');
-                const question = document.createElement("p");
-                question.innerHTML = 'Séléctionnez une réponse';
-                formcode.appendChild(question);
-                clue.machine.choice.forEach(choice => {
-                    const divFormCode = document.createElement("div");
-                    divFormCode.setAttribute('class', 'form-check');
-                    const inputFormCode = document.createElement("input");
-                    inputFormCode.setAttribute('class', 'form-check-input');
-                    inputFormCode.setAttribute('type', 'radio');
-                    inputFormCode.setAttribute('value', choice);
-                    inputFormCode.setAttribute('name', 'choice');
-                    const label = document.createElement("label");
-                    label.setAttribute('class', 'form-check-label');
-                    label.setAttribute('for', 'choice');
-                    label.addEventListener('click', function handleSubmit(event){
-                        event.preventDefault();
-                        inputFormCode.click();
-                    });
-                    const imgLabel = document.createElement("img");
-                    imgLabel.setAttribute('class', 'card-img-top');
-                    imgLabel.setAttribute('src', `/assets/${choice}`);
-                    imgLabel.setAttribute('alt', 'choix');
-                    label.appendChild(imgLabel);
-                    divFormCode.appendChild(inputFormCode);
-                    divFormCode.appendChild(label);
-                    formcode.appendChild(divFormCode);
-                });
-                const buttonFormCode = document.createElement("button");
-                buttonFormCode.setAttribute('class', 'btn bg-lightgrey me-2');
-                buttonFormCode.setAttribute('type', 'submit');
-                buttonFormCode.innerHTML = 'Valider';
-                buttonFormCode.addEventListener('click', function handleSubmit(event){
+                const formMachine = document.createElement("form");
+                formMachine.setAttribute('class', 'card-body');
+                formMachine.addEventListener('submit', function handleSubmit(event){
                     event.preventDefault();
                     const inputValue = $(`#clue${clue.id} .form-check-input:checked[type=radio]`).val();
                     if (inputValue === clue.machine.response) {
@@ -170,6 +139,38 @@ function changeClues(clues, socketClient) {
                         socketClient.emit('penalty', 60, room.id);
                     }
                 });
+                const question = document.createElement("p");
+                question.innerHTML = 'Séléctionnez une réponse';
+                formMachine.appendChild(question);
+                clue.machine.choice.forEach(choice => {
+                    const divFormMachine = document.createElement("div");
+                    divFormMachine.setAttribute('class', 'form-check');
+                    const inputFormMachine = document.createElement("input");
+                    inputFormMachine.setAttribute('class', 'form-check-input');
+                    inputFormMachine.setAttribute('type', 'radio');
+                    inputFormMachine.setAttribute('value', choice);
+                    inputFormMachine.setAttribute('name', 'choice');
+                    inputFormMachine.setAttribute('required', true);
+                    const label = document.createElement("label");
+                    label.setAttribute('class', 'form-check-label');
+                    label.setAttribute('for', 'choice');
+                    label.addEventListener('click', function handleSubmit(event){
+                        event.preventDefault();
+                        inputFormMachine.click();
+                    });
+                    const imgLabel = document.createElement("img");
+                    imgLabel.setAttribute('class', 'card-img-top');
+                    imgLabel.setAttribute('src', `/assets/${choice}`);
+                    imgLabel.setAttribute('alt', 'choix');
+                    label.appendChild(imgLabel);
+                    divFormMachine.appendChild(inputFormMachine);
+                    divFormMachine.appendChild(label);
+                    formMachine.appendChild(divFormMachine);
+                });
+                const buttonFormMachine = document.createElement("button");
+                buttonFormMachine.setAttribute('class', 'btn bg-lightgrey me-2');
+                buttonFormMachine.setAttribute('type', 'submit');
+                buttonFormMachine.innerHTML = 'Valider';
                 const buttonBackToBody = document.createElement("button");
                 buttonBackToBody.setAttribute('class', 'btn bg-grey');
                 buttonBackToBody.innerHTML = 'Retour';
@@ -178,12 +179,71 @@ function changeClues(clues, socketClient) {
                     $(`#clue${clue.id} div.card-body`).show();
                     $(`#clue${clue.id} form.card-body`).hide();
                 });
-                formcode.appendChild(buttonFormCode);
-                formcode.appendChild(buttonBackToBody);
-                verso.appendChild(formcode);
+                formMachine.appendChild(buttonFormMachine);
+                formMachine.appendChild(buttonBackToBody);
+                verso.appendChild(formMachine);
             }
             if (clue.type === 'code') {
-
+                const formcode = document.createElement("form");
+                const desactiveInput = document.createElement("div");
+                desactiveInput.setAttribute('id', 'desactiveInput');
+                const inputcode = document.createElement("input");
+                inputcode.setAttribute('type', 'text');
+                inputcode.setAttribute('class', 'form-control');
+                inputcode.setAttribute('placeholder', 'Entrez un code');
+                inputcode.setAttribute('required', true);
+                inputcode.setAttribute('pattern', '[0-9]{4}');
+                const keyboard = document.createElement("div");
+                keyboard.setAttribute('id', 'keyboard');
+                keyboard.setAttribute('class', 'bg-white');
+                [[1, 2, 3], [4, 5, 6], [7, 8, 9], [0]].forEach(keys => {
+                    const keyGroup = document.createElement("div");
+                    keyGroup.setAttribute('class', 'd-flex flex-lg-nowrap justify-content-around');
+                    keys.forEach(numKey => {
+                        const key = document.createElement("div");
+                        key.setAttribute('class', 'key white bg-grey');
+                        const h3key = document.createElement("h5");
+                        h3key.innerHTML = numKey;
+                        key.appendChild(h3key);
+                        key.addEventListener('click', function handleClick(event) {
+                            event.preventDefault();
+                            console.log(inputcode.value);
+                            inputcode.value = inputcode.value ? +`${inputcode.value}${numKey}` : numKey;
+                        });
+                        keyGroup.appendChild(key);
+                    });
+                    keyboard.appendChild(keyGroup);
+                });
+                const btnKeyboard = document.createElement("div");
+                btnKeyboard.setAttribute('class', 'd-flex flex-lg-nowrap justify-content-around');
+                const btnKeyboardSubmit = document.createElement("button");
+                btnKeyboardSubmit.setAttribute('type', 'submit');
+                btnKeyboardSubmit.setAttribute('class', 'btn bg-lightgrey');
+                btnKeyboardSubmit.innerHTML = 'Valider';
+                const btnKeyboardCancel = document.createElement("div");
+                btnKeyboardCancel.setAttribute('class', 'btn bg-grey');
+                btnKeyboardCancel.innerHTML = 'Cancel';
+                btnKeyboardCancel.addEventListener('click', function handleClick(event) {
+                    event.preventDefault();
+                    formcode.reset();
+                });
+                formcode.addEventListener('submit', function handleSubmit(event){
+                    event.preventDefault();
+                    const inputValue = parseInt(inputcode.value);
+                    if (inputValue === room.game.code) {
+                        socketClient.emit('winGame', room.id);
+                    } else {
+                        socketClient.emit('penalty', 60, room.id);
+                        formcode.reset();
+                    }
+                });
+                btnKeyboard.appendChild(btnKeyboardSubmit);
+                btnKeyboard.appendChild(btnKeyboardCancel);
+                keyboard.appendChild(btnKeyboard);
+                formcode.appendChild(desactiveInput);
+                formcode.appendChild(inputcode);
+                formcode.appendChild(keyboard);
+                body.appendChild(formcode);
             }
             verso.appendChild(body);
             card.appendChild(verso);
@@ -199,4 +259,10 @@ function changeClues(clues, socketClient) {
     divToRemove.forEach(id => {
         $('div').remove(`#${id}`);
     });
+}
+function endedGame() {
+    $('#cards').hide();
+    $('#navbar-info').css('display', 'none');
+    $('#end-message > p').text(room.game.chrono > 0 ? `Bravo vous avez réussi à sortir en ${getChrono(room.game.chrono)} minutes !` : 'Domage ! Le temps est écoulé !')
+    $('#end-message').show();
 }
