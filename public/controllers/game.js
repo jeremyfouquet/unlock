@@ -144,6 +144,10 @@ function changeClues(clues, socketClient) {
                     const label = document.createElement("label");
                     label.setAttribute('class', 'form-check-label');
                     label.setAttribute('for', 'choice');
+                    label.addEventListener('click', function handleSubmit(event){
+                        event.preventDefault();
+                        inputFormCode.click();
+                    });
                     const imgLabel = document.createElement("img");
                     imgLabel.setAttribute('class', 'card-img-top');
                     imgLabel.setAttribute('src', `/assets/${choice}`);
@@ -160,7 +164,11 @@ function changeClues(clues, socketClient) {
                 buttonFormCode.addEventListener('click', function handleSubmit(event){
                     event.preventDefault();
                     const inputValue = $(`#clue${clue.id} .form-check-input:checked[type=radio]`).val();
-                    console.log('todo function', inputValue);
+                    if (inputValue === clue.machine.response) {
+                        addClue(clue.machine.replaceClue, socketClient);
+                    } else {
+                        socketClient.emit('penalty', 60, room.id);
+                    }
                 });
                 const buttonBackToBody = document.createElement("button");
                 buttonBackToBody.setAttribute('class', 'btn bg-grey');
@@ -173,6 +181,9 @@ function changeClues(clues, socketClient) {
                 formcode.appendChild(buttonFormCode);
                 formcode.appendChild(buttonBackToBody);
                 verso.appendChild(formcode);
+            }
+            if (clue.type === 'code') {
+
             }
             verso.appendChild(body);
             card.appendChild(verso);

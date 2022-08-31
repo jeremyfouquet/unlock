@@ -135,7 +135,7 @@
             "numsClues": [],
             "type": "machine",
             "machine": {
-              "reponse": "choix3.png",
+              "response": "choix3.png",
               "replaceClue": 25,
               "choice": ["choix1.png", "choix2.png", "choix3.png"],
               "active": true

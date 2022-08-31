@@ -2,7 +2,7 @@
     text-align: center;
     margin-bottom: 3rem;
 }
-.form-check, .form-check-input, .form-check-label {
+.form-check-input, .form-check-label {
     cursor: pointer;
 }
 #instructions, #btn-container, #waiting, #room-section, #navbar-info, form.card-body {
