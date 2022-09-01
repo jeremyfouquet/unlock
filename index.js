@@ -47,7 +47,7 @@ const robotConversation = require(path.join(__dirname + '/public/datas/robotConv
 
 io.on('connection', (socket) => {
     console.log(`a user connected whith id : ${socket.id}`);
-    const chronoRoom = 5;
+    const chronoRoom = 20;
     //CONNECTION
     // add new player or update existed player into players
     socket.on('addOrUpdatePlayer', (player) => {
@@ -126,9 +126,15 @@ io.on('connection', (socket) => {
       } else {
         rooms[roomIndex].game.chrono-=time;
       }
-      // todo robot said something
+      const team = getTeam(players, roomId);
+      const note =  {
+        message: robotConversation["E"],
+        avatar: 'robot.svg',
+        id: 'robot0',
+        date: getDateHours()
+      }
+      io.emit('updateMessages', note, team);
       if(rooms[roomIndex].game.chrono <= 0) {
-        const team = getTeam(players, roomId);
         io.emit('updateRoomChrono', rooms[roomIndex].game.chrono, team);
       }
     });
@@ -138,11 +144,17 @@ io.on('connection', (socket) => {
       const team = getTeam(players, roomId);
       io.emit('updateRoomEnded', rooms[roomIndex].game.ended, team);
     });
-    socket.on('message', (note, roomId) => {
+    socket.on('message', (message, player, roomId) => {
       const roomIndex = getRoomIndex(rooms, roomId);
+      const note = {
+        message: message,
+        avatar: player.avatar,
+        id: player.id,
+        date: getDateHours()
+      }
       rooms[roomIndex].notes.push(note);
       const team = getTeam(players, roomId);
-      io.emit('getRoom', rooms[roomIndex], team);
+      io.emit('updateMessages', note, team);
       talkToRobot(note, rooms, roomId, players, robotConversation);
     });
 
@@ -194,17 +206,20 @@ function createRoom(roomId, chronoRoom, gameInfo, robotConversation, rooms) {
       {
         message: robotConversation["A"],
         avatar: 'robot.svg',
-        date: new Date().getTime()
+        id: 'robot0',
+        date: getDateHours()
       },
       {
         message: robotConversation["B"],
         avatar: 'robot.svg',
-        date: new Date().getTime()+1
+        id: 'robot0',
+        date: getDateHours()
       },
       {
         message: robotConversation["C"],
         avatar: 'robot.svg',
-        date: new Date().getTime()+2
+        id: 'robot0',
+        date: getDateHours()
       }
     ]
   }
@@ -277,6 +292,12 @@ function getClueIndex(clues, id) {
   const index = clues.findIndex(clue => clue.id === id);
   return index;
 }
+function getDateHours() {
+  const now = new Date();
+  const hour = now.getHours() < 10 ? `0${now.getHours()}`: now.getHours();
+  const min = now.getMinutes() < 10 ? `0${now.getMinutes()}`: now.getMinutes();
+  return `${hour}:${min}`;
+}
 function talkToRobot(note, rooms, roomId, players, robotConversation) {
   let roomIndex = getRoomIndex(rooms, roomId);
   const str = note.message.toLowerCase();
@@ -294,12 +315,13 @@ function talkToRobot(note, rooms, roomId, players, robotConversation) {
         const note = {
           message: messages[0],
           avatar: 'robot.svg',
-          date: new Date().getTime()
+          id: 'robot0',
+          date: getDateHours()
         };
         roomIndex = getRoomIndex(rooms, roomId);
         rooms[roomIndex].notes.push(note);
         const team = getTeam(players, roomId);
-        io.emit('getRoom', rooms[roomIndex], team);
+        io.emit('updateMessages', note, team);
         messages.splice(0, 1);
       } else clearInterval(idInterval);
     }, 1000);

@@ -1,14 +1,19 @@
 let room = {};
 let team = [];
 
-function startGame(socketClient) {
+function startGame(socketClient, currentPlayer) {
     $('#waiting').hide();
     $('#chronoRoom').show();
     $('#instructions').hide();
     $('#room-section').show();
     $('#navbar-info').css('display', 'flex');
+    $('#chatForm .card-footer img').attr('src',`/assets/${currentPlayer.avatar}`);
     changeChronoGame(room.game.chrono);
     changeClues(room.game.clues, socketClient);
+    room.notes.forEach(note => {
+        addMessage(note, currentPlayer);
+    });
+    toggleChat();
 }
 function changeChronoGame(gameChrono) {
     const chronoTraget = $('#chronoGame')[0];
@@ -46,22 +51,22 @@ function changeClues(clues, socketClient) {
             const cards = $('#cards')[0];
             const card = document.createElement("div");
             card.setAttribute('id', `clue${clue.id}`);
-            card.setAttribute('class', 'card col-xl-3 col-lg-4 col-md-5 col-sm-6 col-7');
+            card.setAttribute('class', 'card clue col-xl-3 col-lg-4 col-md-5 col-sm-6 col-7');
             // RECTO CARD
             const recto = document.createElement("div");
             recto.setAttribute('class', 'face recto bg-lightgrey');
             const title = document.createElement("div");
             const bc = clue.type === 'combinable' ? clue.combinable.color : 'bg-white';
             title.setAttribute('class', `card-title ${bc}`);
-            const h4 = document.createElement("h5");
-            h4.innerHTML = `${clue.name} ${clue.id}`;
+            const h5 = document.createElement("h5");
+            h5.innerHTML = `${clue.name} ${clue.id}`;
             const span = document.createElement("span");
             span.innerHTML = '🔁';
             span.addEventListener('click', function handleClick(event) {
                 event.preventDefault();
                 $(`#clue${clue.id}`).toggleClass('return');
             });
-            title.appendChild(h4);
+            title.appendChild(h5);
             title.appendChild(span);
             const img = document.createElement("img");
             img.setAttribute('src', `/assets/${clue.img}`);
@@ -75,15 +80,15 @@ function changeClues(clues, socketClient) {
             verso.setAttribute('class', 'face verso bg-lightgrey');
             const titleBis = document.createElement("div");
             titleBis.setAttribute('class', `card-title ${bc}`);
-            const h4Bis = document.createElement("h4");
-            h4Bis.innerHTML = `${clue.name} ${clue.id}`;
+            const h5Bis = document.createElement("h5");
+            h5Bis.innerHTML = `${clue.name} ${clue.id}`;
             const spanBis = document.createElement("span");
             spanBis.innerHTML = '🔁';
             spanBis.addEventListener('click', function handleClick(event) {
                 event.preventDefault();
                 $(`#clue${clue.id}`).toggleClass('return');
             });
-            titleBis.appendChild(h4Bis);
+            titleBis.appendChild(h5Bis);
             titleBis.appendChild(spanBis);
             verso.appendChild(titleBis);
             const body = document.createElement("div");
@@ -94,7 +99,7 @@ function changeClues(clues, socketClient) {
             if(clue.type === 'combinable') {
                 const formcombine = document.createElement("form");
                 formcombine.setAttribute('name', 'combination');
-                const hcombine = document.createElement("h4");
+                const hcombine = document.createElement("h5");
                 hcombine.setAttribute('class', 'form-label');
                 hcombine.innerHTML = 'Combiner';
                 const inputcombine = document.createElement("input");
@@ -265,4 +270,49 @@ function endedGame() {
     $('#navbar-info').css('display', 'none');
     $('#end-message > p').text(room.game.chrono > 0 ? `Bravo vous avez réussi à sortir en ${getChrono(room.game.chrono)} minutes !` : 'Domage ! Le temps est écoulé !')
     $('#end-message').show();
+}
+function addMessage(note, currentPlayer) {
+    const element = $(`#chat-messages`)[0];
+    const div1 = document.createElement("div");
+    const div2 = document.createElement("div");
+    div2.setAttribute('class', 'col-10');
+    const p1 = document.createElement("p");
+    const p2 = document.createElement("p");
+    if(note.id === currentPlayer.id) {
+        div1.setAttribute('class', 'd-flex flex-row justify-content-end');
+        p1.setAttribute('class', 'small p-2 me-3 mb-1 text-white rounded-3 bg-primary');
+        p2.setAttribute('class', 'small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end');
+    } else {
+        div1.setAttribute('class', 'd-flex flex-row justify-content-start');
+        const img = document.createElement("img");
+        img.setAttribute('src', `/assets/${note.avatar}`);
+        img.setAttribute('alt', 'Avatar');
+        div1.appendChild(img);
+        p1.setAttribute('class', 'small p-2 ms-3 mb-1 rounded-3 bg-lightgrey');
+        p2.setAttribute('class', 'small ms-3 mb-3 rounded-3 text-muted');
+    }
+    p1.innerHTML = note.message;
+    p2.innerHTML = note.date;
+    div2.appendChild(p1);
+    div2.appendChild(p2);
+    div1.appendChild(div2);
+    element.appendChild(div1);
+    $("#chatForm .card-body").scrollTop($("#chat-messages").height());
+}
+function toggleChat() {
+    $("#chat-circle").toggle('scale');
+    $("#chatForm").toggle('scale');
+    $("#chatForm .card-body").scrollTop($("#chat-messages").height());
+}
+function sendMessage(event, socketClient, currentPlayer) {
+    event.preventDefault();
+    const message = $('#chatForm input[name="message"]').val();
+    socketClient.emit('message', message, currentPlayer, room.id);
+    $('#chatForm')[0].reset();
+}
+function getDateHours() {
+    const now = new Date();
+    const hour = now.getHours() < 10 ? `0${now.getHours()}`: now.getHours();
+    const min = now.getMinutes() < 10 ? `0${now.getMinutes()}`: now.getMinutes();
+    return `${hour}:${min}`;
 }

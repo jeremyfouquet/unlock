@@ -19,7 +19,7 @@ socket.on('getRoom', (newRoom, newTeam) => {
     const currentPlayer = newTeam.filter(p => p.id === socket.id)[0];
     if(currentPlayer) {
         room = newRoom;
-        if(room.startGame) startGame(socket);
+        if(room.startGame) startGame(socket, player);
     }
 });
 socket.on('getChronoRoom', (newChrono) => {
@@ -52,5 +52,12 @@ socket.on('updateRoomEnded', (newEnded, newTeam) => {
     if(currentPlayer) {
         room.game.ended = newEnded;
         endedGame();
+    }
+});
+socket.on('updateMessages', (note, newTeam) => {
+    const currentPlayer = newTeam.filter(p => p.id === socket.id)[0];
+    if(currentPlayer) {
+        room.notes.push(note);
+        addMessage(note, player);
     }
 });

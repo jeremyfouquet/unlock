@@ -168,6 +168,26 @@
             </div>
             <div id="cards" class="row">
             </div>
+            <div id="chatbox">
+              <div id="chat-circle" class="btn btn-raised bg-grey" onclick="toggleChat()">
+                <span>✉️</span>
+              </div>
+              <form id="chatForm" class="card col-12" onsubmit="sendMessage(event, socket, player)">
+                <div class="card-title d-flex justify-content-center align-items-center p-3 bg-lightgrey">
+                  <h5 class="mb-0">Chat</h5>
+                  <span onclick="toggleChat()">-</span>
+                </div>
+                <div class="card-body" style="position: relative; height: 400px">
+                  <div id="chat-messages">
+                  </div>
+                </div>
+                <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
+                  <img src="" alt="Avatar" style="width: 40px; height: 100%;">
+                  <input type="text" class="form-control" name="message"
+                    placeholder="Votre message ...">
+                </div>
+              </form>
+            </div>
             <!-- <form id="chatForm" [formGroup]="chatForm" (ngSubmit)="sendMessage()">
               <h3 class="title">Equipe</h3>
               <div
@@ -183,7 +203,7 @@
                   *ngFor="let note of room.notes | arraySort"
                   class="d-flex justify-content-start text-justify m-2">
                     <div class="d-flex flex-column">
-                      <img [src]="'assets/avatar/'+note.avatar" alt="Avatar">
+                      <img [src]="'assets/'+note.avatar" alt="Avatar">
                     </div>
                     <p class=" m-0">{{note.message}}</p>
                   </div>

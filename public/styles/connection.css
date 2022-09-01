@@ -5,8 +5,12 @@
 .form-check-input, .form-check-label {
     cursor: pointer;
 }
-#instructions, #btn-container, #waiting, #room-section, #navbar-info, form.card-body, #end-message {
+#instructions, #btn-container, #waiting, #room-section, #navbar-info, .clue form.card-body, #end-message, #chatForm {
     display: none;
+}
+#room-section {
+    position: relative;
+    min-height: 600px;
 }
 .bd-placeholder-img {
     font-size: 1.125rem;
@@ -44,7 +48,7 @@
     justify-content: space-around;
     text-align: center;
 }
-.card {
+.card.clue {
     background-color: transparent;
     border: 0.5rem solid transparent;
     transform-style: preserve-3d;
@@ -55,7 +59,7 @@
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
-.card-title, .card-title h4 {
+.card-title, .card-title h5 {
     margin: 0;
 }
 .return {
@@ -83,17 +87,22 @@
     z-index: 1;
     transform: rotateY(180deg);
 }
-.face span {
+.card-title span {
     position: absolute;
-    top: 0.1rem;
     right: 0.4rem;
     cursor: pointer;
 }
-.card-body p {
+.clue .card-title span {
+    top: 0.1rem;
+}
+#chatForm .card-title span {
+    font-size: 30px;
+}
+.clue .card-body p {
     text-align: justify;
     margin-bottom: 0.2rem;
 }
-form.card-body .card-img-top {
+.clue form.card-body .card-img-top {
     width: 4rem;
 }
 #desactiveInput {
@@ -119,6 +128,42 @@ form.card-body .card-img-top {
     margin-bottom: 3rem;
 }
 
+/* CHATBOX */
+#chatbox {
+    position: absolute;
+    bottom: 1rem;
+    right: 0;
+    max-width: 30rem;
+}
+#chat-messages img {
+    width: 45px;
+    height: 100%;
+}
+#chat-circle {
+    bottom: 50px;
+    right: 50px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    padding: 28px;
+    cursor: pointer;
+}
+#chatForm {
+    border-color: #434244;
+}
+#chatForm .card-body {
+    overflow: scroll;
+}
+
+#chatForm .form-control {
+    border-color: transparent;
+}
+
+#chatForm .form-control:focus {
+    border-color: transparent;
+    box-shadow: inset 0px 0px 0px 1px transparent;
+}
+
 /* responsive design */
 
 /* < sm */
@@ -135,13 +180,13 @@ form.card-body .card-img-top {
 }
 /* < xl */
 @media (max-width: 1199.98px) {
-    .card {
+    .card.clue {
         height: 360px;
     }
 }
 /* >= xl */
 @media (min-width: 992px) {
-    .card {
+    .card.clue {
         height: 400px;
     }
 }

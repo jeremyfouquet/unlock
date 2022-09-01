@@ -3,6 +3,7 @@
     "B":"Je vous souhaite la bienvenue dans la partie !",
     "C":"Si vous souhaitez avoir un indice sur une carte tapez \"indice\" suivi du numéro de la carte. Exemple: indice 0",
     "D":"Désolé je n'ai pas trouvé la carte portant le n°",
+    "E":"Oups c'est une erreur, vous venez de perdre 1 minute sur le temps restant",
     "0":"Bureau :\nSi vous voyez des chiffres, rentrez les dans le champ \"Recherche d'indice\" un peu plus haut ⬆.\nPuis validez en cliquant sur la touche \"ENTRER\" du clavier !\nAvez vous aussi essayé de cliquer sur le symbole 🔄 dans le coin supérieur droit de la carte ?",
     "11":"Une Clé :\nCela doit servir à ouvrir quelque chose",
     "16":"Un fil :\nCela doit servir à relier quelque chose",
