@@ -130,9 +130,9 @@
 
 /* CHATBOX */
 #chatbox {
-    position: absolute;
+    position: fixed;
     bottom: 1rem;
-    right: 0;
+    right: 1rem;
     max-width: 30rem;
 }
 #chat-messages img {
