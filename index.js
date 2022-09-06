@@ -250,7 +250,7 @@ function refreshPlayer(socket, players) {
   const index = getPlayerIndex(players, socket.id);
   players[index].roomId = '';
   players[index].start = false;
-  socket.emit('refreshData', [], players[index]);
+  socket.emit('refreshData', []);
 }
 // remove the room at the index param
 function removeRoom(rooms, index) {

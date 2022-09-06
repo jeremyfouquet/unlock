@@ -1,63 +1,64 @@
 const socket = io();
+const connection = new Connection();
+
 socket.on('setRoom', (newRoom) => {
-    room = newRoom;
-    setRoomId(room.id);
-    changeChronoRoom(room.chrono);
+    connection.room = newRoom;
+    connection.changeChronoRoom();
 });
 socket.on('getTeam', (newTeam) => {
-    const currentPlayer = newTeam.filter(p => p.id === socket.id)[0];
+    const currentPlayer = connection.getCurrentPlayer(newTeam, socket.id);
     if (currentPlayer) {
-        if(!newTeam[1] && room.chrono <= 0) {
-            back(socket);
+        if(!newTeam[1] && connection.room.chrono <= 0) {
+            connection.back(socket);
         } else {
-            team = newTeam;
-            changeTeam(team);
+            connection.team = newTeam;
+            connection.changeTeam();
         }
     }
 });
 socket.on('getRoom', (newRoom, newTeam) => {
-    const currentPlayer = newTeam.filter(p => p.id === socket.id)[0];
+    const currentPlayer = connection.getCurrentPlayer(newTeam, socket.id);
     if(currentPlayer) {
-        room = newRoom;
-        if(room.startGame) startGame(socket, player);
+        connection.room = newRoom;
+        if(connection.room.startGame) connection.startGame(socket, currentPlayer);
     }
 });
 socket.on('getChronoRoom', (newChrono) => {
-    room.chrono = newChrono;
-    if(room.chrono > 0) changeChronoRoom(room.chrono);
-    else showBtn();
+    connection.room.chrono = newChrono;
+    const currentPlayer = connection.getCurrentPlayer(connection.team, socket.id);
+    if(connection.room.chrono > 0) connection.changeChronoRoom();
+    else if(!currentPlayer.start) connection.showBtn();
 });
-socket.on('refreshData', (newTeam, newPlayer) => {
-    player = newPlayer;
-    team = newTeam;
-    room = {}
-    refreshView();
+socket.on('refreshData', (newTeam) => {
+    connection.team = newTeam;
+    connection.room = {}
+    connection.refreshView();
 });
 socket.on('updateRoomChrono', (newChrono, newTeam) => {
-    const currentPlayer = newTeam.filter(p => p.id === socket.id)[0];
+    const currentPlayer = connection.getCurrentPlayer(newTeam, socket.id);
     if(currentPlayer) {
-        room.game.chrono = newChrono;
-        changeChronoGame(room.game.chrono);
+        connection.room.game.chrono = newChrono;
+        connection.changeChronoGame();
     }
 });
 socket.on('updateClues', (newGame, newTeam) => {
-    const currentPlayer = newTeam.filter(p => p.id === socket.id)[0];
+    const currentPlayer = connection.getCurrentPlayer(newTeam, socket.id);
     if (currentPlayer) {
-        room.game = newGame;
-        changeClues(room.game.clues, socket);
+        connection.room.game = newGame;
+        connection.changeClues(socket);
     }
 });
 socket.on('updateRoomEnded', (newEnded, newTeam) => {
-    const currentPlayer = newTeam.filter(p => p.id === socket.id)[0];
+    const currentPlayer = connection.getCurrentPlayer(newTeam, socket.id);
     if(currentPlayer) {
-        room.game.ended = newEnded;
-        endedGame();
+        connection.room.game.ended = newEnded;
+        connection.endedGame();
     }
 });
 socket.on('updateMessages', (note, newTeam) => {
-    const currentPlayer = newTeam.filter(p => p.id === socket.id)[0];
+    const currentPlayer = connection.getCurrentPlayer(newTeam, socket.id);
     if(currentPlayer) {
-        room.notes.push(note);
-        addMessage(note, player);
+        connection.room.notes.push(note);
+        connection.addMessage(note, currentPlayer);
     }
 });

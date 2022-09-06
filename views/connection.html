@@ -21,18 +21,18 @@
             </span>
             <div id="navbar-info">
               <div id="chronoGame" class="me-2"></div>
-              <form id="clue-form" class="d-flex me-2" role="search" onsubmit="searchClue(event, socket)">
+              <form id="clue-form" class="d-flex me-2" role="search" onsubmit="connection.searchClue(event, socket)">
                 <input class="form-control me-2" type="number" placeholder="Indice" name="clue" required>
                 <button class="btn bg-lightgrey" type="submit">Chercher</button>
               </form>
-              <a class="btn bg-grey" href="/">Quitter</a>
             </div>
+            <a class="btn bg-grey" href="/">Quitter</a>
           </div>
         </nav>
       </header>
       <main class="bg-blue container">
         <div class="row justify-content-around">
-          <form id="connection-form" class="connection col-lg-4" onsubmit="connection(event, socket)">
+          <form id="connection-form" class="connection col-lg-4" onsubmit="connection.connection(event, socket)">
             <h2>Rejoindre une partie</h2>
             <div class="form-group mb-3 mt-3">
               <h4 for="pseudo" class="form-label">Choisir un pseudo</h4>
@@ -82,8 +82,8 @@
               </div>
               <div id="chronoRoom"></div>
               <div id="btn-container">
-                <button type="submit" class="btn bg-lightgrey" onclick="start(socket)">Jouer &raquo;</button>
-                <button type="submit" class="btn bg-grey" onclick="back(socket)">Retour</button>
+                <button type="submit" class="btn bg-lightgrey" onclick="connection.start(socket)">Jouer &raquo;</button>
+                <button type="submit" class="btn bg-grey" onclick="connection.back(socket)">Retour</button>
               </div>
               <div id="waiting">
                 <h4>En attente des autres joueurs</h4>
@@ -169,48 +169,25 @@
             <div id="cards" class="row">
             </div>
             <div id="chatbox">
-              <div id="chat-circle" class="btn btn-raised bg-grey" onclick="toggleChat()">
+              <div id="chat-circle" class="btn btn-raised bg-grey" onclick="connection.toggleChat()">
                 <span>✉️</span>
               </div>
-              <form id="chatForm" class="card col-12" onsubmit="sendMessage(event, socket, player)">
+              <form id="chatForm" class="card col-12" onsubmit="connection.sendMessage(event, socket)">
                 <div class="card-title d-flex justify-content-center align-items-center p-3 bg-lightgrey">
                   <h5 class="mb-0">Chat</h5>
-                  <span onclick="toggleChat()">-</span>
+                  <span onclick="connection.toggleChat()">-</span>
                 </div>
                 <div class="card-body" style="position: relative; height: 400px">
                   <div id="chat-messages">
                   </div>
                 </div>
-                <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
+                <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3 bg-lightgrey">
                   <img src="" alt="Avatar" style="width: 40px; height: 100%;">
                   <input type="text" class="form-control" name="message"
                     placeholder="Votre message ...">
                 </div>
               </form>
             </div>
-            <!-- <form id="chatForm" [formGroup]="chatForm" (ngSubmit)="sendMessage()">
-              <h3 class="title">Equipe</h3>
-              <div
-              class="team">
-                <app-player *ngFor="let player of team" [player]="player"></app-player>
-              </div>
-              <div
-              id="chat-container">
-                <h3 class="title">Chat</h3>
-                <div
-                id="chat">
-                  <div
-                  *ngFor="let note of room.notes | arraySort"
-                  class="d-flex justify-content-start text-justify m-2">
-                    <div class="d-flex flex-column">
-                      <img [src]="'assets/'+note.avatar" alt="Avatar">
-                    </div>
-                    <p class=" m-0">{{note.message}}</p>
-                  </div>
-                </div>
-              </div>
-              <input type="text" id="message" class="form-control" placeholder="Entrez votre message ..." formControlName="message">
-            </form> -->
           </div>
         </div>
       </main>
@@ -224,8 +201,7 @@
       <script src="/popper.js/umd/popper.min.js"></script>
       <script src="/bootstrap/js/bootstrap.min.js"></script>
       <script src="/socket.io/socket.io.js"></script>
+      <script src="/models/connection.js"></script>
       <script src="/controllers/socketClient.js"></script>
-      <script src="/controllers/connection.js"></script>
-      <script src="/controllers/game.js"></script>
     </body>
 </html>
