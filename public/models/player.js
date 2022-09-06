@@ -1,34 +1,16 @@
 function Player (id, pseudo, avatar) {
-    return {
-        id: id,
-        pseudo: pseudo,
-        avatar: avatar,
-        roomId: '',
-        start: false,
-
-        getInfo: function () {
-            return {
-                id,
-                pseudo,
-                avatar,
-                roomId,
-                start
-            };
-        },
-        getId: function () {
-            return id;
-        },
-        getPseudo: function () {
-            return pseudo;
-        },
-        getAvatar: function () {
-            return avatar;
-        },
-        getRoomId: function () {
-            return roomId;
-        },
-        getStart: function () {
-            return start;
-        }
+    this.id = id;
+    this.pseudo = pseudo;
+    this.avatar = avatar;
+    this.roomId = '';
+    this.start = false;
+    this.getInfo = function() {
+        return {
+            id: this.id,
+            pseudo: this.pseudo,
+            avatar: this.avatar,
+            roomId: this.roomId,
+            start: this.start
+        };
     };
 }

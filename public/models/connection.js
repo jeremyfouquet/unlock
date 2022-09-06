@@ -1,42 +1,40 @@
 function Connection () {
-    this.room = {};
+    this.room;
     this.team = [];
 
     this.connection = function (event, socketClient) {
         event.preventDefault();
-        // const newPlayer = new Player(socketClient.id, $('#pseudo')[0].value, document.querySelector('input[name="avatars"]:checked').value);
-        // console.log(newPlayer.getInfo);
-        const currentPlayer = {
-            id: socketClient.id,
-            pseudo: $('#pseudo')[0].value,
-            avatar: document.querySelector('input[name="avatars"]:checked').value,
-            roomId: '',
-            start: false
-        }
+        const currentPlayer = new Player(socketClient.id, $('#pseudo')[0].value, document.querySelector('input[name="avatars"]:checked').value);
         $('#connection-form').hide();
         $('#instructions').show();
-        socketClient.emit('addOrUpdatePlayer', currentPlayer);
+        socketClient.emit('addOrUpdatePlayer', currentPlayer.getInfo());
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const gameIndex = urlParams.get('game');
         socketClient.emit('createOrJoinRoom', gameIndex);
     };
+    this.setRoom = function(room) {
+        this.room = new Room(room.chrono, room.game, room.id, room.notes, room.startGame);
+    };
     this.changeChronoRoom = function() {
         const chronoTraget = $('#chronoRoom')[0];
         chronoTraget.innerHTML = this.getChrono(this.room.chrono);
-    }
-    this.changeChronoGame = function() {
-        const chronoTraget = $('#chronoGame')[0];
-        chronoTraget.innerHTML = this.getChrono(this.room.game.chrono);
-    }
-    this.getChrono = function(newChrono) {
-        const d = Number(newChrono);
+    };
+    this.getChrono = function(chrono) {
+        const d = Number(chrono);
         let m = Math.floor(d % 3600 / 60);
         let s = Math.floor(d % 3600 % 60);
         let mDisplay = m < 10 ? `0${m}` : `${m}`;
         let sDisplay = s < 10 ? `0${s}` : `${s}`;
         return `${mDisplay}:${sDisplay}`;
-    }
+    };
+
+
+    this.changeChronoGame = function() {
+        const chronoTraget = $('#chronoGame')[0];
+        chronoTraget.innerHTML = this.getChrono(this.room.game.chrono);
+    };
+
     this.changeTeam = function() {
         const that = this;
         this.team.forEach(newPlayer => {
@@ -65,26 +63,26 @@ function Connection () {
         divToRemove.forEach(id => {
             $('div').remove(`#${id}`);
         });
-    }
+    };
     this.showBtn = function() {
         $('#chronoRoom').hide();
         $('#btn-container').show();
-    }
+    };
     this.start = function(socketClient) {
         $('#btn-container').hide();
         $('#waiting').show();
         socketClient.emit('start', this.room.id);
-    }
+    };
     this.back = function(socketClient) {
         socketClient.emit('back', this.room.id);
-    }
+    };
     this.refreshView = function() {
         $('#waiting').hide();
         $('#btn-container').hide();
         $('#chronoRoom').show();
         $('#instructions').hide();
         $('#connection-form').show();
-    }
+    };
     this.startGame = function(socketClient, currentPlayer) {
         $('#waiting').hide();
         $('#chronoRoom').show();
@@ -98,7 +96,7 @@ function Connection () {
             this.addMessage(note, currentPlayer);
         });
         this.toggleChat();
-    }
+    };
     this.searchClue = function(event, socketClient) {
         event.preventDefault();
         const clueNum = parseInt($('#clue-form input[name="clue"]').val());
@@ -109,11 +107,11 @@ function Connection () {
             socketClient.emit('penalty', 60, this.room.id);
         }
         $('#clue-form')[0].reset();
-    }
+    };
 
     this.addClue = function(clueNum, socketClient) {
         if(!this.room.game.clues.filter(clue => clue.id === clueNum)[0]) socketClient.emit('addClue', clueNum, this.room.id);
-    }
+    };
 
     this.changeClues = function(socketClient) {
         const that = this;
@@ -335,13 +333,13 @@ function Connection () {
         divToRemove.forEach(id => {
             $('div').remove(`#${id}`);
         });
-    }
+    };
     this.endedGame = function() {
         $('#cards').hide();
         $('#navbar-info').css('display', 'none');
         $('#end-message > p').text(this.room.game.chrono > 0 ? `Bravo vous avez réussi à sortir en ${this.getChrono(this.room.game.chrono)} minutes !` : 'Domage ! Le temps est écoulé !')
         $('#end-message').show();
-    }
+    };
     this.addMessage = function(note, currentPlayer) {
         const element = $(`#chat-messages`)[0];
         const div1 = document.createElement("div");
@@ -372,29 +370,25 @@ function Connection () {
         if ($("#chatForm").css("display") == "none" ) {
             $("#chat-circle").addClass("shake");
         }
-    }
+    };
     this.toggleChat = function() {
         $("#chat-circle").toggle('scale');
         $("#chatForm").toggle('scale');
         $("#chatForm .card-body").scrollTop($("#chat-messages").height());
         $("#chat-circle").removeClass("shake");
-    }
+    };
     this.sendMessage = function(event, socketClient) {
         const currentPlayer = this.team.filter(p => p.id === socketClient.id)[0];
         event.preventDefault();
         const message = $('#chatForm input[name="message"]').val();
         socketClient.emit('message', message, currentPlayer, this.room.id);
         $('#chatForm')[0].reset();
-    }
+    };
     this.getDateHours = function() {
         const now = new Date();
         const hour = now.getHours() < 10 ? `0${now.getHours()}`: now.getHours();
         const min = now.getMinutes() < 10 ? `0${now.getMinutes()}`: now.getMinutes();
         return `${hour}:${min}`;
-    }
-    this.getCurrentPlayer = function(newTeam, socketId) {
-        const currentPlayer = newTeam.filter(p => p.id === socketId)[0];
-        return currentPlayer;
     }
 }
 
