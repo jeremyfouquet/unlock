@@ -1,17 +1,21 @@
 function Connection () {
-    this.room;
+    this.socket = io();
+    this.room = {};
     this.team = [];
-
-    this.connection = function (event, socketClient) {
+    this.getCurrentPlayer = function (team) {
+        const currentPlayer = team.filter(player => player.id === this.socket.id)[0];
+        return currentPlayer;
+    };
+    this.connection = function (event) {
         event.preventDefault();
-        const currentPlayer = new Player(socketClient.id, $('#pseudo')[0].value, document.querySelector('input[name="avatars"]:checked').value);
+        const currentPlayer = new Player(this.socket.id, $('#pseudo')[0].value, document.querySelector('input[name="avatars"]:checked').value, '', false);
         $('#connection-form').hide();
         $('#instructions').show();
-        socketClient.emit('addOrUpdatePlayer', currentPlayer.getInfo());
+        this.socket.emit('addOrUpdatePlayer', currentPlayer.getInfo());
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const gameIndex = urlParams.get('game');
-        socketClient.emit('createOrJoinRoom', gameIndex);
+        this.socket.emit('createOrJoinRoom', gameIndex);
     };
     this.setRoom = function(room) {
         this.room = new Room(room.chrono, room.game, room.id, room.notes, room.startGame);
@@ -28,27 +32,34 @@ function Connection () {
         let sDisplay = s < 10 ? `0${s}` : `${s}`;
         return `${mDisplay}:${sDisplay}`;
     };
-
-
-    this.changeChronoGame = function() {
-        const chronoTraget = $('#chronoGame')[0];
-        chronoTraget.innerHTML = this.getChrono(this.room.game.chrono);
+    this.start = function() {
+        $('#btn-container').hide();
+        $('#waiting').show();
+        this.socket.emit('start', this.room.id);
     };
-
+    this.back = function() {
+        this.socket.emit('back', this.room.id);
+    };
+    this.setTeam = function(team) {
+        this.team = [];
+        team.forEach(player => {
+            this.team.push(new Player(player.id, player.pseudo, player.avatar, player.roomId, player.start));
+        });
+    };
     this.changeTeam = function() {
         const that = this;
-        this.team.forEach(newPlayer => {
-            const element = $(`#${newPlayer.id}`);
+        this.team.forEach(player => {
+            const element = $(`#${player.id}`);
             if(!element[0]) {
                 const teamTraget = $('#team')[0];
                 const div = document.createElement("div");
-                div.setAttribute('id', newPlayer.id);
+                div.setAttribute('id', player.id);
                 const img = document.createElement("img");
-                img.setAttribute('src', `/assets/${newPlayer.avatar}`);
+                img.setAttribute('src', `/assets/${player.avatar}`);
                 img.setAttribute('alt', 'avatar');
                 img.setAttribute('class', 'avatar');
                 const p = document.createElement("p");
-                p.innerHTML = newPlayer.pseudo
+                p.innerHTML = player.pseudo;
                 div.appendChild(img);
                 div.appendChild(p);
                 teamTraget.appendChild(div);
@@ -64,56 +75,25 @@ function Connection () {
             $('div').remove(`#${id}`);
         });
     };
-    this.showBtn = function() {
-        $('#chronoRoom').hide();
-        $('#btn-container').show();
-    };
-    this.start = function(socketClient) {
-        $('#btn-container').hide();
-        $('#waiting').show();
-        socketClient.emit('start', this.room.id);
-    };
-    this.back = function(socketClient) {
-        socketClient.emit('back', this.room.id);
-    };
-    this.refreshView = function() {
-        $('#waiting').hide();
-        $('#btn-container').hide();
-        $('#chronoRoom').show();
-        $('#instructions').hide();
-        $('#connection-form').show();
-    };
-    this.startGame = function(socketClient, currentPlayer) {
+    this.startGame = function(player) {
         $('#waiting').hide();
         $('#chronoRoom').show();
         $('#instructions').hide();
         $('#room-section').show();
         $('#navbar-info').css('display', 'flex');
-        $('#chatForm .card-footer img').attr('src',`/assets/${currentPlayer.avatar}`);
+        $('#chatForm .card-footer img').attr('src',`/assets/${player.avatar}`);
         this.changeChronoGame();
-        this.changeClues(socketClient);
+        this.changeClues();
         this.room.notes.forEach(note => {
-            this.addMessage(note, currentPlayer);
+            this.addMessage(note);
         });
         this.toggleChat();
     };
-    this.searchClue = function(event, socketClient) {
-        event.preventDefault();
-        const clueNum = parseInt($('#clue-form input[name="clue"]').val());
-        const finded = this.room.game.clues.find(clue => clue.numsClues.includes(clueNum)) ? true : false;
-        if (finded) {
-            this.addClue(clueNum, socketClient);
-        } else {
-            socketClient.emit('penalty', 60, this.room.id);
-        }
-        $('#clue-form')[0].reset();
+    this.changeChronoGame = function() {
+        const chronoTraget = $('#chronoGame')[0];
+        chronoTraget.innerHTML = this.getChrono(this.room.game.chrono);
     };
-
-    this.addClue = function(clueNum, socketClient) {
-        if(!this.room.game.clues.filter(clue => clue.id === clueNum)[0]) socketClient.emit('addClue', clueNum, this.room.id);
-    };
-
-    this.changeClues = function(socketClient) {
+    this.changeClues = function() {
         const that = this;
         this.room.game.clues.forEach(clue => {
             const element = $(`#cards #clue${clue.id}`);
@@ -183,9 +163,9 @@ function Connection () {
                         const inputValue = parseInt(inputcombine.value);
                         const somme = inputValue + clue.combinable.numClue;
                         if (somme === clue.combinable.numCombine) {
-                            that.addClue(somme, socketClient);
+                            that.addClue(somme);
                         } else {
-                            socketClient.emit('penalty', 60, that.room.id);
+                            that.socket.emit('penalty', 60, that.room.id);
                         }
                         formcombine.reset();
                     });
@@ -209,9 +189,9 @@ function Connection () {
                         event.preventDefault();
                         const inputValue = $(`#clue${clue.id} .form-check-input:checked[type=radio]`).val();
                         if (inputValue === clue.machine.response) {
-                            that.addClue(clue.machine.replaceClue, socketClient);
+                            that.addClue(clue.machine.replaceClue);
                         } else {
-                            socketClient.emit('penalty', 60, that.room.id);
+                            that.socket.emit('penalty', 60, that.room.id);
                         }
                     });
                     const question = document.createElement("p");
@@ -305,9 +285,9 @@ function Connection () {
                         event.preventDefault();
                         const inputValue = parseInt(inputcode.value);
                         if (inputValue === that.room.game.code) {
-                            socketClient.emit('winGame', that.room.id);
+                            that.socket.emit('winGame', that.room.id);
                         } else {
-                            socketClient.emit('penalty', 60, that.room.id);
+                            that.socket.emit('penalty', 60, that.room.id);
                             formcode.reset();
                         }
                     });
@@ -334,20 +314,17 @@ function Connection () {
             $('div').remove(`#${id}`);
         });
     };
-    this.endedGame = function() {
-        $('#cards').hide();
-        $('#navbar-info').css('display', 'none');
-        $('#end-message > p').text(this.room.game.chrono > 0 ? `Bravo vous avez réussi à sortir en ${this.getChrono(this.room.game.chrono)} minutes !` : 'Domage ! Le temps est écoulé !')
-        $('#end-message').show();
+    this.addClue = function(clueNum) {
+        if(!this.room.game.clues.filter(clue => clue.id === clueNum)[0]) this.socket.emit('addClue', clueNum, this.room.id);
     };
-    this.addMessage = function(note, currentPlayer) {
+    this.addMessage = function(note) {
         const element = $(`#chat-messages`)[0];
         const div1 = document.createElement("div");
         const div2 = document.createElement("div");
         div2.setAttribute('class', 'col-10');
         const p1 = document.createElement("p");
         const p2 = document.createElement("p");
-        if(note.id === currentPlayer.id) {
+        if(note.id === this.socket.id) {
             div1.setAttribute('class', 'd-flex flex-row justify-content-end');
             p1.setAttribute('class', 'small p-2 me-3 mb-1 text-white rounded-3 bg-primary');
             p2.setAttribute('class', 'small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end');
@@ -361,7 +338,7 @@ function Connection () {
             p2.setAttribute('class', 'small ms-3 mb-3 rounded-3 text-muted');
         }
         p1.innerHTML = note.message;
-        p2.innerHTML = note.date;
+        p2.innerHTML = `${note.pseudo} - ${note.date}`;
         div2.appendChild(p1);
         div2.appendChild(p2);
         div1.appendChild(div2);
@@ -377,18 +354,104 @@ function Connection () {
         $("#chatForm .card-body").scrollTop($("#chat-messages").height());
         $("#chat-circle").removeClass("shake");
     };
-    this.sendMessage = function(event, socketClient) {
-        const currentPlayer = this.team.filter(p => p.id === socketClient.id)[0];
+    this.showBtn = function() {
+        $('#chronoRoom').hide();
+        $('#btn-container').show();
+    };
+    this.refreshView = function() {
+        $('#waiting').hide();
+        $('#btn-container').hide();
+        $('#chronoRoom').show();
+        $('#instructions').hide();
+        $('#connection-form').show();
+    };
+    this.endedGame = function() {
+        $('#cards').hide();
+        $('#navbar-info').css('display', 'none');
+        $('#end-message > p').text(this.room.game.chrono > 0 ? `Bravo vous avez réussi à sortir en ${this.getChrono(this.room.game.chrono)} minutes !` : 'Domage ! Le temps est écoulé !')
+        $('#end-message').show();
+    };
+    this.searchClue = function(event) {
+        event.preventDefault();
+        const clueNum = parseInt($('#clue-form input[name="clue"]').val());
+        const finded = this.room.game.clues.find(clue => clue.numsClues.includes(clueNum)) ? true : false;
+        if (finded) {
+            this.addClue(clueNum);
+        } else {
+            this.socket.emit('penalty', 60, this.room.id);
+        }
+        $('#clue-form')[0].reset();
+    };
+    this.sendMessage = function(event) {
+        const currentPlayer = this.team.filter(p => p.id === this.socket.id)[0];
         event.preventDefault();
         const message = $('#chatForm input[name="message"]').val();
-        socketClient.emit('message', message, currentPlayer, this.room.id);
+        this.socket.emit('message', message, currentPlayer, this.room.id);
         $('#chatForm')[0].reset();
     };
-    this.getDateHours = function() {
-        const now = new Date();
-        const hour = now.getHours() < 10 ? `0${now.getHours()}`: now.getHours();
-        const min = now.getMinutes() < 10 ? `0${now.getMinutes()}`: now.getMinutes();
-        return `${hour}:${min}`;
-    }
 }
 
+const connection = new Connection();
+    //SOCKETCLIENT
+connection.socket.on('setRoom', (room) => {
+    connection.setRoom(room);
+    connection.changeChronoRoom();
+});
+connection.socket.on('getTeam', (team) => {
+    const currentPlayer = connection.getCurrentPlayer(team);
+    if (currentPlayer) {
+        if(!team[1] && connection.room.chrono === 0) {
+            connection.back();
+        } else {
+            connection.setTeam(team);
+            connection.changeTeam();
+        }
+    }
+});
+connection.socket.on('getRoom', (startGame, team) => {
+    const currentPlayer = connection.getCurrentPlayer(team);
+    if(currentPlayer) {
+        connection.room.setStartGame(startGame);
+        if(connection.room.startGame) connection.startGame(currentPlayer);
+    }
+});
+connection.socket.on('getChronoRoom', (chrono) => {
+    connection.room.setChrono(chrono);
+    const currentPlayer = connection.getCurrentPlayer(connection.team);
+    if(connection.room.chrono > 0) connection.changeChronoRoom();
+    else if(!currentPlayer.start) connection.showBtn();
+});
+connection.socket.on('refreshData', (team) => {
+    connection.setTeam(team);
+    connection.room = {};
+    connection.refreshView();
+});
+connection.socket.on('updateRoomChrono', (chrono, team) => {
+    const currentPlayer = connection.getCurrentPlayer(team);
+    if(currentPlayer) {
+        connection.room.game.setChrono(chrono);
+        connection.changeChronoGame();
+    }
+});
+connection.socket.on('updateClues', (game, team) => {
+    const currentPlayer = connection.getCurrentPlayer(team);
+    if (currentPlayer) {
+        connection.room.game.setClues(game.clues);
+        connection.room.game.setDeck(game.deck);
+        connection.changeClues();
+    }
+});
+connection.socket.on('updateRoomEnded', (ended, team) => {
+    const currentPlayer = connection.getCurrentPlayer(team);
+    if(currentPlayer) {
+        connection.room.game.setEnded(ended);
+        connection.endedGame();
+    }
+});
+connection.socket.on('updateMessages', (note, team) => {
+    const currentPlayer = connection.getCurrentPlayer(team);
+    if(currentPlayer) {
+        connection.room.addnotes(note);
+        connection.addMessage(note);
+    }
+});

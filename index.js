@@ -24,8 +24,7 @@ app.all('/connection/?', (req, res, next) => {
   if(game) {
     next();
   } else {
-    res.sendFile(path.join(__dirname, 'views/404.html'));
-    // next(new Error('cannot find game ' + req.params.id));
+    res.sendFile(path.join(__dirname, 'views/buildingpage.html'));
   }
 });
 app.get('/connection/?', (req, res) => {
@@ -131,6 +130,7 @@ io.on('connection', (socket) => {
         message: robotConversation["E"],
         avatar: 'robot.svg',
         id: 'robot0',
+        pseudo: 'game master',
         date: getDateHours()
       }
       io.emit('updateMessages', note, team);
@@ -150,6 +150,7 @@ io.on('connection', (socket) => {
         message: message,
         avatar: player.avatar,
         id: player.id,
+        pseudo: player.pseudo,
         date: getDateHours()
       }
       rooms[roomIndex].notes.push(note);
@@ -207,18 +208,21 @@ function createRoom(roomId, chronoRoom, gameInfo, robotConversation, rooms) {
         message: robotConversation["A"],
         avatar: 'robot.svg',
         id: 'robot0',
+        pseudo: 'game master',
         date: getDateHours()
       },
       {
         message: robotConversation["B"],
         avatar: 'robot.svg',
         id: 'robot0',
+        pseudo: 'game master',
         date: getDateHours()
       },
       {
         message: robotConversation["C"],
         avatar: 'robot.svg',
         id: 'robot0',
+        pseudo: 'game master',
         date: getDateHours()
       }
     ]
@@ -271,7 +275,7 @@ function teamReady(team, rooms, roomId) {
   if(team[1] && team.length === team.filter(player => player.start).length) {
     const roomIndex = getRoomIndex(rooms, roomId);
     rooms[roomIndex].startGame = true;
-    io.emit('getRoom', rooms[roomIndex], team);
+    io.emit('getRoom', rooms[roomIndex].startGame, team);
     intervalRoom(rooms, roomId, team);
   }
 }
@@ -316,6 +320,7 @@ function talkToRobot(note, rooms, roomId, players, robotConversation) {
           message: messages[0],
           avatar: 'robot.svg',
           id: 'robot0',
+          pseudo: 'game master',
           date: getDateHours()
         };
         roomIndex = getRoomIndex(rooms, roomId);
