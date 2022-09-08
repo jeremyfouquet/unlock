@@ -45,16 +45,22 @@ const rooms = require(path.join(__dirname + '/public/datas/rooms.json'));
 const robotConversation = require(path.join(__dirname + '/public/datas/robotConversation.json'));
 
 io.on('connection', (socket) => {
-    console.log(`a user connected whith id : ${socket.id}`);
     const chronoRoom = 20;
-    //CONNECTION
-    // add new player or update existed player into players
+    /**
+     * Si player.id existe en BDD alors met à jours le player de la BDD avec les info reçu en parametre de la fonction sinon ajoute celui ci en BDD
+     * @param { Object } player
+    */
     socket.on('addOrUpdatePlayer', (player) => {
       const playerIndex = getPlayerIndex(players, player.id)
       if(!players[playerIndex]) players.push(player);
       else players[playerIndex] = player;
     });
-    // create new room or get existed room waiting for new players
+    /**
+     * Si aucune Room en attente de joueur en BDD alors la créer avec les infos correspondant au game du gameIndex passé en paramettre
+     * Mettre à jour en BDD le roomId du currentPlayer avec la Room créé ou en attente de joueurs
+     * Envoyé au client les infos mises à jours de la Room et de la Team puis appel de la fonction intervalChrono()
+     * @param { number } gameIndex
+    */
     socket.on('createOrJoinRoom', (gameIndex) => {
       const gameInfo = {
         name : games[gameIndex].name,
@@ -65,7 +71,6 @@ io.on('connection', (socket) => {
         code: games[gameIndex].code,
         ended: games[gameIndex].ended
       }
-      // Object.assign({}, games[gameIndex]);
       let room = rooms.filter(room => room.chrono > 0 && !room.startGame && getTeam(players, room.id).length < 4 && room.game.name === gameInfo.name)[0];
       let roomId = room ? room.id : null;
       let firstPlayer = false;
@@ -83,6 +88,7 @@ io.on('connection', (socket) => {
       io.emit('getTeam', team);
       intervalChrono(socket, rooms, players, roomId, firstPlayer)
     });
+    // Met à jours en base de donnée le Player qui se deconnecte
     socket.on('back', (roomId) => {
       let team = getTeam(players, roomId);
       if(team[1]) {
