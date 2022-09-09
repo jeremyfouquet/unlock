@@ -21,7 +21,7 @@ function Playground () {
     };
 
     /**
-     * Enregistre les informations recu par le backend dans la Room local
+     * Affecte this.room avec les informations recu par le backend en parametre
      * @name setRoom
      * @param { Room } room
     */
