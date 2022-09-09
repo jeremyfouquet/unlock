@@ -42,7 +42,7 @@ const robotConversation = require(path.join(__dirname + '/datas/robotConversatio
 
 // SOCKET :
 io.on('connection', (socket) => {
-    const chronoRoom = 20;
+    const chronoRoom = 20; // chrono par defaut pour la Room
     /**
      * Permet d'ajouter ou de mettre à jour un Player en BDD
      * @name addOrUpdatePlayer

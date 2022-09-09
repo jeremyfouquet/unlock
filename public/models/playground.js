@@ -2,7 +2,12 @@ function Playground () {
     this.socket = io();
     this.room = {};
     this.team = [];
-    // Creer un nouveau joueur avec les informations entrés dans le formulaire. Puis envoyer le joueur au backend qui se chargera de l'enregistrer dans la base et de renvoyer le information de la Room rejoind par le joueur
+
+    /**
+     * Creer un nouveau joueur avec les informations entrés dans le formulaire. Puis envoyer le joueur au backend qui se chargera de l'enregistrer dans la base et de renvoyer le information de la Room rejoind par le joueur
+     * @name connection
+     * @param { any } event
+    */
     this.connection = function (event) {
         event.preventDefault();
         const currentPlayer = new Player(this.socket.id, $('#pseudo')[0].value, document.querySelector('input[name="avatars"]:checked').value, '', false);
@@ -14,21 +19,40 @@ function Playground () {
         const gameIndex = urlParams.get('game');
         this.socket.emit('createOrJoinRoom', gameIndex);
     };
-    // Enregistre les informations recu par le backend dans la Room local
+
+    /**
+     * Enregistre les informations recu par le backend dans la Room local
+     * @name setRoom
+     * @param { Room } room
+    */
     this.setRoom = function(room) {
         this.room = new Room(room.chrono, room.game, room.id, room.notes, room.startGame);
     };
-    // Met à jour la vue avec le nouveau chronometre de la Room
+
+    /**
+     * Met à jour la vue avec le nouveau chronometre de la Room
+     * @name changeChronoRoom
+    */
     this.changeChronoRoom = function() {
         const chronoTraget = $('#chronoRoom')[0];
         chronoTraget.innerHTML = this.getChrono(this.room.chrono);
     };
-    // Met à jour la vue avec le nouveau chronometre du Game
+
+    /**
+     * Met à jour la vue avec le nouveau chronometre du Game
+     * @name changeChronoGame
+    */
     this.changeChronoGame = function() {
         const chronoTraget = $('#chronoGame')[0];
         chronoTraget.innerHTML = this.getChrono(this.room.game.chrono);
     };
-    // Transforme un integer en string sous le format min:sec
+
+    /**
+     * Retourne une string sous le format min:sec à partir d'un number
+     * @name getChrono
+     * @param { number } chrono
+     * @return { string }
+    */
     this.getChrono = function(chrono) {
         const d = Number(chrono);
         let m = Math.floor(d % 3600 / 60);
@@ -37,22 +61,41 @@ function Playground () {
         let sDisplay = s < 10 ? `0${s}` : `${s}`;
         return `${mDisplay}:${sDisplay}`;
     };
-    // Envoi au backend l'information que le joueur est pret à commencer le jeu
+
+    /**
+     * Envoi au backend l'information que le joueur est pret à commencer le jeu
+     * @name start
+    */
     this.start = function() {
         $('#btn-container').hide();
         $('#waiting').show();
         this.socket.emit('start', this.room.id);
     };
-    // Envoi au backend l'information que le joueur abandonne le jeu
+
+    /**
+     * Envoi au backend l'information que le joueur abandonne le jeu
+     * @name back
+    */
     this.back = function() {
         this.socket.emit('back', this.room.id);
     };
+
+    /**
+     * Réaffecte this.team avec le Array de Player envoyé en parametre
+     * @name setTeam
+     * @param { Array<Player> } team
+    */
     this.setTeam = function(team) {
         this.team = [];
         team.forEach(player => {
             this.team.push(new Player(player.id, player.pseudo, player.avatar, player.roomId, player.start));
         });
     };
+
+    /**
+     * Met à jour la vue avec les Players de this.team
+     * @name changeTeam
+    */
     this.changeTeam = function() {
         const that = this;
         this.team.forEach(player => {
@@ -82,6 +125,12 @@ function Playground () {
             $('div').remove(`#${id}`);
         });
     };
+
+    /**
+     * Met à jour la vue avec les informations relatif au Game
+     * @name startGame
+     * @param {Player} player
+    */
     this.startGame = function(player) {
         $('#waiting').hide();
         $('#chronoRoom').show();
@@ -96,6 +145,11 @@ function Playground () {
         });
         this.toggleChat();
     };
+
+    /**
+     * Met à jour la vue avec les Clues de Game.clues
+     * @name changeClues
+    */
     this.changeClues = function() {
         const that = this;
         this.room.game.clues.forEach(clue => {
@@ -317,9 +371,21 @@ function Playground () {
             $('div').remove(`#${id}`);
         });
     };
+
+    /**
+     * Si le number passé en parametre n'est pas encore dans Game.clues alors envoi au backend le numéro du Clue à ajouter
+     * @name addClue
+     * @param { number } clueNum
+    */
     this.addClue = function(clueNum) {
         if(!this.room.game.clues.filter(clue => clue.id === clueNum)[0]) this.socket.emit('addClue', clueNum, this.room.id);
     };
+
+    /**
+     * Met à jour le chat de la vue avec la Note recu en parametre
+     * @name addMessage
+     * @param { Note } note
+    */
     this.addMessage = function(note) {
         const element = $(`#chat-messages`)[0];
         const div1 = document.createElement("div");
@@ -351,16 +417,31 @@ function Playground () {
             $("#chat-circle").addClass("shake");
         }
     };
+
+    /**
+     * Reduit ou agrandit la fenetre de chat
+     * @name toggleChat
+    */
     this.toggleChat = function() {
         $("#chat-circle").toggle('scale');
         $("#chatForm").toggle('scale');
         $("#chatForm .card-body").scrollTop($("#chat-messages").height());
         $("#chat-circle").removeClass("shake");
     };
+
+    /**
+     * Remplace le chrono par les boutons start et back lorsque le Player attend pour rejoindre un Game
+     * @name showBtn
+    */
     this.showBtn = function() {
         $('#chronoRoom').hide();
         $('#btn-container').show();
     };
+
+    /**
+     * Reinitialise la vue par defaut lors de la connexion à un Game
+     * @name refreshView
+    */
     this.refreshView = function() {
         $('#waiting').hide();
         $('#btn-container').hide();
@@ -368,12 +449,23 @@ function Playground () {
         $('#instructions').hide();
         $('#connection-form').show();
     };
+
+    /**
+     * Met à jour la vue lorsque le Game est terminé avec un message informant si la partie est gagné ou perdu
+     * @name endedGame
+    */
     this.endedGame = function() {
         $('#cards').hide();
         $('#navbar-info').css('display', 'none');
         $('#end-message > p').text(this.room.game.chrono > 0 ? `Bravo vous avez réussi à sortir en ${this.getChrono(this.room.game.chrono)} minutes !` : 'Domage ! Le temps est écoulé !')
         $('#end-message').show();
     };
+
+    /**
+     * Appelle addClue() si le numéro rentré dans le champ "clue" est valide, Sinon envoi au backend une demande de penalité
+     * @name searchClue
+     * @param { any } event
+    */
     this.searchClue = function(event) {
         event.preventDefault();
         const clueNum = parseInt($('#clue-form input[name="clue"]').val());
@@ -385,6 +477,12 @@ function Playground () {
         }
         $('#clue-form')[0].reset();
     };
+
+    /**
+     * Récupere le message dans le champ "message" et l'envoi au backend pour enrigistrer la Note du currentPlayer
+     * @name sendMessage
+     * @param { any } event
+    */
     this.sendMessage = function(event) {
         const currentPlayer = this.team.filter(p => p.id === this.socket.id)[0];
         event.preventDefault();
