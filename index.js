@@ -236,46 +236,53 @@ io.on('connection', (socket) => {
  * @param { string } id
  * @return { number }
 */
-// return player's index from players
 function getPlayerIndex(players, id) {
   const index = players.findIndex(player => player.id === id);
   return index;
 }
 
 /**
- * Permet ...
+ * Permet de retourner l'index d'une Room dans un Array de Room en fonction de son id
  * @name getRoomIndex
+ * @param { Array<Object> } players
+ * @param { string } id
+ * @return { number }
 */
-// return room's index from rooms
 function getRoomIndex(rooms, id) {
   const index = rooms.findIndex(room => room.id === id);
   return index;
 }
 
 /**
- * Permet ...
+ * Permet de retourner un Array de Player filtrer avec les Players ayant une roomId spécifique
  * @name getTeam
+ * @param { Array<Object> } players
+ * @param { string } id
+ * @return { Array<Object> }
 */
-// return player's array with same room's id
 function getTeam(players, id) {
   const team = players.filter(player => player.roomId === id);
   return team;
 }
 
 /**
- * Permet ...
+ * Permet de retourner un id
  * @name newId
+ * @return { string }
 */
-// return id
 function newId() {
   return Math.random().toString(36).substring(2, 9);
 }
 
 /**
- * Permet ...
+ * Permet de creer une Room et de l'ajouter dans un Array de Room
  * @name createRoom
+ * @param { string } roomId
+ * @param { number } chronoRoom
+ * @param { Object } gameInfo
+ * @param { JSON } robotConversation
+ * @param { Array<Object> } rooms
 */
-// create room into rooms
 function createRoom(roomId, chronoRoom, gameInfo, robotConversation, rooms) {
   const room = {
     id: roomId,
@@ -292,10 +299,15 @@ function createRoom(roomId, chronoRoom, gameInfo, robotConversation, rooms) {
 }
 
 /**
- * Permet ...
+ * Permet d'envoyer au Client le chrono mis à jour toutes les secondes tant que celui ci n'est pas inférieur à 0
+ * Appelle la fonction back() si le chrono === 0 et Team.length === 1
  * @name intervalChrono
+ * @param { any } socket
+ * @param { Array<Object> } rooms
+ * @param { Array<Object> } players
+ * @param { string } roomId
+ * @param { boolean } firstPlayer
 */
-// refresh chrono each seconde from room and go to back function if only one player at the end of chrono
 function intervalChrono(socket, rooms, players, roomId, firstPlayer) {
   const idInterval = setInterval(() => {
     const roomIndex = getRoomIndex(rooms, roomId);
@@ -312,20 +324,25 @@ function intervalChrono(socket, rooms, players, roomId, firstPlayer) {
 }
 
 /**
- * Permet ...
+ * Permet d'appeler les fonction refreshPlayer() et removeRoom()
  * @name back
+ * @param { any } socket
+ * @param { Array<Object> } players
+ * @param { Array<Object> } rooms
+ * @param { number } roomIndex
 */
-// go to refreshPlayer and removeRoom functions
 function back(socket, players, rooms, roomIndex) {
   refreshPlayer(socket, players);
   removeRoom(rooms, roomIndex);
 }
 
 /**
- * Permet ...
+ * Permet d'affecter roomId et start avec leurs valeurs par defaut au Player à un index specifique dans un Array de Players
+ * Envoi un tableau vide en guise de Team au client
  * @name refreshPlayer
+ * @param { any } socket
+ * @param { Array<Object> } players
 */
-// set roomId param to '' and start param to false then emit team's array to empty array for the current player
 function refreshPlayer(socket, players) {
   const index = getPlayerIndex(players, socket.id);
   players[index].roomId = '';
@@ -334,10 +351,11 @@ function refreshPlayer(socket, players) {
 }
 
 /**
- * Permet ...
+ * Permet de supprimer la Room à un index spécifique dans un Array de Room
  * @name removeRoom
+ * @param { Array<Object> } rooms
+ * @param { number } index
 */
-// remove the room at the index param
 function removeRoom(rooms, index) {
   rooms.splice(index, 1);
 }
