@@ -229,25 +229,50 @@ io.on('connection', (socket) => {
 
 });
 
+/**
+ * Permet ...
+ * @name getPlayerIndex
+ * @param { string } roomId
+*/
 // return player's index from players
 function getPlayerIndex(players, id) {
   const index = players.findIndex(player => player.id === id);
   return index;
 }
+
+/**
+ * Permet ...
+ * @name getRoomIndex
+*/
 // return room's index from rooms
 function getRoomIndex(rooms, id) {
   const index = rooms.findIndex(room => room.id === id);
   return index;
 }
+
+/**
+ * Permet ...
+ * @name getTeam
+*/
 // return player's array with same room's id
 function getTeam(players, id) {
   const team = players.filter(player => player.roomId === id);
   return team;
 }
+
+/**
+ * Permet ...
+ * @name newId
+*/
 // return id
 function newId() {
   return Math.random().toString(36).substring(2, 9);
 }
+
+/**
+ * Permet ...
+ * @name createRoom
+*/
 // create room into rooms
 function createRoom(roomId, chronoRoom, gameInfo, robotConversation, rooms) {
   const room = {
@@ -263,6 +288,11 @@ function createRoom(roomId, chronoRoom, gameInfo, robotConversation, rooms) {
   }
   rooms.push(room);
 }
+
+/**
+ * Permet ...
+ * @name intervalChrono
+*/
 // refresh chrono each seconde from room and go to back function if only one player at the end of chrono
 function intervalChrono(socket, rooms, players, roomId, firstPlayer) {
   const idInterval = setInterval(() => {
@@ -278,11 +308,21 @@ function intervalChrono(socket, rooms, players, roomId, firstPlayer) {
     } else clearInterval(idInterval);
   }, 1000);
 }
+
+/**
+ * Permet ...
+ * @name back
+*/
 // go to refreshPlayer and removeRoom functions
 function back(socket, players, rooms, roomIndex) {
   refreshPlayer(socket, players);
   removeRoom(rooms, roomIndex);
 }
+
+/**
+ * Permet ...
+ * @name refreshPlayer
+*/
 // set roomId param to '' and start param to false then emit team's array to empty array for the current player
 function refreshPlayer(socket, players) {
   const index = getPlayerIndex(players, socket.id);
@@ -290,10 +330,20 @@ function refreshPlayer(socket, players) {
   players[index].start = false;
   socket.emit('refreshData', []);
 }
+
+/**
+ * Permet ...
+ * @name removeRoom
+*/
 // remove the room at the index param
 function removeRoom(rooms, index) {
   rooms.splice(index, 1);
 }
+
+/**
+ * Permet ...
+ * @name removePlayer
+*/
 // remove the player at the index param and if it was the last player from the room remove the room
 function removePlayer(players, index, rooms) {
   const roomId = players[index].roomId;
@@ -304,6 +354,11 @@ function removePlayer(players, index, rooms) {
     removeRoom(rooms, roomIndex);
   }
 }
+
+/**
+ * Permet ...
+ * @name teamReady
+*/
 // if > 2 players into team and each player is ready so set startGame param for current room to true and emit new room before go to intervalRoom function
 function teamReady(team, rooms, roomId) {
   if(team[1] && team.length === team.filter(player => player.start).length) {
@@ -314,7 +369,10 @@ function teamReady(team, rooms, roomId) {
   }
 }
 
-// FOR THE ROOM TEMPLATE
+/**
+ * Permet ...
+ * @name intervalRoom
+*/
 // refresh chrono each seconde from room.game and emit this
 function intervalRoom(rooms, roomId, team) {
   const idIntervalChrono = setInterval(() => {
@@ -326,16 +384,30 @@ function intervalRoom(rooms, roomId, team) {
   }, 1000);
 }
 
+/**
+ * Permet ...
+ * @name getClueIndex
+*/
 function getClueIndex(clues, id) {
   const index = clues.findIndex(clue => clue.id === id);
   return index;
 }
+
+/**
+ * Permet ...
+ * @name getDateHours
+*/
 function getDateHours() {
   const now = new Date();
   const hour = now.getHours() < 10 ? `0${now.getHours()}`: now.getHours();
   const min = now.getMinutes() < 10 ? `0${now.getMinutes()}`: now.getMinutes();
   return `${hour}:${min}`;
 }
+
+/**
+ * Permet ...
+ * @name talkToRobot
+*/
 function talkToRobot(note, rooms, roomId, players, robotConversation) {
   let roomIndex = getRoomIndex(rooms, roomId);
   const str = note.message.toLowerCase();
@@ -360,6 +432,11 @@ function talkToRobot(note, rooms, roomId, players, robotConversation) {
     }, 1000);
   }
 }
+
+/**
+ * Permet ...
+ * @name createNote
+*/
 function createNote(message, avatar, id, pseudo) {
   return {
     message: message,
