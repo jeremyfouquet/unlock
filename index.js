@@ -361,10 +361,13 @@ function removeRoom(rooms, index) {
 }
 
 /**
- * Permet ...
+ * Permet de supprimer le Player à un index spécifique dans un Array de Player
+ * S'l n'y a plus d'autre Player avec la même roomId que le Player venant d'être supprimer alors appelle removeRoom()
  * @name removePlayer
+ * @param { Array<Object> } players
+ * @param { number } index
+ * @param { Array<Object> } rooms
 */
-// remove the player at the index param and if it was the last player from the room remove the room
 function removePlayer(players, index, rooms) {
   const roomId = players[index].roomId;
   players.splice(index, 1);
@@ -376,11 +379,14 @@ function removePlayer(players, index, rooms) {
 }
 
 /**
- * Permet ...
+ * Permet d'affecter startGame d'une Room à un index spécifique à true puis envoi cette mise à jour au client et appelle intervalRoom()
  * @name teamReady
+ * @param { Array<Object> } team
+ * @param { Array<Object> } rooms
+ * @param { string } roomId
 */
-// if > 2 players into team and each player is ready so set startGame param for current room to true and emit new room before go to intervalRoom function
 function teamReady(team, rooms, roomId) {
+  // Uniquement si team.length > 1 et tout les Player de team on start à true
   if(team[1] && team.length === team.filter(player => player.start).length) {
     const roomIndex = getRoomIndex(rooms, roomId);
     rooms[roomIndex].startGame = true;
@@ -390,13 +396,17 @@ function teamReady(team, rooms, roomId) {
 }
 
 /**
- * Permet ...
+ * Permet de decrementer le chrono du Game pour une Room à un index specifique dans un Array de Room toute les secondes
+ * Envoi la mise à jour du chrono au client
  * @name intervalRoom
+ * @param { Array<Object> } rooms
+ * @param { string } roomId
+ * @param { Array<Object> } team
 */
-// refresh chrono each seconde from room.game and emit this
 function intervalRoom(rooms, roomId, team) {
   const idIntervalChrono = setInterval(() => {
     const roomIndex = getRoomIndex(rooms, roomId);
+    // uniquement si la Room existe toujours et que le chrono du Game est > à 0 et que le Game n'est pas terminé
     if (rooms[roomIndex] && rooms[roomIndex].game.chrono > 0 && rooms[roomIndex].game.ended !== true) {
       rooms[roomIndex].game.chrono--;
       io.emit('updateRoomChrono', rooms[roomIndex].game.chrono, team);
@@ -405,8 +415,11 @@ function intervalRoom(rooms, roomId, team) {
 }
 
 /**
- * Permet ...
+ * Permet de retourner l'index d'un Clue dans un Array de Clue en fonction de son id
  * @name getClueIndex
+ * @param { Array<Object> } clues
+ * @param { number } id
+ * @return { number }
 */
 function getClueIndex(clues, id) {
   const index = clues.findIndex(clue => clue.id === id);
@@ -414,8 +427,9 @@ function getClueIndex(clues, id) {
 }
 
 /**
- * Permet ...
+ * Permet de retourner l'heure actuelle au format hh:mm
  * @name getDateHours
+ * @return { string }
 */
 function getDateHours() {
   const now = new Date();
@@ -425,8 +439,13 @@ function getDateHours() {
 }
 
 /**
- * Permet ...
+ * Permet de creer une note de l'IA avec un message approprié si dans le message de la Note reçu en parametre il y a le mot 'indice'
  * @name talkToRobot
+ * @param { Object } note
+ * @param { Array<Object> } rooms
+ * @param { string } roomId
+ * @param { Array<Object> } players
+ * @param { JSON } robotConversation
 */
 function talkToRobot(note, rooms, roomId, players, robotConversation) {
   let roomIndex = getRoomIndex(rooms, roomId);
@@ -446,6 +465,7 @@ function talkToRobot(note, rooms, roomId, players, robotConversation) {
         roomIndex = getRoomIndex(rooms, roomId);
         rooms[roomIndex].notes.push(note);
         const team = getTeam(players, roomId);
+        // envoi la Note au client
         io.emit('updateMessages', note, team);
         messages.splice(0, 1);
       } else clearInterval(idInterval);
@@ -454,8 +474,12 @@ function talkToRobot(note, rooms, roomId, players, robotConversation) {
 }
 
 /**
- * Permet ...
+ * Permet retourner un Note
  * @name createNote
+ * @param { string } message
+ * @param { string } avatar
+ * @param { string } id
+ * @param { string } pseudo
 */
 function createNote(message, avatar, id, pseudo) {
   return {
