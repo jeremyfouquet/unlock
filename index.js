@@ -230,9 +230,11 @@ io.on('connection', (socket) => {
 });
 
 /**
- * Permet ...
+ * Permet de retourner l'index d'un Player dans un Array de Player en fonction de son id
  * @name getPlayerIndex
- * @param { string } roomId
+ * @param { Array<Object> } players
+ * @param { string } id
+ * @return { number }
 */
 // return player's index from players
 function getPlayerIndex(players, id) {
