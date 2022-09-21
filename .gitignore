@@ -1,0 +1,5 @@
+# dependences
+node_modules/
+
+# archives
+package-lock.json
