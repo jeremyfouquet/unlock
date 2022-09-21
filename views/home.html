@@ -8,11 +8,53 @@
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/styles/global.css" rel="stylesheet" type="text/css">
+    <link href="/styles/home.css" rel="stylesheet" type="text/css">
     </head>
     <body>
+        <header>
+            <nav class="navbar fixed-top bg-lightgrey">
+              <div class="container-fluid">
+                <span class="navbar-brand">
+                    <img src="/assets/logo.svg" alt="logo" width="30" height="24" class="d-inline-block align-text-top">
+                    Unlock
+                </span>
+              </div>
+            </nav>
+        </header>
         <main class="bg-blue container games">
-            Bienvenue Home !
+            <div class="row justify-content-around">
+                <div class="col-lg-4">
+                    <img class="rounded-circle" width="140" height="140" src="/assets/game-zero.png" alt="Tutoriel">
+                    <h2>Tutoriel</h2>
+                    <p>Un tutoriel très simple. Une fois terminé, vous pourrez jouer à l’ensemble des aventures disponibles.</p>
+                    <p><a class="btn bg-lightgrey" href="/connection/?game=0">Jouer &raquo;</a></p>
+                </div>
+                <div class="col-lg-4">
+                    <img class="rounded-circle" width="140" height="140" src="/assets/game-one.png" alt="Squeek & sausage">
+                    <h2>Squeek & sausage</h2>
+                    <p>Déjouez les plans de l'infâme professeur Noside dans cette aventure cartoonesque !</p>
+                    <p><a class="btn bg-lightgrey" href="/connection/?game=1">Jouer &raquo;</a></p>
+                </div>
+                <div class="col-lg-4">
+                    <img class="rounded-circle" width="140" height="140" src="/assets/game-two.png" alt="La formule">
+                    <h2>La formule</h2>
+                    <p>Entrez dans un laboratoire secret pour récupérer une mystérieuse formule...</p>
+                    <p><a class="btn bg-lightgrey" href="/connection/?game=2">Jouer &raquo;</a></p>
+                </div>
+                <div class="col-lg-4">
+                    <img class="rounded-circle" width="140" height="140" src="/assets/game-three.png" alt="L'ile du docteur Goorse">
+                    <h2>L'ile du docteur Goorse</h2>
+                    <p>Visitez l'île mystérieuse d'un milliardaire fou et triomphez de ses pièges !</p>
+                    <p><a class="btn bg-lightgrey" href="/connection/?game=3">Jouer &raquo;</a></p>
+                </div>
+            </div>
         </main>
+        <footer>
+            <div class="container">
+                <p>&copy; 2022 Jeremy Fouquet & Co.</p>
+            </div>
+        </footer>
         <!-- SCRIPTS -->
         <script src="/jquery/jquery.min.js"></script>
         <script src="/popper.js/umd/popper.min.js"></script>

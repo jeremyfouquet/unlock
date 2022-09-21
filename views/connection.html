@@ -8,14 +8,41 @@
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/styles/global.css" rel="stylesheet" type="text/css">
+    <link href="/styles/connection.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <main class="bg-blue container games">
-            Bienvenue Connection !
-        </main>
-        <!-- SCRIPTS -->
-        <script src="/jquery/jquery.min.js"></script>
-        <script src="/popper.js/umd/popper.min.js"></script>
-        <script src="/bootstrap/js/bootstrap.min.js"></script>
+      <header>
+        <nav class="navbar fixed-top bg-lightgrey">
+          <div class="container-fluid">
+            <span class="navbar-brand">
+                <img src="/assets/logo.svg" alt="logo" width="30" height="24" class="d-inline-block align-text-top">
+                Unlock
+            </span>
+            <div id="navbar-info">
+              <div id="chronoGame" class="me-2"></div>
+              <form id="clue-form" class="d-flex me-2" role="search" onsubmit="playground.searchClue(event)">
+                <input class="form-control me-2" type="number" placeholder="Indice" name="clue" required>
+                <button class="btn bg-lightgrey" type="submit">Chercher</button>
+              </form>
+            </div>
+            <a class="btn bg-grey" href="/">Quitter</a>
+          </div>
+        </nav>
+      </header>
+      <main class="bg-blue container">
+        Bienvenu Connection
+      </main>
+      <footer>
+          <div class="container">
+              <p>&copy; 2022 Jeremy Fouquet & Co.</p>
+          </div>
+      </footer>
+      <!-- SCRIPTS -->
+      <script src="/jquery/jquery.min.js"></script>
+      <script src="/popper.js/umd/popper.min.js"></script>
+      <script src="/bootstrap/js/bootstrap.min.js"></script>
+      <script src="/socket.io/socket.io.js"></script>
+      <script src="/controllers/connection.js"></script>
     </body>
 </html>
