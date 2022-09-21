@@ -1,0 +1,207 @@
+@keyframes shake {
+    0% { transform:translate(0,0) }
+    1.78571% { transform:translate(5px,0) }
+    3.57143% { transform:translate(0,0) }
+    5.35714% { transform:translate(5px,0) }
+    7.14286% { transform:translate(0,0) }
+    8.92857% { transform:translate(5px,0) }
+    10.71429% { transform:translate(0,0) }
+    100% { transform:translate(0,0) }
+}
+.connection {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+.form-check-input, .form-check-label {
+    cursor: pointer;
+}
+#instructions, #btn-container, #waiting, #room-section, #navbar-info, .clue form.card-body, #end-message, #chatForm {
+    display: none;
+}
+#room-section {
+    position: relative;
+    min-height: 600px;
+}
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+.carousel {
+    margin-bottom: 3rem;
+}
+.carousel-caption {
+    top: 1rem;
+    z-index: 10;
+}
+.row img {
+    height: fit-content;
+}
+#btn-container .bg-lightgrey {
+    margin-right: 3rem;
+}
+.avatar {
+    width: 40px;
+}
+#team {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+#navbar-info {
+    justify-content: center;
+    align-items: center;
+}
+#cards {
+    justify-content: space-around;
+    text-align: center;
+}
+.card.clue {
+    background-color: transparent;
+    border: 0.5rem solid transparent;
+    transform-style: preserve-3d;
+    position: relative;
+    transition: transform 1s;
+}
+.card-title {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.card-title, .card-title h5 {
+    margin: 0;
+}
+.return {
+    transform: rotateY(180deg);
+}
+.face{
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    backface-visibility: hidden;
+    height: 100%;
+    border-radius: 5px;
+    width: 100%;
+}
+.card-img-top {
+    border-radius: 0;
+    margin: auto;
+}
+.recto{
+    z-index: 0;
+}
+.verso{
+    z-index: 1;
+    transform: rotateY(180deg);
+}
+.card-title span {
+    position: absolute;
+    right: 0.4rem;
+    cursor: pointer;
+}
+.clue .card-title span {
+    top: 0.1rem;
+}
+#chatForm .card-title span {
+    font-size: 30px;
+}
+.clue .card-body p {
+    text-align: justify;
+    margin-bottom: 0.2rem;
+}
+.clue form.card-body .card-img-top {
+    width: 4rem;
+}
+#desactiveInput {
+    height: 40px;
+    width: 285px;
+    z-index: 1;
+    float: right;
+    position: absolute;
+}
+#keyboard {
+    border-radius: 5px;
+    padding: 0.5rem;
+}
+#keyboard .key {
+    border-radius: 10px;
+    border: 2px double #D1D1D1;
+    width: 30%;
+    margin-bottom: 0.2rem;
+    cursor: pointer;
+}
+#end-message {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+/* CHATBOX */
+#chatbox {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    max-width: 30rem;
+}
+#chat-messages img {
+    width: 45px;
+    height: 100%;
+}
+#chat-circle {
+    bottom: 50px;
+    right: 50px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    padding: 28px;
+    cursor: pointer;
+}
+#chat-circle.shake {
+    animation: shake 3s ease infinite;
+    transform-origin: 50% 50%;
+    background-color: #F26548;
+}
+#chatForm {
+    border-color: #434244;
+}
+#chatForm .card-body {
+    overflow: scroll;
+}
+
+#chatForm .form-control {
+    border-color: transparent;
+}
+
+#chatForm .form-control:focus {
+    border-color: transparent;
+    box-shadow: inset 0px 0px 0px 1px transparent;
+}
+
+/* responsive design */
+
+/* < sm */
+@media (max-width: 575.98px) {
+    .carousel-container {
+        padding: 1rem 3rem 3rem 3rem;
+    }
+}
+/* >= sm */
+@media (min-width: 576px) {
+    .carousel-container {
+        padding: 1rem 7rem 3rem 7rem;
+    }
+}
+/* < xl */
+@media (max-width: 1199.98px) {
+    .card.clue {
+        height: 360px;
+    }
+}
+/* >= xl */
+@media (min-width: 992px) {
+    .card.clue {
+        height: 400px;
+    }
+}

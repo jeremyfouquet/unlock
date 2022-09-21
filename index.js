@@ -39,6 +39,11 @@ app.get('*', function(req, res){
     res.sendFile(path.join(__dirname, 'views/404.html'));
 });
 
+// SOCKET :
+io.on('connection', (socket) => {
+    console.log(`${socket.id} connecté`);
+});
+
 http.listen(port, () => {
     console.log(`listening on port : http://localhost:${port}`);
 });
