@@ -1,0 +1,82 @@
+.white {
+    color: #FFFFFF;
+}
+.eggwhite {
+    color: #F7F7F7;
+}
+.black {
+    color: #000000;
+}
+.lightgrey {
+    color: #D1D1D1;
+}
+.grey {
+    color: #434244;
+}
+.red {
+    color: #F26548;
+}
+.blue {
+    color: #23b5ef;
+}
+.darkblue {
+    color: #4785ef;
+}
+.green {
+    color: #1CC691;
+}
+.bg-white {
+    background-color: #FFFFFF;
+}
+.bg-eggwhite {
+    background-color: #F7F7F7;
+}
+.bg-black {
+    background-color: #000000;
+}
+.bg-lightgrey {
+    background-color: #D1D1D1;
+}
+.bg-grey {
+    background-color: #434244;
+}
+.bg-red {
+    background-color: #F26548;
+}
+.bg-blue {
+    background-color: #23b5ef;
+}
+.bg-darkblue {
+    background-color: #4785ef;
+}
+.bg-green {
+    background-color: #1CC691;
+}
+body {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    color: #434244;
+    background-color: #23b5ef;
+    margin-top: 56px;
+}
+h2 {
+    color: #000000;
+}
+h5 {
+    margin: 0;
+}
+footer {
+    border-top: 1px solid #D1D1D1;
+    padding: 3rem 0 0 0;
+}
+.btn.bg-lightgrey:hover {
+    background-color: #434244;
+    color: #D1D1D1;
+}
+.btn.bg-lightgrey:not(:hover) {
+    color: #434244;
+    border-color: #434244;
+}
+.btn.bg-grey:not(:hover) {
+    color: #D1D1D1;
+}
