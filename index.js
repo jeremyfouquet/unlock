@@ -16,6 +16,9 @@ app.use(express.static('public'));
 
 // DATAS :
 const games = require(path.join(__dirname + '/datas/games.json'));
+const players = require(path.join(__dirname + '/datas/players.json'));
+const rooms = require(path.join(__dirname + '/datas/rooms.json'));
+const robotConversation = require(path.join(__dirname + '/datas/robotConversation.json'));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/home.html'));
