@@ -61,9 +61,9 @@
             "discard": [16, 46, 85],
             "type": "combinable",
             "combinable": {
-            "numClue": 25,
-            "numCombine": 67,
-            "color": "bg-darkblue"
+              "numClue": 25,
+              "numCombine": 67,
+              "color": "bg-darkblue"
             }
         },
         {
