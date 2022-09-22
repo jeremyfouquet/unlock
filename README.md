@@ -3,6 +3,29 @@
 application web d'un jeu d'escape game en temps réel
 
 ---
+
+## Authors
+
+Jeremy Fouquet
+
+## Technologies
+- Javascript
+- CSS
+- Html
+- Node.js
+- socket.io
+
+### A typical top-level directory layout
+
+    .
+    ├── datas                   # Json files for data base
+    ├── public                  # Assets and Javascript and Css files (Frontend/Client)
+    ├── views                   # Html element
+    ├── .gitignore              # File specifies intentionally untracked files that Git should ignore
+    ├── index.js                # Application entry point (Backend/Server)
+    ├── package.json            # This file is used to give the project's dependencies to npm
+    └── README.md
+
 ## Requirements
 
 For development, you will only need Node.js and a node global package installed in your environement.
