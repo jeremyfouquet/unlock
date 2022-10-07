@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+    <meta charset="utf-8">
+    <title>Unlock</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/styles/global.css" rel="stylesheet" type="text/css">
+    <link href="/styles/playground.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+      <header>
+        <nav class="navbar fixed-top bg-lightgrey">
+          <div class="container-fluid">
+            <span class="navbar-brand">
+                <img src="/assets/logo.svg" alt="logo" width="30" height="24" class="d-inline-block align-text-top">
+                Unlock
+            </span>
+            <div id="navbar-info">
+              <div id="chronoGame" class="me-2"></div>
+              <form id="clue-form" class="d-flex me-2" role="search" onsubmit="playground.searchClue(event)">
+                <input class="form-control me-2" type="number" placeholder="Indice" name="clue" required>
+                <button class="btn bg-lightgrey" type="submit">Chercher</button>
+              </form>
+            </div>
+            <a class="btn bg-grey" href="/">Quitter</a>
+          </div>
+        </nav>
+      </header>
+      <main class="bg-blue container">
+        <div class="row justify-content-around">
+          <form id="connection-form" class="connection col-lg-4" onsubmit="playground.connection(event)">
+            <h2>Rejoindre une partie</h2>
+            <div class="form-group mb-3 mt-3">
+              <h4 for="pseudo" class="form-label">Choisir un pseudo</h4>
+              <input id="pseudo" type="text" class="form-control" placeholder="pseudo" minLength="2" maxLength="20" autofocus required>
+            </div>
+            <div class="form-group mb-3 mt-3">
+              <h4 for="pseudo" class="form-label">Choisir un avatar</h4>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="avatars" id="agent1" value="agent1.svg" checked/>
+                <label class="form-check-label" for="agent1">
+                  <img
+                  src="/assets/agent1.svg"
+                  class="avatar">
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="avatars" id="agent2" value="agent2.svg" />
+                <label class="form-check-label" for="agent2">
+                  <img
+                  src="/assets/agent2.svg"
+                  class="avatar">
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="avatars" id="agent3" value="agent3.svg" />
+                <label class="form-check-label" for="agent3">
+                  <img
+                  src="/assets/agent3.svg"
+                  class="avatar">
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="avatars" id="agent4" value="agent4.svg" />
+                <label class="form-check-label" for="agent4">
+                  <img
+                  src="/assets/agent4.svg"
+                  class="avatar">
+                </label>
+              </div>
+            </div>
+            <button id="start" class="btn bg-lightgrey" type="submit">Valider</button>
+          </form>
+          <div id="instructions" class="connection">
+            <div class="mb-3 row justify-content-around">
+              <h2>Equipe</h2>
+              <div id="team" class="col-lg-4">
+              </div>
+              <div id="chronoRoom"></div>
+              <div id="btn-container">
+                <button type="submit" class="btn bg-lightgrey" onclick="playground.start()">Jouer &raquo;</button>
+                <button type="submit" class="btn bg-grey" onclick="playground.back()">Retour</button>
+              </div>
+              <div id="waiting">
+                <h4>En attente des autres joueurs</h4>
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">loading...</span>
+                </div>
+              </div>
+            </div>
+            <div id="myCarousel" class="carousel slide bg-grey white" data-bs-ride="carousel">
+              <div class="carousel-indicators">
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
+              </div>
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <div class="container carousel-container">
+                      <h1>Les Cartes</h1>
+                      <p>Au recto de chaque carte vous verrez une image correspondante à celle-ci et au verso ses instructions ! Pour retourner la carte cliquez sur le bouton 🔁 dans le coin supérieur droit.</p>
+                      <div class="row justify-content-around">
+                        <img src="/assets/instruction1.png" alt="notice d'utilisation des cartes" class="col-lg-3 col-sm-6 col-10">
+                        <img src="/assets/instruction2.png" alt="notice d'utilisation des cartes" class="col-lg-3 col-sm-6 col-10">
+                      </div>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="container carousel-container">
+                      <h1>Les types Cartes</h1>
+                      <p>Il existe plusieurs types de cartes. Certaines cartes possèdent des numéros sur leur images, ce sont des indices qu'il faut révéler, certains numéros sont cachés observez bien les cartes. Certaines cartes possèdent un titre bleu ou rouge, ce sont des cartes combinables, utilisez le champ au verso de celles-ci pour les combiner !</p>
+                      <div class="row justify-content-around">
+                        <img src="/assets/instruction1.png" alt="notice d'utilisation des cartes" class="col-lg-3 col-sm-6 col-10">
+                        <img src="/assets/instruction6.png" alt="notice d'utilisation des cartes" class="col-lg-3 col-sm-6 col-10">
+                        <img src="/assets/instruction7.png" alt="notice d'utilisation des cartes" class="col-lg-3 col-sm-6 col-10">
+                        <img src="/assets/instruction8.png" alt="notice d'utilisation des cartes" class="col-lg-3 col-sm-6 col-10">
+                      </div>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="container carousel-container">
+                      <h1>Le chat</h1>
+                      <p>Vous trouverez à droite de l'écran un chat. Celui-ci permet de discuter avec votre équipe ! Vous pourrez également demander des indices sur les cartes auprès de votre game master en tapant par ex: indice 11. Ceci vous denera un indice sur la carte n°11 !</p>
+                      <div class="row justify-content-around">
+                        <img src="/assets/instruction3.png" alt="notice d'utilisation des cartes" class="col-lg-3 col-sm-6 col-10">
+                      </div>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="container carousel-container">
+                      <h1>La recherche d'indice</h1>
+                      <p>Vous trouverez à droite de l'écran un champ "Recherche d'indice". C'est ici qu'il faudra écrire les numéros que vous pourrez voir sur l'image des cartes afin de pouvoir révéler de nouvelles cartes et donc de nouveaux indices</p>
+                      <div class="row justify-content-around">
+                        <img src="/assets/instruction4.png" alt="notice d'utilisation des cartes" class="col-lg-3 col-sm-6 col-10">
+                      </div>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="container carousel-container">
+                      <h1>Le chrono</h1>
+                      <p>Il faut finir le jeu avant la fin du chronomètre. Si le celui-ci tombe à zéro la partie est terminé et perdu. Attention certaines mauvaises actions peuvent vous donner une pénalité de temps de 1 minutes !</p>
+                      <div class="row justify-content-around">
+                        <img src="/assets/instruction5.png" alt="notice d'utilisation des cartes" class="col-lg-3 col-sm-6 col-10">
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+          <div id="room-section" class="row-container">
+            <div id="end-message">
+              <p></p>
+              <a href="/" class="btn bg-lightgrey">Retour</a>
+            </div>
+            <div id="cards" class="row">
+            </div>
+            <div id="chatbox">
+              <div id="chat-circle" class="btn btn-raised bg-grey" onclick="playground.toggleChat()">
+                <span>✉️</span>
+              </div>
+              <form id="chatForm" class="card col-12" onsubmit="playground.sendMessage(event)">
+                <div class="card-title d-flex justify-content-center align-items-center p-3 bg-lightgrey">
+                  <h5 class="mb-0">Chat</h5>
+                  <span onclick="playground.toggleChat()">-</span>
+                </div>
+                <div class="card-body" style="position: relative; height: 400px">
+                  <div id="chat-messages">
+                  </div>
+                </div>
+                <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3 bg-lightgrey">
+                  <img src="" alt="Avatar" style="width: 40px; height: 100%;">
+                  <input type="text" class="form-control" name="message"
+                    placeholder="Votre message ...">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+      <footer>
+          <div class="container">
+              <p>&copy; 2022 Jeremy Fouquet & Co.</p>
+          </div>
+      </footer>
+      <!-- SCRIPTS -->
+      <script src="/jquery/jquery.min.js"></script>
+      <script src="/popper.js/umd/popper.min.js"></script>
+      <script src="/bootstrap/js/bootstrap.min.js"></script>
+      <script src="/socket.io/socket.io.js"></script>
+      <script src="/models/player.js"></script>
+      <script src="/models/clue.js"></script>
+      <script src="/models/game.js"></script>
+      <script src="/models/note.js"></script>
+      <script src="/models/room.js"></script>
+      <script src="/models/playground.js"></script>
+      <script src="/models/socket.js"></script>
+    </body>
+</html>

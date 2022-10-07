@@ -28,7 +28,7 @@ app.all('/connection/?', (req, res, next) => {
   }
 });
 app.get('/connection/?', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views/connection.html'));
+  res.sendFile(path.join(__dirname, 'views/playground.html'));
 });
 app.get('*', function(req, res){
   res.sendFile(path.join(__dirname, 'views/404.html'));
