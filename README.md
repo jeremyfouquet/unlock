@@ -63,6 +63,11 @@ If the installation was successful, you should be able to run the following comm
 
     $ npm start
 
+## See project on localhost development
+
+http://localhost:${port}
+http://localhost:3000
+
 ## See project on production
 
 [projet-unlock](https://ionized-cautious-ragdoll.glitch.me/) (https://ionized-cautious-ragdoll.glitch.me/)
