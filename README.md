@@ -66,6 +66,7 @@ If the installation was successful, you should be able to run the following comm
 ## See project on localhost development
 
 http://localhost:${port}
+
 http://localhost:3000
 
 ## See project on production
