@@ -1,6 +1,6 @@
-# projet-unlock
+# Unlock (Escape Game en Ligne)
 
-application web d'un jeu d'escape game en temps réel
+Un projet d'application web reprenant le celebre jeux d'escape game Unlock. La réalisation est faite en NodeJs pour une programmation full stack et la communication se fait en temps réèl grâce à socket.io. Les modules d'interface sont eux réalisé en HTML CSS et JavaScript.
 
 ---
 
