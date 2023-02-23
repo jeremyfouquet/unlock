@@ -55,7 +55,7 @@ If the installation was successful, you should be able to run the following comm
 
 ## Install
 
-    $ git clone https://github.com/jeremyfouquet/projet-unlock.git
+    $ git clone https://github.com/jeremyfouquet/unlock.git
     $ cd unlock
     $ npm install
 
