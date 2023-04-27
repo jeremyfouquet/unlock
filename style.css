@@ -1,0 +1,51 @@
+body, div, input, main, form, h1{
+    border: 1px solid;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 98%;
+    background: #1C6EA4;
+    background: -moz-linear-gradient(left, #1C6EA4 0%, #2388CB 50%, #144E75 100%);
+    background: -webkit-linear-gradient(left, #1C6EA4 0%, #2388CB 50%, #144E75 100%);
+    background: linear-gradient(to right, #1C6EA4 0%, #2388CB 50%, #144E75 100%);
+}
+
+main {
+    width: 25%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 26px;
+    background-color: aliceblue;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+}
+
+input{
+    width: 100%;
+    border-radius: 6px;
+    margin-bottom: 1em;
+}
+h1{
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size: 3em;
+    margin-bottom: 1em;
+    font-weight: 700;
+    background: #1C6EA4;
+    opacity: 70%;
+    background-;
+}
+
+.submit{
+    width: 100%;
+}
