@@ -11,7 +11,7 @@ const errorroutes = require('./routes/error')
 const usersroutes = require('./routes/users')
 const standartroutes = require('./routes/standart')
 
-mongoose.connect('mongodb+srv://preacherdoe:27231403@cluster0.2mo7f2d.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect('', //Secret URI
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
