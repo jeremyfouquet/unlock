@@ -4,14 +4,13 @@ const path = require('path');
 const cors = require('./middlewares/cors');
 const mongoose = require('mongoose');
 
-
 const app = express();
 
 const errorroutes = require('./routes/error')
 const usersroutes = require('./routes/users')
 const standartroutes = require('./routes/standart')
 
-mongoose.connect('', //Secret URI
+mongoose.connect('mongodb+srv://jeremyfouquet:8hKofoyhxauZiLtN@cluster0.vhuekui.mongodb.net/?retryWrites=true&w=majority', //Secret URI
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
