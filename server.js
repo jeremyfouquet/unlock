@@ -47,7 +47,7 @@ server.on('listening', () => {
 const io = require('socket.io')(server, {
   cors: {origin : '*'}
 });
-// initialize my socketio module and pass it the io instance
+// initialize socket module and pass it the io instance
 require('./socket')(io);
 
 server.listen(port);

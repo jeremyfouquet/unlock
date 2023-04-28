@@ -1,9 +1,3 @@
-// const express = require('express');
-// const app = express();
-// const server = require('./server')
-// const io = require('socket.io')(server, {
-//     cors: {origin : '*'}
-// });
 const path = require('path');
 
 // DATABASE :
