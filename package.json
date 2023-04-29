@@ -4,8 +4,8 @@
   "description": "application web d'un jeu d'escape game en temps réel",
   "main": "server.js",
   "scripts": {
-    "run": "node server.js",
-    "dev": "NODE_ENV=development nodemon server.js"
+    "run": "node ./server.js",
+    "dev": "NODE_ENV=development nodemon --trace-warnings server.js"
   },
   "author": "",
   "license": "ISC",
