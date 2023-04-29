@@ -41,8 +41,14 @@ server.on('error', errorHandler);
 server.on('listening', () => {
   const address = server.address();
   const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
-  console.log('Listening on ' + bind);
+  console.log('Listening on ' + bind + ' => ' + 'http://localhost:' + port);
 });
+
+const io = require('socket.io')(server, {
+  cors: {origin : '*'}
+});
+// initialize socket module and pass it the io instance
+require('./socket')(io);
 
 server.listen(port);
 
