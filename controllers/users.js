@@ -2,6 +2,7 @@ const {getUniqueId} = require('../middlewares/helper.js');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const path = require('path');
 
 // let users = require('../mock-users')
 
@@ -19,7 +20,11 @@ const jwt = require('jsonwebtoken');
 //         res.status(201).json(users);
 // };
 
-exports.signup = (req, res, next) => {
+exports.getPage = (req, res) => {
+    res.sendFile(path.join(process.cwd(), '/views/user.html'));   
+};
+
+exports.signup = (req, res) => {
     bcrypt.hash(req.body.pass, 10)
       .then(hash => {
         const user = new User({
@@ -33,7 +38,7 @@ exports.signup = (req, res, next) => {
       .catch(error => res.status(500).json({ error }));
   };
 
-  exports.login = (req, res, next) => {
+  exports.login = (req, res) => {
     User.findOne({ email: req.body.email })
         .then(user => {
             if (!user) {

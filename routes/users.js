@@ -8,6 +8,7 @@ const usersControllers = require('../controllers/users');
 //     next();
 // }
 
+router.get('/', usersControllers.getPage);
 router.post('/signup',  usersControllers.signup);
 router.post('/login' , usersControllers.login);
 
