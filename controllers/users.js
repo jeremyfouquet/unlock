@@ -1,4 +1,4 @@
-const {getUniqueId} = require('../middlewares/helper.js');
+//const {getUniqueId} = require('../middlewares/helper.js');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -16,7 +16,9 @@ exports.signup = (req, res) => {
       .then(hash => {
         const user = new User({
           email: req.body.email,
-          password: hash
+          password: hash,
+          win:0,
+          loose:0
         });
         user.save()
           .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
@@ -37,16 +39,23 @@ exports.signup = (req, res) => {
                         return res.status(401).json({ error: 'Mot de passe incorrect !' });
                     }
 
+
+                    // Création du Token d'authentification
                     let token = jwt.sign(
                         { userId: user._id },
                         process.env.JWT_SECRET_KEY,
                         { expiresIn: '3h' }
                     )
-
+                    
+                    // Création du cookie contenant le Token
                     new Cookies(req,res).set('access_token',token, {
                         httpOnly: true, //cookie not available through client js code
-                        secure: false // true to force https
+                        secure: false, // true to force https
+                        maxAge: 5000 // time in seconds before expiration
                     });
+
+                    // On envoie tout 
+                    // TODO renvoyé ver Home.html
                     try {
                         res.status(200).json({
                             userId: user._id,
@@ -60,3 +69,17 @@ exports.signup = (req, res) => {
         })
         .catch(error => res.status(500).json({ error, message: 'mongoose'}));
  };
+
+ exports.logout = (req, res) => {
+
+    new Cookies(req,res).set('access_token', "", {
+        httpOnly: true, //cookie not available through client js code
+        secure: false, // true to force https
+        maxAge: 5 // Time in seconde before expire
+    });
+
+    try {
+        res.status(200).sendFile(path.join(process.cwd(), '/views/user.html'));
+    }
+    catch (err) {res.status(500).json({ error: err})}
+ }
