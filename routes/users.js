@@ -9,7 +9,9 @@ const usersControllers = require('../controllers/users');
 // }
 
 router.get('/', usersControllers.getPage);
+router.get('/me', usersControllers.getMe);
 router.post('/signup',  usersControllers.signup);
 router.post('/login' , usersControllers.login);
+
 
 module.exports = router;

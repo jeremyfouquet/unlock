@@ -4,12 +4,14 @@ const path = require('path');
 const cors = require('./middlewares/cors');
 require('dotenv').config()
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 const SecretURI = process.env.MONGO_URI;
 const app = express();
 
 const errorroutes = require('./routes/error')
 const usersroutes = require('./routes/users')
 const standartroutes = require('./routes/standart')
+
 
 mongoose.connect(SecretURI, //Secret URI from .env
   { useNewUrlParser: true,
@@ -21,6 +23,7 @@ app
     //Traitement du corp et de l'URL de la requête
     .use(express.urlencoded())
     .use(express.json())
+    .use(cookieParser())
     //Traitement des erreurs CORS
     .use(cors)
     //Traitement des dependances
@@ -30,8 +33,8 @@ app
     .use('/bootstrap/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')))
     .use(express.static('public'))
     //Application des routes
-    .use('/', standartroutes)
     .use('/api/users', usersroutes)
+    .use('/', standartroutes)
     .use('*', errorroutes);
 
 module.exports = app;
