@@ -1,6 +1,8 @@
-//TODO
-//  - redirection
-//  - temps de validité du JWT et du cookie ?
+/*TODO
+* - redirection
+* - temps de validité du JWT et du cookie ?
+* - Finir updatePSWD et deleteAccount
+*/
 
 const User = require('../models/user'); // Modèle mongoose
 const bcrypt = require('bcrypt');       // Chiffrement du MDP 
@@ -16,6 +18,7 @@ require('dotenv').config();
  * @param {object} res 
  */
 exports.getPage = (req , res) => {
+
     res.status(200).sendFile(path.join(process.cwd(), '/views/user.html'));   
 };
 
@@ -35,7 +38,9 @@ exports.signup = (req, res) => {
       .then(hash => {
         const user = new User({
           email: req.body.email,
-          password: hash
+          password: hash,
+          win: 0,
+          loose: 0
         });
         user.save()
           .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
@@ -114,13 +119,12 @@ exports.signup = (req, res) => {
  * @param { object } req : la requête envoyé depuis le frontend
  * @param { object } res : la reponse envoyé depuis le backend
 */
- exports.getMe = (req, res) => {
+exports.getMe = (req, res) => {
         try {
             // Récupération du cookie
             const token = req.cookies.access_token;
             // décodage et vérification avec JWT
             const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-        
             // Renvoie (le mieux dans un fetch) les informations utilisateur
             if (decoded) {
                 User.findOne({_id : decoded.userId})
@@ -143,4 +147,52 @@ exports.signup = (req, res) => {
             });
            
         }
+};
+
+/**
+ * recoit une requette HTTP de type PUT, contrôle le token d'authentification,
+ * et modifie le mot de passe en base de donnée
+ * @name updatePSWD
+ * @param { object } req : la requête envoyé depuis le frontend
+ * @param { object } res : la reponse envoyé depuis le backend
+*/
+exports.updatePSWD = async (req, res) => {
+    try{
+        const decoded = jwt.verify(req.cookie.access_token, process.env.JWT_SECRET_KEY);
+
+        if (decoded) {
+            bcrypt.hash(req.body.pass, 10)
+                .then(async hash =>  {
+                    await User.findOneAndUpdate(
+                        {_id: decoded.userId},
+                        {password: hash},
+                        {new: true});
+    })}}
+    catch(err) {}
+};
+
+/**
+ * recoit une requette HTTP de type DELETE, contrôle le token d'authentification,
+ * supprime le compte de l'utilisateur de la base de donnée. Supprime également le cookie
+ * d'authentification.
+ * @name deleteAccount
+ * @param { object } req : la requête envoyé depuis le frontend
+ * @param { object } res : la reponse envoyé depuis le backend
+*/
+exports.updatePSWD =
+exports.deleteAccount = async (req, res) => {
+    try{
+        const decoded = jwt.verify(req.cookie.access_token, process.env.JWT_SECRET_KEY);
+
+        if (decoded) {
+            const result = await User.deleteOne({_id: decoded.userId})
+            if (result.deletedCount) {
+                 // Supprime le cookie
+                res.clearCookie('access_token');
+                // Redirige vers une page de notre choix
+                res.status(200).sendFile(path.join(process.cwd(), '/views/user.html'));
+            }
+        }
     }
+    catch (err) {console.error(err);}
+};

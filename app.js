@@ -1,11 +1,10 @@
 const express = require('express');
-const {restart} = require('nodemon');
 const path = require('path');
 const cors = require('./middlewares/cors');
-require('dotenv').config()
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-const SecretURI = process.env.MONGO_URI;
+
+require('dotenv').config()
 const app = express();
 
 const errorroutes = require('./routes/error')
@@ -13,7 +12,7 @@ const usersroutes = require('./routes/users')
 const standartroutes = require('./routes/standart')
 
 
-mongoose.connect(SecretURI, //Secret URI from .env
+mongoose.connect(process.env.MONGO_URI, //Secret URI from .env
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
