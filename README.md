@@ -7,6 +7,8 @@ Un projet d'application web reprenant le celebre jeux d'escape game Unlock. La r
 ## Authors
 
 Jeremy Fouquet
+Thibaut Decressonniere
+Georges Miot
 
 ## Technologies
 - Javascript
@@ -19,10 +21,18 @@ Jeremy Fouquet
 
     .
     ├── datas                   # Json files for data base
+    ├── controllers             # 
+    ├── middlewares             # 
+    ├── models                  # 
     ├── public                  # Assets and Javascript and Css files (Frontend/Client)
-    ├── views                   # Html element
+    ├── routes                  #
+    ├── views                   # Html elements
     ├── .gitignore              # File specifies intentionally untracked files that Git should ignore
-    ├── index.js                # Application entry point (Backend/Server)
+    ├── .env                    # config to mongodb ignoring by git
+    ├── .env.example            # sample config to to mongodb
+    ├── app.js                  
+    ├── socket.js               # Module constructor for socket.io with all functions
+    ├── server.js               # Application entry point (Backend/Server)
     ├── package.json            # This file is used to give the project's dependencies to npm
     └── README.md
 
@@ -58,6 +68,10 @@ If the installation was successful, you should be able to run the following comm
     $ git clone https://github.com/jeremyfouquet/unlock.git
     $ cd unlock
     $ npm install
+
+## Create config
+
+For connected the mongodb you need to create .env file on root project and place your Secret URI like .env.example
 
 ## Running the project
 
