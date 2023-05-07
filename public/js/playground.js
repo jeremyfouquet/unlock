@@ -11,7 +11,7 @@ function Playground (socketclient) {
     this.connection = function (event) {
         event.preventDefault();
         const currentPlayer = new Player(this.socketclient.id, $('#pseudo')[0].value, document.querySelector('input[name="avatars"]:checked').value, '', false);
-        $('#connection-form').hide();
+        $('#play-form').hide();
         $('#instructions').show();
         this.socketclient.emit('addOrUpdatePlayer', currentPlayer);
         const queryString = window.location.search;
@@ -447,7 +447,7 @@ function Playground (socketclient) {
         $('#btn-container').hide();
         $('#chronoRoom').show();
         $('#instructions').hide();
-        $('#connection-form').show();
+        $('#play-form').show();
     };
 
     /**

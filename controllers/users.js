@@ -8,7 +8,7 @@ const Cookies = require('cookies');
 require('dotenv').config();
 
 exports.getPage = (req, res) => {
-    res.status(200).sendFile(path.join(process.cwd(), '/views/user.html'));   
+    res.status(200).sendFile(path.join(process.cwd(), '/views/connection.html'));   
 };
 
 exports.signup = (req, res) => {
@@ -79,7 +79,7 @@ exports.signup = (req, res) => {
     });
 
     try {
-        res.status(200).sendFile(path.join(process.cwd(), '/views/user.html'));
+        res.status(200).sendFile(path.join(process.cwd(), '/views/connection.html'));
     }
     catch (err) {res.status(500).json({ error: err})}
  }

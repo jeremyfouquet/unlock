@@ -23,16 +23,24 @@
               <div id="chronoGame" class="me-2"></div>
               <form id="clue-form" class="d-flex me-2" role="search" onsubmit="playground.searchClue(event)">
                 <input class="form-control me-2" type="number" placeholder="Indice" name="clue" required>
-                <button class="btn bg-lightgrey" type="submit">Chercher</button>
+                <button class="btn bg-green" type="submit">Chercher</button>
               </form>
             </div>
-            <a class="btn bg-grey" href="/">Quitter</a>
+            <div id="navbar-right-item">
+              <a class="btn bg-green" href="/api/users">
+                <span>
+                    Connexion
+                    <img id="logo-profil" src="/assets/logo-profil-light.svg" alt="logo de profil" width="20" class="d-inline-block align-text-top">
+                </span>
+              </a>
+              <a class="btn bg-grey" href="/">Quitter</a>
+            </div>
           </div>
         </nav>
       </header>
-      <main class="bg-blue container">
+      <main class="container">
         <div class="row justify-content-around">
-          <form id="connection-form" class="connection col-lg-4" onsubmit="playground.connection(event)">
+          <form id="play-form" class="align-txt-and-marge col-lg-4" onsubmit="playground.connection(event)">
             <h2>Rejoindre une partie</h2>
             <div class="form-group mb-3 mt-3">
               <h4 for="pseudo" class="form-label">Choisir un pseudo</h4>
@@ -75,7 +83,7 @@
             </div>
             <button id="start" class="btn bg-lightgrey" type="submit">Valider</button>
           </form>
-          <div id="instructions" class="connection">
+          <div id="instructions" class="align-txt-and-marge">
             <div class="mb-3 row justify-content-around">
               <h2>Equipe</h2>
               <div id="team" class="col-lg-4">
@@ -172,8 +180,8 @@
               <div id="chat-circle" class="btn btn-raised bg-grey" onclick="playground.toggleChat()">
                 <span>✉️</span>
               </div>
-              <form id="chatForm" class="card col-12" onsubmit="playground.sendMessage(event)">
-                <div class="card-title d-flex justify-content-center align-items-center p-3 bg-lightgrey">
+              <form id="chatForm" class="card col-12 bg-white-transparent" onsubmit="playground.sendMessage(event)">
+                <div class="card-title d-flex justify-content-center align-items-center p-3 bg-lightgrey-transparent">
                   <h5 class="mb-0">Chat</h5>
                   <span onclick="playground.toggleChat()">-</span>
                 </div>
@@ -181,7 +189,7 @@
                   <div id="chat-messages">
                   </div>
                 </div>
-                <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3 bg-lightgrey">
+                <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3 bg-lightgrey-transparent">
                   <img src="" alt="Avatar" style="width: 40px; height: 100%;">
                   <input type="text" class="form-control" name="message"
                     placeholder="Votre message ...">
@@ -193,7 +201,7 @@
       </main>
       <footer>
           <div class="container">
-              <p>&copy; 2022 Jeremy Fouquet & Co.</p>
+            <p style="margin-bottom:0;">&copy; 2023 Jeremy Fouquet - Thibaut Decressonniere - Georges Miot</p>
           </div>
       </footer>
       <!-- SCRIPTS -->

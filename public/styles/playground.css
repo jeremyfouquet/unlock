@@ -8,10 +8,6 @@
     10.71429% { transform:translate(0,0) }
     100% { transform:translate(0,0) }
 }
-.connection {
-    text-align: center;
-    margin-bottom: 3rem;
-}
 .form-check-input, .form-check-label {
     cursor: pointer;
 }
@@ -141,17 +137,15 @@
 /* CHATBOX */
 #chatbox {
     position: fixed;
-    bottom: 1rem;
-    right: 1rem;
     max-width: 30rem;
+    border-color: #434244;
+    bottom: 140px;
 }
 #chat-messages img {
     width: 45px;
     height: 100%;
 }
 #chat-circle {
-    bottom: 50px;
-    right: 50px;
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -163,9 +157,7 @@
     transform-origin: 50% 50%;
     background-color: #F26548;
 }
-#chatForm {
-    border-color: #434244;
-}
+
 #chatForm .card-body {
     overflow: scroll;
 }
@@ -186,11 +178,20 @@
     .carousel-container {
         padding: 1rem 3rem 3rem 3rem;
     }
+    #navbar-info{
+        order:2;
+    }
+    #chatbox {
+        right: 0rem;
+    }
 }
 /* >= sm */
 @media (min-width: 576px) {
     .carousel-container {
         padding: 1rem 7rem 3rem 7rem;
+    }
+    #chatbox {
+        right: 1rem;
     }
 }
 /* < xl */
