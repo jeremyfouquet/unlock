@@ -9,7 +9,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
         <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="/styles/global.css" rel="stylesheet" type="text/css">
-        <link href="/styles/connection.css" rel="stylesheet" type="text/css">
+        <link href="/styles/login.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         <header>
@@ -25,7 +25,7 @@
         </header>
         <main class="container">
             <div class="row justify-content-around">
-                <form id="connection-form" class="align-txt-and-marge col-lg-4" onsubmit="submitForm(event)">
+                <form id="login-form" class="align-txt-and-marge col-lg-4" onsubmit="submitForm(event)">
                     <h2>Connexion / Inscription</h2>
                     <div class="form-group mb-3 mt-3">
                         <h4 for="mail" class="form-label">E-mail de login</h4>
@@ -40,8 +40,8 @@
                         <input id="pass2" type="password" class="form-control" placeholder="mot de passe" minLength="8" data-help="Pour inscription uniquement">
                     </div>
                     <div class="form-group mb-3 mt-3">
-                        <button id="connection-submit" class="btn bg-lightgrey" type="submit" onclick="connection()">Connexion</button>
-                        <button id="inscription-submit" class="btn bg-grey" type="button" onclick="inscription()">Inscription</button>
+                        <button id="signin" class="btn bg-lightgrey" type="submit" onclick="signin()">Connexion</button>
+                        <button id="signup" class="btn bg-grey" type="button" onclick="signup()">Inscription</button>
                     </div>
                 </form>
             </div>
@@ -76,6 +76,6 @@
     <script src="/jquery/jquery.min.js"></script>
     <script src="/popper.js/umd/popper.min.js"></script>
     <script src="/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/js/connection.js"></script>
+    <script src="/js/login.js"></script>
     </body>
 </html>
