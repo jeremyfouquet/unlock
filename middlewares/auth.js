@@ -11,7 +11,8 @@ module.exports = (req, res, next) => {
            userId: userId
        };
 	next();
-   } catch(error) {
-       res.status(401).send('Veuillez vous reconnecter');
+   } catch(error) {     
+       res.redirect('/api/users');
+    //    res.status(401).send('Veuillez vous reconnecter');
    }
 };

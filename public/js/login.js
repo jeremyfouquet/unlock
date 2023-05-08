@@ -1,10 +1,10 @@
-function signup() {
+function inscription() {
     const type = "signup";
     verification_password(type);
     change_button(type);
 }
 
-function signin() {
+function login() {
     const type = "signin";
     verification_password(type);
     change_button(type);
@@ -40,13 +40,49 @@ function change_button(type) {
     btn.setAttribute('type', 'button');
 }
 
-function submitForm(e) {
+async function submitForm(e) {
     e.preventDefault(); // empêche le rechargement de la page
     const submit = document.querySelector('button[type="submit"]');
     const type = submit.getAttribute("id");
+    const form = document.querySelector('form[name="login-form"]');
+    const email = form.elements['email'].value;
+    const pass = form.elements['pass'].value;
+    const small = document.getElementById("message-help");
+    var message = "";
     if (type == "signin") {
-        // action="http://localhost:3000/api/users/login" method="POST"
+        const response = await api(email, pass, '/api/users/login');
+        if(response.error){
+            message = response.error? response.error : "erreur inconnue";
+        } else {
+            // comment faire après pour valider le token auprès du back ?
+            console.log('response', response);
+            window.location.href = '/api/users/profil';
+        }
     } else if (type == "signup") {
-        // action="http://localhost:3000/api/users/signup" method="POST"
+        const response = await api(email, pass, '/api/users/signup');
+        if(response.error){
+            message = response.error? response.error : "erreur inconnue";
+        } else {
+            message = response.message + " Vous pouvez vous connecter";
+            form.reset();
+        }
     }
+    small.textContent = message;
+}
+
+async function api(email, pass, api) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const options = {
+      method: 'POST',
+      credentials: 'include',
+      mode: 'cors',
+      body: JSON.stringify({
+        email,
+        pass
+      }),
+      headers
+    };
+    const response = await fetch(api, options);
+    return response.json();
 }

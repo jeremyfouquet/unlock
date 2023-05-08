@@ -83,3 +83,7 @@ exports.signup = (req, res) => {
     }
     catch (err) {res.status(500).json({ error: err})}
  }
+
+ exports.profil = (req, res) => {
+    res.status(200).sendFile(path.join(process.cwd(), '/views/profil.html'));
+};
