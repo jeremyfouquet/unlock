@@ -9,6 +9,6 @@ router.post('/signup',  usersControllers.signup);
 router.post('/login' , usersControllers.login);
 router.delete('/delete', usersControllers.deleteAccount);
 router.put('/updatePSWD', usersControllers.updatePSWD);
-
+router.post('/logout', usersControllers.logout);
 
 module.exports = router;
