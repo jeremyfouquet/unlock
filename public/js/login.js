@@ -55,7 +55,7 @@ async function submitForm(e) {
             message = response.error? response.error : "erreur inconnue";
         } else {
             // comment faire après pour valider le token auprès du back ?
-            console.log('response', response);
+            // console.log('response', response);
             window.location.href = '/api/users/profil';
         }
     } else if (type == "signup") {
@@ -75,7 +75,7 @@ async function api(email, pass, api) {
     headers.append('Content-Type', 'application/json');
     const options = {
       method: 'POST',
-      credentials: 'include',
+    //   credentials: 'include',
       mode: 'cors',
       body: JSON.stringify({
         email,
@@ -84,5 +84,6 @@ async function api(email, pass, api) {
       headers
     };
     const response = await fetch(api, options);
-    return response.json();
+    const respJson = response.json();
+    return respJson;
 }
