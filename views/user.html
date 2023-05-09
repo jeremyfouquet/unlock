@@ -6,27 +6,48 @@
     </head>
     <body>
         <main>
-        <h1>Inscription</h1>
-        <form action="http://localhost:3000/api/users/signup" method="POST">
-            <input class="mail" id="email" type="email" name="email" placeholder="Email">
-            <input class="pass" id="pass" type="password" name="pass" placeholder="Password">
-            <input class="submit" type="submit" value="Register">
-        </form>
+            <h1>Inscription</h1>
+            <form action="http://localhost:3000/api/users/signup" method="POST">
+                <input class="mail" id="email" type="email" name="email" placeholder="Email">
+                <input class="pass" id="pass" type="password" name="pass" placeholder="Password">
+                <input class="submit" type="submit" value="Register">
+            </form>
 
-        <h1>Login</h1>
-        <form action="http://localhost:3000/api/users/login" method="POST">
-            <input type="email" name="email" id="email" class="mail" placeholder="Email">
-            <input class="pass" id="pass" type="password" name="pass" placeholder="Password">
-            <input class="submit" type="submit" value="login">
-        </form>
+            <h1>Login</h1>
+            <form action="http://localhost:3000/api/users/login" method="POST">
+                <input type="email" name="email" id="email" class="mail" placeholder="Email">
+                <input class="pass" id="pass" type="password" name="pass" placeholder="Password">
+                <input class="submit" type="submit" value="login">
+            </form>
 
-        <h1>Logout</h1>
-        <form action="http://localhost:3000/api/users/logout" method="POST">
-            <input class="submit" type="submit" value="logout">
-        </form>
+            <h1>Logout</h1>
+            <form action="http://localhost:3000/api/users/logout" method="POST">
+                <input class="submit" type="submit" value="logout">
+            </form>
+
+            <h1>Mon Profil</h1>
+                <div class="mail-container"></div>
+                <div class="win-container"></div>
+                <div class="loose-container"></div>
+                <div class="error"></div>
+            <form class="getMeForm" action="http://localhost:3000/api/users/me" method="GET">
+                <input class="submit" type="submit" value="MAJ">
+            </form>            
+        </main>
         
-    </main>
-        
-        <!-- <script src="index.js"></script> -->
+        <script>
+            const form = document.querySelector('.getMeForm');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                fetch('http://localhost:3000/api/users/me')
+                    .then( response => response.json())
+                    .then(result => {
+                        document.querySelector('.mail-container').innerHTML = result.email;
+                        document.querySelector('.win-container').innerHTML = result.win;
+                        document.querySelector('.loose-container').innerHTML = result.loose;
+                    })
+                    .catch(error => { document.querySelector('.error').innerHTML = error})
+            })
+        </script>
     </body>
 </html>
