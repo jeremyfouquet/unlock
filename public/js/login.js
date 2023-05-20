@@ -1,15 +1,3 @@
-function inscription() {
-    const type = "signup";
-    verification_password(type);
-    change_button(type);
-}
-
-function login() {
-    const type = "signin";
-    verification_password(type);
-    change_button(type);
-}
-
 function verification_password(type) {
     var pass1 = document.getElementById("pass1")
     var pass2 = document.getElementById("pass2");
@@ -40,26 +28,40 @@ function change_button(type) {
     btn.setAttribute('type', 'button');
 }
 
-async function submitForm(e) {
+function inscription() {
+    const type = "signup";
+    verification_password(type);
+    change_button(type);
+}
+
+function login() {
+    const type = "signin";
+    verification_password(type);
+    change_button(type);
+}
+
+async function submitLoginForm(e) {
     e.preventDefault(); // empêche le rechargement de la page
     const submit = document.querySelector('button[type="submit"]');
     const type = submit.getAttribute("id");
     const form = document.querySelector('form[name="login-form"]');
     const email = form.elements['email'].value;
     const pass = form.elements['pass'].value;
+    const body = JSON.stringify({
+        email,
+        pass
+    });
     const small = document.getElementById("message-help");
     var message = "";
     if (type == "signin") {
-        const response = await api(email, pass, '/api/users/login');
+        const response = await api('/api/users/login', 'POST', body);
         if(response.error){
             message = response.error? response.error : "erreur inconnue";
         } else {
-            // comment faire après pour valider le token auprès du back ?
-            // console.log('response', response);
             window.location.href = '/api/users/profil';
         }
     } else if (type == "signup") {
-        const response = await api(email, pass, '/api/users/signup');
+        const response = await api('/api/users/signup', 'POST', body);
         if(response.error){
             message = response.error? response.error : "erreur inconnue";
         } else {
@@ -70,20 +72,17 @@ async function submitForm(e) {
     small.textContent = message;
 }
 
-async function api(email, pass, api) {
+async function api(api, method, body) {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    const options = {
-      method: 'POST',
-    //   credentials: 'include',
-      mode: 'cors',
-      body: JSON.stringify({
-        email,
-        pass
-      }),
-      headers
-    };
+    var options = {};
+    options.method = method;
+    options.mode= 'cors';
+    if( typeof(body) != 'undefined' ){
+        options.body = body;
+    }
+    options.headers = headers;
     const response = await fetch(api, options);
-    const respJson = response.json();
+    const respJson = await response.json();
     return respJson;
 }

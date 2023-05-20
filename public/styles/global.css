@@ -88,10 +88,10 @@ footer {
 .btn.bg-grey:not(:hover) {
     color: #F7F7F7;
 }
-.btn.bg-green {
+.btn.bg-green, .btn.bg-red {
     color : #F7F7F7;
 }
-.btn.bg-green:hover {
+.btn.bg-green:hover, .btn.bg-red:hover {
     background-color: #F7F7F7;
     color : #434244;
 }
@@ -109,4 +109,9 @@ a:not(:hover) img#logo-profil {
 }
 a:hover img#logo-profil {
     content: url("/assets/logo-profil-dark.svg");
+}
+#message-help{
+    text-align: start;
+    width: 100%;
+    display: block;
 }
