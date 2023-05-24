@@ -11,7 +11,7 @@ function Playground (socketclient) {
     this.connection = function (event) {
         event.preventDefault();
         const currentPlayer = new Player(this.socketclient.id, $('#pseudo')[0].value, document.querySelector('input[name="avatars"]:checked').value, '', false);
-        $('#connection-form').hide();
+        $('#play-form').hide();
         $('#instructions').show();
         this.socketclient.emit('addOrUpdatePlayer', currentPlayer);
         const queryString = window.location.search;
@@ -447,7 +447,7 @@ function Playground (socketclient) {
         $('#btn-container').hide();
         $('#chronoRoom').show();
         $('#instructions').hide();
-        $('#connection-form').show();
+        $('#play-form').show();
     };
 
     /**
@@ -459,6 +459,17 @@ function Playground (socketclient) {
         $('#navbar-info').css('display', 'none');
         $('#end-message > p').text(this.room.game.chrono > 0 ? `Bravo vous avez réussi à sortir en ${this.getChrono(this.room.game.chrono)} minutes !` : 'Domage ! Le temps est écoulé !')
         $('#end-message').show();
+        //todo
+        const api = this.room.game.chrono > 0 ? '/api/users/incrementWin' : '/api/users/incrementLoose';
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        var options = {};
+        options.method = 'PUT';
+        options.mode= 'cors';
+        options.headers = headers;
+        fetch(api, options)
+        .then(resp => console.log(resp))
+        .catch(err => console.log(err));
     };
 
     /**

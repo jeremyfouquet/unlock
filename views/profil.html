@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <title>Unlock</title>
+        <base href="/">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/styles/global.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <header>
+            <nav class="navbar fixed-top bg-lightgrey">
+              <div class="container-fluid">
+                <span class="navbar-brand">
+                    <img src="/assets/logo.svg" alt="logo" width="30" height="24" class="d-inline-block align-text-top">
+                    Unlock
+                </span>
+                <div id="navbar-right-item">
+                    <a class="btn bg-grey" href="/">Quitter</a>
+                    <button id="btn-disconnect" class="btn bg-red" onclick="logout()">
+                        Déconnexion
+                    </button>
+                </div>
+              </div>
+            </nav>
+        </header>
+        <main class="container">
+            <div class="row justify-content-around">                    
+                <h2 class="align-txt-and-marge col-lg-12">Mon profil</h2>
+                <form id="profil-form" name="profil-form" class="align-txt-and-marge col-lg-4" onsubmit="deleteProfil(event)">
+                    <div class="form-group mb-3 mt-3">
+                        <h4 for="mail" class="form-label">E-mail</h4>
+                        <input id="mail-profil" type="email" name="email" class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" minLength="5" disabled>
+                    </div>
+                    <div class="form-group mb-3 mt-3">
+                        <h4 for="win" class="form-label">Nombre de victoires</h4>
+                        <input id="nb-win" type="text" name="win" class="form-control" disabled>
+                    </div>
+                    <div class="form-group mb-3 mt-3">
+                        <h4 for="loose" class="form-label">Nombre de défaites</h4>
+                        <input id="nb-loose" type="text" name="loose" class="form-control" disabled>
+                    </div>
+                    <div class="form-group mb-3 mt-3">
+                        <button id="signin" class="btn bg-grey" type="submit" >Supprimer le compte</button>
+                    </div>
+                </form>
+                <form id="pwd-form" name="pwd-form" class="align-txt-and-marge col-lg-4" onsubmit="updatePwd(event)">
+                    <div class="form-group mb-3 mt-3">
+                        <h4 for="pass1" class="form-label">Mot de passe</h4>
+                        <input id="pass1" type="password" name="pass" class="form-control" placeholder="mot de passe" minLength="8" data-help="8 caractères minimum" required>
+                    </div>
+                    <div class="form-group mb-3 mt-3">
+                        <h4 for="pass2" class="form-label">Confirmer le mot de passe</h4>
+                        <input id="pass2" type="password" class="form-control" placeholder="mot de passe" minLength="8" data-help="Pour inscription uniquement" required>
+                    </div>
+                    <div class="form-group mb-3 mt-3">
+                        <button id="signup" class="btn bg-lightgrey" type="submit" onclick="validatePwd()" >Modifier mot de passe</button>
+                    </div>
+                </form>
+                <small id="message-help" class="eggwhite align-txt-and-marge col-lg-12"></small>
+            </div>
+        </main>
+
+    <footer>
+        <div class="container">
+            <p style="margin-bottom:0;">&copy; 2023 Jeremy Fouquet - Thibaut Decressonniere - Georges Miot</p>
+        </div>
+    </footer>
+    <!-- SCRIPTS -->
+    <script src="/jquery/jquery.min.js"></script>
+    <script src="/popper.js/umd/popper.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/js/profil.js"></script>
+    </body>
+</html>

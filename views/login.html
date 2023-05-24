@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <title>Unlock</title>
+        <base href="/">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/styles/global.css" rel="stylesheet" type="text/css">
+        <link href="/styles/login.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <header>
+            <nav class="navbar fixed-top bg-lightgrey">
+              <div class="container-fluid">
+                <span class="navbar-brand">
+                    <img src="/assets/logo.svg" alt="logo" width="30" height="24" class="d-inline-block align-text-top">
+                    Unlock
+                </span>
+                <a class="btn bg-grey" href="/">Quitter</a>
+              </div>
+            </nav>
+        </header>
+        <main class="container">
+            <div class="row justify-content-around">
+                <form id="login-form" name="login-form" class="align-txt-and-marge col-lg-4" onsubmit="submitLoginForm(event)">
+                    <h2>Connexion / Inscription</h2>
+                    <div class="form-group mb-3 mt-3">
+                        <h4 for="mail" class="form-label">E-mail de login</h4>
+                        <input id="mail" type="email" name="email" class="form-control" placeholder="e-mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" minLength="5" autofocus required>
+                    </div>
+                    <div class="form-group mb-3 mt-3">
+                        <h4 for="pass1" class="form-label">Mot de passe</h4>
+                        <input id="pass1" type="password" name="pass" class="form-control" placeholder="mot de passe" minLength="8" data-help="8 caractères minimum" required>
+                    </div>
+                    <div class="form-group mb-3 mt-3">
+                        <button id="signin" class="btn bg-lightgrey" type="submit" onclick="login()">Connexion</button>
+                    </div>
+                    <div class="form-group mb-3 mt-3">
+                        <h4 for="pass2" class="form-label">Confirmer le mot de passe</h4>
+                        <input id="pass2" type="password" class="form-control" placeholder="mot de passe" minLength="8" data-help="Pour inscription uniquement">
+                    </div>
+                    <div class="form-group mb-3 mt-3">
+                        <button id="signup" class="btn bg-grey" type="button" onclick="inscription()">Inscription</button>
+                    </div>
+                    <small id="message-help" class="eggwhite"></small>
+                </form>
+            </div>
+        
+    </main>
+
+    <footer>
+        <div class="container">
+            <p style="margin-bottom:0;">&copy; 2023 Jeremy Fouquet - Thibaut Decressonniere - Georges Miot</p>
+        </div>
+    </footer>
+    <!-- SCRIPTS -->
+    <script src="/jquery/jquery.min.js"></script>
+    <script src="/popper.js/umd/popper.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/js/login.js"></script>
+    </body>
+</html>

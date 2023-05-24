@@ -19,7 +19,7 @@ require('dotenv').config();
  */
 exports.getPage = (req , res) => {
 
-    res.status(200).sendFile(path.join(process.cwd(), '/views/user.html'));   
+    res.status(200).sendFile(path.join(process.cwd(), '/views/login.html'));   
 };
 
 /**
@@ -62,29 +62,28 @@ exports.signup = (req, res) => {
     User.findOne({ email: req.body.email })
         .then(user => {
             if (!user) {
-                return res.status(401).json({ error: 'Utilisateur non trouvé !' });
+                return res.status(401).json({ error: 'E-mail et/ou Mot de passe incorrect !' });
             }
             // Compare les mots de passe avec bcrypt car les MDP sont chiffrés
             bcrypt.compare(req.body.pass , user.password)
                 .then(valid => {
                     if (!valid) {
-                        return res.status(401).json({ error: 'Mot de passe incorrect !' });
+                        return res.status(401).json({ error: 'E-mail et/ou Mot de passe incorrect !' });
                     }
 
-                    // Création du Token d'authentification
+                    // Création du Token d'authentification expire en 24h
                     let token = jwt.sign(
                         { userId: user._id },
                         process.env.JWT_SECRET_KEY,
-                        { expiresIn: '3h' }
+                        { expiresIn: '24h' }
+                        // { expiresIn: '3h' }
+                        // { expiresIn: '60s' }
                     )
                     
-                    // Création du cookie contenant le Token
-                    res.cookie('access_token', token, {maxAge: 1000 * 60 * 15, httpOnly: true});
-                    
-                    // On envoie tout 
-                    // TODO renvoyé ver Home.html
+                    // Création du cookie contenant le Token expire en 24h
+                    res.cookie('access_token', token, {maxAge: 1000 * 60 * 60 * 1, httpOnly: true});
                     try {
-                        res.status(200).sendFile(path.join(process.cwd(), '/views/user.html'));
+                        res.status(200).json({ message: 'Utilisateur connecté !' })
                     }
                     catch (err) {res.status(500).json({ error: err})}
          
@@ -95,18 +94,18 @@ exports.signup = (req, res) => {
  };
 
  /**
- * recoit une requette HTTP de type POST, supprime le cookie d'authentification et redirige vers une page
+ * recoit une requette HTTP de type POST, supprime le cookie d'authentification
  * @name logout
  * @param { object } req : la requête envoyé depuis le frontend
  * @param { object } res : la reponse envoyé depuis le backend
 */
  exports.logout = (req, res) => {
-
     try {
         // Supprime le cookie
         res.clearCookie('access_token');
-        // Redirige vers une page de notre choix
-        res.status(200).sendFile(path.join(process.cwd(), '/views/user.html'));
+        // Retourne un simple message et Redirige vers une page de notre choix dans le front end
+        res.status(200).json({ message: 'Utilisateur déconnecté !' });
+
     }
     catch (err) {res.status(500).json({ error: err})}
  };
@@ -136,16 +135,16 @@ exports.getMe = (req, res) => {
                         });
                     })
                     .catch((err) => {console.error(err);});
-                } 
-        }
-        catch{
+                }
+        }            
+        // Si pas de token ou une erreur innatendue on renvoie une erreur
+        catch {
             // Si pas de token ou une erreur innatendue on renvoie un random
-            res.status(200).json({ 
+            res.status(400).json({ 
                 email : "GUEST",
                 win : "PAS INSCRIT !",
                 loose: "PAS INSCRIT !"
             });
-           
         }
 };
 
@@ -158,7 +157,7 @@ exports.getMe = (req, res) => {
 */
 exports.updatePSWD = async (req, res) => {
     try{
-        const decoded = jwt.verify(req.cookie.access_token, process.env.JWT_SECRET_KEY);
+        const decoded = jwt.verify(req.cookies.access_token, process.env.JWT_SECRET_KEY);
 
         if (decoded) {
             bcrypt.hash(req.body.pass, 10)
@@ -166,9 +165,13 @@ exports.updatePSWD = async (req, res) => {
                     await User.findOneAndUpdate(
                         {_id: decoded.userId},
                         {password: hash},
-                        {new: true});
+                        {new: true})
+                            .then((user) => {
+                                res.status(200).json({ message: "Le mot de passe a été mis à jour"});
+                            });
+                        
     })}}
-    catch(err) {}
+    catch (err) {res.status(500).json({ error: err})}
 };
 
 /**
@@ -179,20 +182,80 @@ exports.updatePSWD = async (req, res) => {
  * @param { object } req : la requête envoyé depuis le frontend
  * @param { object } res : la reponse envoyé depuis le backend
 */
-exports.updatePSWD =
 exports.deleteAccount = async (req, res) => {
     try{
-        const decoded = jwt.verify(req.cookie.access_token, process.env.JWT_SECRET_KEY);
+        const decoded = jwt.verify(req.cookies.access_token, process.env.JWT_SECRET_KEY);
 
         if (decoded) {
             const result = await User.deleteOne({_id: decoded.userId})
             if (result.deletedCount) {
                  // Supprime le cookie
                 res.clearCookie('access_token');
-                // Redirige vers une page de notre choix
-                res.status(200).sendFile(path.join(process.cwd(), '/views/user.html'));
+                // Retourne un simple message et Redirige vers une page de notre choix dans le front end
+                res.status(200).json({ message: 'Utilisateur supprimé !' });
+
             }
         }
     }
     catch (err) {console.error(err);}
 };
+
+/**
+ * Renvoie vers la page de profil ou login.
+ * @name getProfil
+ * @param {object} req 
+ * @param {object} res 
+ */
+exports.getProfil = async (req , res) => {
+    try{
+        const decoded = jwt.verify(req.cookies.access_token, process.env.JWT_SECRET_KEY);
+        if (decoded) {
+            const user = await User.findOne({_id: decoded.userId});
+            if (user) {
+               // Redirige vers le page de profil
+               res.status(200).sendFile(path.join(process.cwd(), '/views/profil.html'));
+            }
+        }
+    }
+    catch (err) {
+        // Redirige vers le page de login
+        res.status(200).sendFile(path.join(process.cwd(), '/views/login.html'));
+    } 
+};
+
+/**
+ * Increment Win
+ * @name incrementWin
+ * @param {object} req 
+ * @param {object} res 
+ */
+exports.incrementWin = async (req , res) => {
+    try{
+        const decoded = jwt.verify(req.cookies.access_token, process.env.JWT_SECRET_KEY);
+        if (decoded) {
+            await User.incrementWin({_id: decoded.userId});
+        }
+    }
+    catch (err) {
+        console.log(err);
+    } 
+};
+
+/**
+ * Increment Loose
+ * @name incrementLoose
+ * @param {object} req 
+ * @param {object} res 
+ */
+exports.incrementLoose = async (req , res) => {
+    try{
+        const decoded = jwt.verify(req.cookies.access_token, process.env.JWT_SECRET_KEY);
+        if (decoded) {
+            await User.incrementLoose({_id: decoded.userId});
+        }
+    }
+    catch (err) {
+        console.log(err);
+    } 
+};
+
