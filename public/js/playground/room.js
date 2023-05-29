@@ -1,3 +1,6 @@
+const Game = require('./game');
+const Note = require('./note');
+
 function Room (chrono, game, id, notes, startGame) {
     this.chrono = chrono;
     this.game = new Game(game.name, game.chronoStart, game.chrono, game.clues, game.deck, game.code, game.ended);
