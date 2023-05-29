@@ -63,3 +63,5 @@ function Game (name, chronoStart, chrono, clues, deck, code, ended) {
     this.setClues(clues);
     this.setDeck(deck);
 }
+
+module.exports = Game;
