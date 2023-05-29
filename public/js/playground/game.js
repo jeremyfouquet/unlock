@@ -1,3 +1,5 @@
+const Clue = require('./clue');
+
 function Game (name, chronoStart, chrono, clues, deck, code, ended) {
     this.name = name;
     this.chronoStart = chronoStart;
