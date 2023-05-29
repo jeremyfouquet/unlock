@@ -26,3 +26,5 @@ function Clue (id, name, description, img, numsClues, discard, type) {
         this.machine = machine;
     };
 }
+
+module.exports = Clue;
