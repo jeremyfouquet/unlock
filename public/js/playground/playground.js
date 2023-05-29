@@ -502,3 +502,5 @@ function Playground (socketclient) {
         $('#chatForm')[0].reset();
     };
 }
+
+module.exports = Playground;
