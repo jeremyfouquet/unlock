@@ -34,3 +34,5 @@ function Room (chrono, game, id, notes, startGame) {
         this.addNotes(note);
     });
 }
+
+module.exports = Room;
