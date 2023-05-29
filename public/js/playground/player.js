@@ -5,3 +5,5 @@ function Player (id, pseudo, avatar, roomId, start) {
     this.roomId = roomId;
     this.start = start;
 }
+
+module.exports = Player;
