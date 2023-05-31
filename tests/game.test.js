@@ -1,5 +1,5 @@
-const Clue = require('../public/js/clue');
-const Game = require('../public/js/game');
+const Clue = require('../public/js/playground/clue');
+const Game = require('../public/js/playground/game');
 
 describe('Game', () => {
   let game;

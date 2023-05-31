@@ -1,4 +1,4 @@
-const Clue = require('../public/js/clue');
+const Clue = require('../public/js/playground/clue');
 
 describe('Clue', () => {
     let clue;

@@ -52,9 +52,15 @@
 .bg-green {
     background-color: #1CC691;
 }
+.bg-lightgrey-transparent {
+    background-color: rgba(209, 209, 209, 0.5)
+}
+.bg-white-transparent {
+    background-color: rgba(255, 255, 255, 0.5)
+}
 body {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+    /* padding-top: 3rem; */
+    /* padding-bottom: 3rem; */
     color: #434244;
     background-color: #23b5ef;
     margin-top: 56px;
@@ -67,16 +73,45 @@ h5 {
 }
 footer {
     border-top: 1px solid #D1D1D1;
-    padding: 3rem 0 0 0;
+    padding: 3rem 0;
+}
+.btn.bg-lightgrey {
+    color: #434244;
 }
 .btn.bg-lightgrey:hover {
-    background-color: #434244;
-    color: #D1D1D1;
+    background-color: #F7F7F7;
 }
-.btn.bg-lightgrey:not(:hover) {
-    color: #434244;
-    border-color: #434244;
+.btn.bg-grey:hover {
+    background-color: #F7F7F7;
+    color : #434244
 }
 .btn.bg-grey:not(:hover) {
-    color: #D1D1D1;
+    color: #F7F7F7;
+}
+.btn.bg-green, .btn.bg-red {
+    color : #F7F7F7;
+}
+.btn.bg-green:hover, .btn.bg-red:hover {
+    background-color: #F7F7F7;
+    color : #434244;
+}
+main {
+    padding-top: 3rem;
+    min-height: calc(100vh - 121.09px - 55.97px);
+}
+.align-txt-and-marge {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+a:not(:hover) img#logo-profil {
+    content: url("/assets/logo-profil-light.svg");
+}
+a:hover img#logo-profil {
+    content: url("/assets/logo-profil-dark.svg");
+}
+#message-help{
+    text-align: start;
+    width: 100%;
+    display: block;
 }

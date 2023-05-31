@@ -1,10 +1,10 @@
 // Importez les dépendances nécessaires
 const io = require('socket.io-client');
-const Playground = require('../public/js/playground');
-const Room = require('../public/js/room');
+const Playground = require('../public/js/playground/playground');
+const Room = require('../public/js/playground/room');
 
 // Mock de la classe Playground
-jest.mock('../public/js/playground', () => {
+jest.mock('../public/js/playground/playground', () => {
   return jest.fn().mockImplementation(() => {
     return {
       setRoom: jest.fn(),

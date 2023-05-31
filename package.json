@@ -10,24 +10,23 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^29.5.0",
-    "nodemon": "^2.0.22",
-    "supertest": "^6.3.3"
+    "nodemon": "^2.0.22"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
     "bootstrap": "^5.2.1",
-    "cheerio": "^1.0.0-rc.12",
     "cookie-parser": "^1.4.6",
     "cookies": "^0.8.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jquery": "^3.6.1",
+    "jsdom": "^22.1.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.4",
     "mongoose-unique-validator": "^4.0.0",
     "popper.js": "^1.16.1",
     "socket.io": "^4.5.2",
-    "socket.io-client": "^4.5.2"
+    "socket.io-client": "^4.5.2",
+    "supertest": "^6.3.3"
   }
 }

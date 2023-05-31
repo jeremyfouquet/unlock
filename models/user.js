@@ -25,8 +25,8 @@ userSchema.statics.incrementLoose = async function(_id) {
   .then(async user => {
     await this.findOneAndUpdate(
       { _id },
-      {loose: this.loose + 1 },
-      {new: true});
+      {loose: user.loose + 1},
+      {new: true})
     })
   .catch( err => {console.error(err)});
   };
