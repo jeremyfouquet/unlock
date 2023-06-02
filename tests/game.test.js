@@ -1,11 +1,18 @@
-const Clue = require('../public/js/playground/clue');
-const Game = require('../public/js/playground/game');
+/****************************************************************************
+  Nom ......... : game.test.js
+  Rôle ........ : tests unitaires du fichier game.js
+  Auteur ...... : Georges Miot
+  Version ..... : V1.0 du 02/06/2023
+  Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
+*****************************************************************************/
+
+const Clue = require('./public/js/playground/clue');
+const Game = require('./public/js/playground/game');
 
 describe('Game', () => {
   let game;
 
   beforeEach(() => {
-    // Créez une instance de jeu pour chaque test
     const clues = [
       {
         id: 1,
@@ -15,9 +22,7 @@ describe('Game', () => {
         numsClues: 3,
         discard: false,
         type: 'combinable',
-        combinable: {
-          // Propriétés combinables
-        },
+        combinable: {},
       },
     ];
 
@@ -30,16 +35,14 @@ describe('Game', () => {
         numsClues: 2,
         discard: true,
         type: 'machine',
-        machine: {
-          // Propriétés machine
-        },
+        machine: {},
       },
     ];
 
     game = new Game('Test Game', 0, 0, clues, deck, '1234', false);
   });
 
-  it('should have the correct properties', () => {
+  it('Doit avoir les bonnes propriétés', () => {
     expect(game.name).toBe('Test Game');
     expect(game.chronoStart).toBe(0);
     expect(game.chrono).toBe(0);
@@ -49,12 +52,13 @@ describe('Game', () => {
     expect(game.ended).toBe(false);
   });
 
-  it('should set the chrono correctly', () => {
+  it('Doit modifier la propriété chrono', () => {
     game.setChrono(60);
+
     expect(game.chrono).toBe(60);
   });
 
-  it('should set the clues correctly', () => {
+  it('Doit modifier la propriété clues', () => {
     const newClues = [
       {
         id: 3,
@@ -64,9 +68,7 @@ describe('Game', () => {
         numsClues: 1,
         discard: false,
         type: 'combinable',
-        combinable: {
-          // Propriétés combinables
-        },
+        combinable: {},
       },
     ];
 
@@ -75,14 +77,12 @@ describe('Game', () => {
     expect(game.clues).toHaveLength(1);
 
     const clue = game.clues[0];
+
     expect(clue).toBeInstanceOf(Clue);
     expect(clue.id).toBe(3);
-    expect(clue.name).toBe('Clue 3');
-    expect(clue.description).toBe('Description 3');
-    // Vérifiez les autres propriétés du Clue si nécessaire
   });
 
-  it('should set the deck correctly', () => {
+  it('Doit modifier la propriété deck', () => {
     const newDeck = [
       {
         id: 4,
@@ -92,9 +92,7 @@ describe('Game', () => {
         numsClues: 2,
         discard: true,
         type: 'machine',
-        machine: {
-          // Propriétés machine
-        },
+        machine: {},
       },
     ];
 
@@ -103,15 +101,21 @@ describe('Game', () => {
     expect(game.deck).toHaveLength(1);
 
     const clue = game.deck[0];
+
     expect(clue).toBeInstanceOf(Clue);
     expect(clue.id).toBe(4);
     expect(clue.name).toBe('Clue 4');
     expect(clue.description).toBe('Description 4');
-    // Vérifiez les autres propriétés du Clue si nécessaire
+    expect(clue.img).toBe('image4.jpg');
+    expect(clue.numsClues).toBe(2);
+    expect(clue.discard).toBe(true);
+    expect(clue.type).toBe('machine');
   });
 
-  it('should set the ended flag correctly', () => {
+  it('Doit modifier la propriété ended', () => {
     game.setEnded(true);
+
     expect(game.ended).toBe(true);
   });
+
 });

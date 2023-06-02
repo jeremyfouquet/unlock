@@ -1,19 +1,24 @@
+/****************************************************************************
+  Nom ......... : routes-controllers-users.test.js
+  Rôle ........ : tests systèmes des routes users
+  Auteur ...... : Georges Miot
+  Version ..... : V1.0 du 02/06/2023
+  Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
+*****************************************************************************/
+
 const request = require('supertest');
 const app = require('../app');
 const User = require('../models/user');
-const jwt = require('jsonwebtoken');    // Utilisation des tokens hashé
+const jwt = require('jsonwebtoken'); // Utilisation de tokens hashés
 const mongoose = require('mongoose');
 
-let cookie;
-
 describe('Test des users routes', () => {
+  let cookie;
 
-  beforeAll(async () => {
-    await User.deleteMany(); // supprimer tous les utilisateurs
-  });
-  
-  it('Attente de connexion de mongoose...', (done) => {
+  // attente du chargement de mongoose
+  beforeAll((done) => {
     setTimeout(() => {
+      User.deleteMany();  // supprime tous les utilisateurs
       done();
     }, 3000); // attendre 3 secondes (ajuster si nécessaire)
   });
@@ -47,7 +52,7 @@ describe('Test des users routes', () => {
     expect(cookie).toBeDefined();
     expect(response.text).toContain('Utilisateur connecté !');
   });
-
+  
   it('Doit récupérer les informations de l\'utilisateur authentifié', async () => {
     const response = await request(app).get('/api/users/me').set('Cookie', cookie);
     
@@ -64,15 +69,16 @@ describe('Test des users routes', () => {
     expect(response.text).toContain('Mon profil');
   });
 
-/*
+  /*
   it('Doit incrémenter le nombre de victoires de l\'utilisateur authentifié', async () => {
     await request(app).get('/api/users/incrementWin').set('Cookie', cookie);
+
     const cookieArray = cookie[0].split(';');
     let access_token = cookieArray[0];
     accessToken = access_token.substring('access_token='.length);  
     const decoded = await jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
     const id = await User.findById({_id: decoded.userId});
-    
+
     expect(id.win).toBe(1);
   });
 
@@ -86,7 +92,7 @@ describe('Test des users routes', () => {
     
     expect(id.loose).toBe(1);
   });
-*/
+  */
 
   it('Doit mettre à jour un mot de passe', async() => {
     const response = await request(app).put('/api/users/updatePSWD').send({pass: 'newpassword123'}).set('Cookie', cookie);
@@ -94,12 +100,12 @@ describe('Test des users routes', () => {
     expect(response.status).toBe(200);
   });
   
-  it('Attente mise à jour mot de passe...', (done) => {
+  it('Attente mise à jour du mot de passe...', (done) => {
     setTimeout(() => {
       done();
     }, 3000); // attendre 3 secondes (ajuster si nécessaire)
   });
-
+  
   it('Doit se connecter avec le nouveau mot de passe', async () => {
     const response = await request(app).post('/api/users/login').send({
       email: 'test@example.com',

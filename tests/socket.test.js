@@ -1,12 +1,21 @@
-const server = require('../server');
-const path = require('path');
+/****************************************************************************
+  Nom ......... : socket.test.js
+  Rôle ........ : tests systèmes des sockets
+  Auteur ...... : Georges Miot
+  Version ..... : V1.0 du 02/06/2023
+  Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
+*****************************************************************************/
+
+const server = require('../server'); // démarre serveur
+
+// connecte trois clients
 const io = require('socket.io-client');
 const client1 = io('http://localhost:3000');
 const client2 = io('http://localhost:3000');
 const client3 = io('http://localhost:3000');
 
-// DATABASE :
-//const games = require(path.join('../datas/games.json'));
+// charge la database
+const path = require('path');
 const players = require(path.join('../datas/players.json'));
 const rooms = require(path.join('../datas/rooms.json'));
 const robotConversation = require(path.join('../datas/robotConversation.json'));
@@ -18,26 +27,30 @@ let player3;
 let team;
 let note;
 
+// écoute de la team
 client1.on('getTeam', (t) => {
   team = t;
 });
 
+// écoute des messages
 client1.on('updateMessages', (n, t) => {
   note = n;
 });
 
 describe('addOrUpdatePlayer', () => {
 
+  // attente du chargement du serveur
   beforeAll((done) => {
     setTimeout(() => {
       done();
-    }, 3000); // (ajuster si nécessaire)
+    }, 3000); // attendre 3 secondes (ajuster si nécessaire)
   });
 
+  // attente de la mise à jour de la database
   beforeEach((done) => {
     setTimeout(() => {
       done();
-    }, 1000); // (ajuster si nécessaire)
+    }, 1000);  // attendre 1 seconde (ajuster si nécessaire)
   });
   
   it('Doit ajouter trois nouveau joueur à la liste des joueurs', (done) => {
@@ -49,7 +62,7 @@ describe('addOrUpdatePlayer', () => {
       client2.emit('addOrUpdatePlayer', player2);
       client3.emit('addOrUpdatePlayer', player3);
       done();
-    }, 4000); // (ajuster si nécessaire)
+    }, 4000); // attendre 4 secondes pour la mise à jour de la database (ajuster si nécessaire)
   });
 
   it('Vérifie la présence des trois nouveaux joueurs dans la database', () => {
@@ -64,7 +77,7 @@ describe('addOrUpdatePlayer', () => {
       updatedPlayer1 = { id: client1.id, name: 'Updated John', roomId: null };
       client1.emit('addOrUpdatePlayer', updatedPlayer1);
       done();
-    }, 4000); // (ajuster si nécessaire)
+    }, 4000); // attendre 4 secondes pour la mise à jour de la database (ajuster si nécessaire)
   });
 
   it('Vérifie la mise à jour du joueur dans la database', () => {
@@ -76,17 +89,18 @@ describe('addOrUpdatePlayer', () => {
 
 describe('createOrJoinRoom', () => {
 
+  // attente de la mise à jour de la database
   beforeEach((done) => {
     setTimeout(() => {
       done();
-    }, 1000); // (ajuster si nécessaire)
+    }, 1000);  // attendre 1 seconde (ajuster si nécessaire)
   });
 
   it('Doit créer une nouvelle salle et y mettre un joueur', (done) => {
     setTimeout(() => {
       client1.emit('createOrJoinRoom', 0);
       done();
-    }, 4000); // (ajuster si nécessaire)
+    }, 4000); // attendre 4 secondes pour la mise à jour de la database (ajuster si nécessaire)
   });
 
   it('Vérifie la présence de la nouvelle salle dans la database', () => {
@@ -96,12 +110,12 @@ describe('createOrJoinRoom', () => {
     expect(players[0].roomId).toBe(rooms[0].id);
   });
 
-  it('Doit ajouter deux autres joueurs joueurs à la salle existante', (done) => {
+  it('Doit ajouter deux autres joueurs à la salle existante', (done) => {
     setTimeout(() => {
       client2.emit('createOrJoinRoom', 0);
       client3.emit('createOrJoinRoom', 0);
       done();
-    }, 4000); // (ajuster si nécessaire)
+    }, 4000); // attendre 4 secondes pour la mise à jour de la database (ajuster si nécessaire)
   });
 
   it('Vérifie la présence des deux autres joueurs dans la salle existante', () => {
@@ -115,17 +129,18 @@ describe('createOrJoinRoom', () => {
 
 describe('start', () => {
 
+  // attente de la mise à jour de la database
   beforeEach((done) => {
     setTimeout(() => {
       done();
-    }, 1000); // (ajuster si nécessaire)
+    }, 1000);  // attendre 1 seconde (ajuster si nécessaire)
   });
     
   it('Doit définir un joueur prêt à jouer', (done) => {
     setTimeout(() => {
       client1.emit('start', rooms[0].id);
       done();
-    }, 4000); // (ajuster si nécessaire)
+    }, 4000); // attendre 4 secondes pour la mise à jour de la database (ajuster si nécessaire)
   });
     
   it('Vérifie que le joueur est prêt à jouer mais pas la partie dans la database', () => {
@@ -139,10 +154,10 @@ describe('start', () => {
       client2.emit('start', rooms[0].id);
       client3.emit('start', rooms[0].id);
       done();
-    }, 4000); // (ajuster si nécessaire)
+    }, 4000); // attendre 4 secondes pour la mise à jour de la database (ajuster si nécessaire)
   });
     
-  it('Vérifie que les les deux autres joueurs sont prêts à jouer et que la partie aussi dans la database', () => {
+  it('Vérifie que les les deux autres joueurs sont prêts à jouer ainsi que la partie dans la database', () => {
     expect(team.length).toBe(3);
     expect(players[1].start).toEqual(true);
     expect(rooms[0].startGame).toEqual(true);
@@ -152,17 +167,18 @@ describe('start', () => {
 
 describe('addClue', () => {
 
+  // attente de la mise à jour de la database
   beforeEach((done) => {
     setTimeout(() => {
       done();
-    }, 1000); // (ajuster si nécessaire)
+    }, 1000);  // attendre 1 seconde (ajuster si nécessaire)
   });
     
   it('Doit transférer un clue du deck vers les clues', (done) => {
     setTimeout(() => {
       client1.emit('addClue', 11, rooms[0].id);
       done();
-    }, 4000); // (ajuster si nécessaire)
+    }, 4000); // attendre 4 secondes pour la mise à jour de la database (ajuster si nécessaire)
   });
   
   it('Vérifie le transfert du clue du deck vers les clues dans la database', () => {
@@ -170,14 +186,15 @@ describe('addClue', () => {
     expect(rooms[0].game.deck[0].id).toBe(16);
   });
   
- });
+});
 
- describe('penalty', () => {
+describe('penalty', () => {
 
+  // attente de la mise à jour de la database
   beforeEach((done) => {
     setTimeout(() => {
       done();
-    }, 1000); // (ajuster si nécessaire)
+    }, 1000);  // attendre 1 seconde (ajuster si nécessaire)
   });
     
   it('Doit retirer du temps au chrono du jeu', (done) => {
@@ -185,13 +202,12 @@ describe('addClue', () => {
       rooms[0].game.chrono = 10;
       client1.emit('penalty', 1, rooms[0].id);
       done();
-    }, 4000); // (ajuster si nécessaire)
+    }, 4000); // attendre 4 secondes pour la mise à jour de la database (ajuster si nécessaire)
   });
   
   it('Vérifie que du temps a été retiré dans la database et qu\'un message est transmis à l\'utilisateur', () => {
     expect(note.message).toBe(robotConversation["E"]);
-    expect(rooms[0].game.chrono).toBe(8);
-    
+    expect(rooms[0].game.chrono).toBe(8); // 8 au lieu de 9 car le temps s'écoule en plus de la pénalité
   });
 
   it('Doit retirer du temps au chrono du jeu déjà à 0', (done) => {
@@ -199,50 +215,51 @@ describe('addClue', () => {
       rooms[0].game.chrono = 0;
       client1.emit('penalty', 1, rooms[0].id);
       done();
-    }, 4000); // (ajuster si nécessaire)
+    }, 4000); // attendre 4 secondes pour la mise à jour de la database (ajuster si nécessaire)
   });
   
   it('Vérifie que le chrono du jeu reste à 0 dans la database', () => {
     expect(rooms[0].game.chrono).toBe(0);
-    
   });
-  
- });
+
+});
 
 describe('winGame', () => {
 
+  // attente de la mise à jour de la database
   beforeEach((done) => {
     setTimeout(() => {
       done();
-    }, 1000); // (ajuster si nécessaire)
+    }, 1000);  // attendre 1 seconde (ajuster si nécessaire)
   });
     
   it('Doit signaler le jeu comme étant terminé', (done) => {
     setTimeout(() => {
       client1.emit('winGame', rooms[0].id);
       done();
-    }, 4000); // (ajuster si nécessaire)
+    }, 4000); // attendre 4 secondes pour la mise à jour de la database (ajuster si nécessaire)
   });
   
   it('Vérifie que le jeu est signalé comme terminé dans la database', () => {
     expect(rooms[0].game.ended).toBe(true);
   });
 
- });
+});
 
- describe('message', () => {
+describe('message', () => {
 
+  // attente de la mise à jour de la database
   beforeEach((done) => {
     setTimeout(() => {
       done();
-    }, 1000); // (ajuster si nécessaire)
+    }, 4000);  // attendre 4 secondes (ajuster si nécessaire)
   });
     
   it('Doit ajouter une note dans le jeu', (done) => {
     setTimeout(() => {
       client1.emit('message', 'echo', players[0], rooms[0].id);
       done();
-    }, 4000); // (ajuster si nécessaire)
+    }, 4000); // attendre 4 secondes pour la mise à jour de la database (ajuster si nécessaire)
   });
 
   it('Vérifie que la note est ajoutée dans la database et que le message est reçu', () => {
@@ -254,35 +271,30 @@ describe('winGame', () => {
     setTimeout(() => {
       client1.emit('message', 'indice 11', players[0], rooms[0].id);
       done();
-    }, 4000); // (ajuster si nécessaire)
+    }, 4000); // attendre 4 secondes pour la mise à jour de la database (ajuster si nécessaire)
   });
   
-  it('Attend la réponse du robot...', (done) => {
-    setTimeout(() => {
-      done();
-    }, 4000); // (ajuster si nécessaire)
-  });
-
   it('Vérifie que la note est ajoutée dans la database et que la réponse du robot est juste', () => {
     expect(rooms[0].notes.length).toBe(6);
     expect(note.message).toBe(robotConversation["11"]);
   });
 
- });
+});
 
- describe('disconnect', () => {
+describe('disconnect', () => {
 
+  // attente de la mise à jour de la database
   beforeEach((done) => {
     setTimeout(() => {
       done();
-    }, 1000); // (ajuster si nécessaire)
+    }, 1000);  // attendre 1 seconde (ajuster si nécessaire)
   });
     
   it('Doit déconnecter un joueur', (done) => {
     setTimeout(() => {
       client3.close();
       done();
-    }, 4000); // (ajuster si nécessaire)
+    }, 4000); // attendre 4 secondes pour la mise à jour de la database (ajuster si nécessaire)
   });
   
   it('Vérifie que le joueur est supprimé de la database', () => {
@@ -293,17 +305,18 @@ describe('winGame', () => {
 
 describe('back', () => {
 
+  // attente de la mise à jour de la database
   beforeEach((done) => {
     setTimeout(() => {
       done();
-    }, 1000); // (ajuster si nécessaire)
+    }, 1000);  // attendre 1 seconde (ajuster si nécessaire)
   });
     
   it('Doit supprimer le lien entre un joueur et une salle', (done) => {
     setTimeout(() => {
       client1.emit('back', players[0].roomId);
       done();
-    }, 4000); // (ajuster si nécessaire)
+    }, 4000); // attendre 4 secondes pour la mise à jour de la database (ajuster si nécessaire)
   });
     
   it('Vérifie la suppression du lien dans la database', () => {
@@ -316,7 +329,7 @@ describe('back', () => {
     setTimeout(() => {
       client2.emit('back', players[1].roomId);
       done();
-    }, 4000); // (ajuster si nécessaire)
+    }, 4000); // attendre 4 secondes pour la mise à jour de la database (ajuster si nécessaire)
   });
   
   it('Vérifie la suppression du lien du second joueur et de la salle dans la database', () => {
@@ -328,13 +341,9 @@ describe('back', () => {
     setTimeout(() => {
       client1.close();
       client2.close();
-      //client3.close();
       server.close();
       done();
-    }, 4000); // (ajuster si nécessaire)
+    }, 4000); // attendre 4 secondes (ajuster si nécessaire)
   });
 
 });
-  
-
-    

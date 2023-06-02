@@ -1,4 +1,12 @@
-const Clue = require('../public/js/playground/clue');
+/****************************************************************************
+  Nom ......... : clue.test.js
+  Rôle ........ : tests unitaires du fichier clue.js
+  Auteur ...... : Georges Miot
+  Version ..... : V1.0 du 02/06/2023
+  Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
+*****************************************************************************/
+
+const Clue = require('./public/js/playground/clue');
 
 describe('Clue', () => {
     let clue;
@@ -7,7 +15,7 @@ describe('Clue', () => {
       clue = new Clue(1, 'Clue Name', 'Clue Description', 'clue.jpg', 3, false, 'type');
     });
     
-    it('should have the correct properties', () => {
+    it('Doit avoir les bonnes propriétés', () => {
       expect(clue.id).toBe(1);
       expect(clue.name).toBe('Clue Name');
       expect(clue.description).toBe('Clue Description');
@@ -19,16 +27,19 @@ describe('Clue', () => {
       expect(clue.machine).toEqual({});
     });
   
-    it('should set combinable property correctly', () => {
+    it('Doit modifier la propriété \'combinable\'', () => {
       const combinableObj = { prop: 'value' };
       clue.setCombinable(combinableObj);
+
       expect(clue.combinable).toEqual(combinableObj);
     });
     
-    it('should set machine property correctly', () => {
+    it('Doit modifier la propriété \'machine\'', () => {
       const machineObj = { prop: 'value' };
       clue.setMachine(machineObj);
+
       expect(clue.machine).toEqual(machineObj);
     });
+
   });
   
