@@ -337,13 +337,10 @@ describe('back', () => {
     expect(players[1].roomId).toEqual('');
   });
 
-  afterAll((done) => {
-    setTimeout(() => {
-      client1.close();
-      client2.close();
-      server.close();
-      done();
-    }, 4000); // attendre 4 secondes (ajuster si nécessaire)
+  afterAll(() => {
+    client1.close();
+    client2.close();
+    server.close();
   });
 
 });
