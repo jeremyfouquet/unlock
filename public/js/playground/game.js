@@ -1,6 +1,5 @@
-function Game (name, chronoStart, chrono, clues, deck, code, ended) {
+function Game (name, chrono, clues, deck, code, ended) {
     this.name = name;
-    this.chronoStart = chronoStart;
     this.chrono = chrono;
     this.clues = [];
     this.deck = [];

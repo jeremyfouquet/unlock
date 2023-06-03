@@ -30,7 +30,6 @@ module.exports = (io) => {
     socket.on('createOrJoinRoom', (gameIndex) => {
       const gameInfo = {
         name : games[gameIndex].name,
-        chronoStart: games[gameIndex].chronoStart,
         chrono : games[gameIndex].chrono,
         clues : JSON.parse(JSON.stringify(games[gameIndex].clues)),
         deck : JSON.parse(JSON.stringify(games[gameIndex].deck)),

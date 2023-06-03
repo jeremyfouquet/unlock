@@ -1,3 +1,10 @@
+/**
+ * Vérifie la correspondance des mots de passe lors de la création ou de la connexion d'un compte utilisateur.
+ * 
+ * @name verification_password
+ * @param {string} type - Le type d'opération ('signin' pour la connexion, 'signup' pour la création de compte).
+ * @returns {void}
+*/
 function verification_password(type) {
     var pass1 = document.getElementById("pass1")
     var pass2 = document.getElementById("pass2");
@@ -14,6 +21,13 @@ function verification_password(type) {
     }
 }
 
+/**
+ * Change le type des boutons de soumission et d'annulation en fonction du type d'opération (connexion ou création de compte).
+ * 
+ * @name change_button
+ * @param {string} type - Le type d'opération ('signin' pour la connexion, 'signup' pour la création de compte).
+ * @returns {void}
+*/
 function change_button(type) {
     var submit;
     var btn;
@@ -28,18 +42,37 @@ function change_button(type) {
     btn.setAttribute('type', 'button');
 }
 
+/**
+ * Fonction appelée lors de la création d'un compte utilisateur.
+ * 
+ * @name inscription
+ * @returns {void}
+*/
 function inscription() {
     const type = "signup";
     verification_password(type);
     change_button(type);
 }
 
+/**
+ * Fonction appelée lors de la connexion d'un utilisateur existant.
+ * 
+ * @name login
+ * @returns {void}
+*/
 function login() {
     const type = "signin";
     verification_password(type);
     change_button(type);
 }
 
+/**
+ * Soumet le formulaire de connexion ou de création de compte.
+ * 
+ * @name submitLoginForm
+ * @param {Event} e - L'événement de soumission du formulaire.
+ * @returns {void}
+*/
 async function submitLoginForm(e) {
     e.preventDefault(); // empêche le rechargement de la page
     const submit = document.querySelector('button[type="submit"]');
@@ -72,6 +105,15 @@ async function submitLoginForm(e) {
     small.textContent = message;
 }
 
+/**
+ * Effectue un appel à l'API.
+ * 
+ * @name api
+ * @param {string} api - L'URL de l'API à appeler.
+ * @param {string} method - La méthode HTTP à utiliser.
+ * @param {Object} body - Le corps de la requête (facultatif).
+ * @returns {Object} - La réponse de l'API sous forme de JSON.
+*/
 async function api(api, method, body) {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');

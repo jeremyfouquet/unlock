@@ -41,6 +41,9 @@ Georges Miot
 For development, you will only need Node.js and a node global package installed in your environement.
 
 ### Node
+
+This project requires Npm version >=8.11.0 <=9.5.0 and Node version >=16.15.1 <=18.15.0
+
 - #### Node installation on Windows
 
   Just go on [official Node.js website](https://nodejs.org/) and download the installer.
@@ -58,10 +61,10 @@ For development, you will only need Node.js and a node global package installed 
 If the installation was successful, you should be able to run the following command.
 
     $ node --version
-    v16.15.1
+    v18.15.0
 
     $ npm --version
-    8.11.0
+    9.5.0
 
 ## Install
 

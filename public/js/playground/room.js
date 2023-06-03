@@ -1,6 +1,6 @@
 function Room (chrono, game, id, notes, startGame) {
     this.chrono = chrono;
-    this.game = new Game(game.name, game.chronoStart, game.chrono, game.clues, game.deck, game.code, game.ended);
+    this.game = new Game(game.name, game.chrono, game.clues, game.deck, game.code, game.ended);
     this.id = id;
     this.notes = [];
     this.startGame = startGame;
