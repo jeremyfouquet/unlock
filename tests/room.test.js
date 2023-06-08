@@ -18,6 +18,7 @@ function readFile(filePath) {
 // évalue et exécute les fichiers nécessaires aux tests
 eval(readFile('../public/js/playground/room.js'));
 eval(readFile('../public/js/playground/game.js'));
+eval(readFile('../public/js/playground/note.js'));
 
 describe('Room', () => {
   let room;
