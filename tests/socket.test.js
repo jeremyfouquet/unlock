@@ -1,6 +1,6 @@
 /****************************************************************************
   Nom ......... : socket.test.js
-  Rôle ........ : tests systèmes des sockets
+  Rôle ........ : tests de socket
   Auteur ...... : Georges Miot
   Version ..... : V1.0 du 02/06/2023
   Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'

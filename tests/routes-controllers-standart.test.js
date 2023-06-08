@@ -1,6 +1,6 @@
 /****************************************************************************
   Nom ......... : routes-controllers-error.test.js
-  Rôle ........ : tests systèmes des routes standart
+  Rôle ........ : tests d'intégrations des routes standart
   Auteur ...... : Georges Miot
   Version ..... : V1.0 du 02/06/2023
   Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
