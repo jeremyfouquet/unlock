@@ -6,7 +6,12 @@
   Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
 *****************************************************************************/
 
-const Clue = require('./public/js/playground/clue');
+// récupère et évalue le contenu du fichier clue.js dans le contexte du test
+const fs = require('fs');
+const path = require('path');
+const filePath = path.resolve(__dirname, '../public/js/playground/clue.js');
+const fileContent = fs.readFileSync(filePath, 'utf-8');
+eval(fileContent);
 
 describe('Clue', () => {
     let clue;

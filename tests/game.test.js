@@ -6,8 +6,18 @@
   Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
 *****************************************************************************/
 
-const Clue = require('./public/js/playground/clue');
-const Game = require('./public/js/playground/game');
+const fs = require('fs');
+const path = require('path');
+
+// récupère le contenu d'un fichier JavaScript dans le contexte du test
+function readFile(filePath) {
+  const resolvedPath = path.resolve(__dirname, filePath);
+  return fs.readFileSync(resolvedPath, 'utf-8');
+}
+
+// évalue et exécute les fichiers nécessaires aux tests
+eval(readFile('../public/js/playground/clue.js'));
+eval(readFile('../public/js/playground/game.js'));
 
 describe('Game', () => {
   let game;
