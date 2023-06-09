@@ -229,33 +229,34 @@ exports.getProfil = async (req , res) => {
  * @param {object} req 
  * @param {object} res 
  */
-exports.incrementWin = async (req , res) => {
-    try{
-        const decoded = jwt.verify(req.cookies.access_token, process.env.JWT_SECRET_KEY);
-        if (decoded) {
-            await User.incrementWin({_id: decoded.userId});
-        }
+exports.incrementWin = async (req, res) => {
+    try {
+      const decoded = jwt.verify(req.cookies.access_token, process.env.JWT_SECRET_KEY);
+      if (decoded) {
+        await User.incrementWin({ _id: decoded.userId });
+        res.status(200).json({ message: "Win incremented successfully" });
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Error incrementing win" });
     }
-    catch (err) {
-        console.log(err);
-    } 
-};
+  };
 
-/**
+  /**
  * Increment Loose
  * @name incrementLoose
  * @param {object} req 
  * @param {object} res 
  */
-exports.incrementLoose = async (req , res) => {
-    try{
-        const decoded = jwt.verify(req.cookies.access_token, process.env.JWT_SECRET_KEY);
-        if (decoded) {
-            await User.incrementLoose({_id: decoded.userId});
-        }
+exports.incrementLoose = async (req, res) => {
+    try {
+      const decoded = jwt.verify(req.cookies.access_token, process.env.JWT_SECRET_KEY);
+      if (decoded) {
+        await User.incrementLoose({ _id: decoded.userId });
+        res.status(200).json({ message: "Loose incremented successfully" });
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Error incrementing loose" });
     }
-    catch (err) {
-        console.log(err);
-    } 
-};
-
+  };
