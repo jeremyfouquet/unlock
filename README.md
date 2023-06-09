@@ -6,9 +6,9 @@ Un projet d'application web reprenant le celebre jeux d'escape game Unlock. La r
 
 ## Authors
 
-Jeremy Fouquet
-Thibaut Decressonniere
-Georges Miot
+- Jeremy Fouquet
+- Thibaut Decressonniere
+- Georges Miot
 
 ## Technologies
 - Javascript
