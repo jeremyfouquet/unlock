@@ -32,7 +32,7 @@ describe('Test des users routes', () => {
 
   it('Doit créer une nouvel utilisateur', async () => {
     const response = await request(app).post('/api/users/signup').send({
-      email: 'test@example.com',
+      email: 'test1@example.com',
       pass: 'password123',
     });
 

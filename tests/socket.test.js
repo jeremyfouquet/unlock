@@ -301,7 +301,7 @@ describe('disconnect', () => {
     expect(players).toHaveLength(2);
   });
 
- });
+});
 
 describe('back', () => {
 
