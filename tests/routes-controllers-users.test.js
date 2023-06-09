@@ -13,7 +13,10 @@ const jwt = require('jsonwebtoken'); // Utilisation de tokens hashés
 const mongoose = require('mongoose');
 
 describe('Test des users routes', () => {
+  const email = 'test@example.com';
+  const pswd = 'password123';
   let cookie;
+  let jeton;
 
   // attente du chargement de mongoose
   beforeAll((done) => {
@@ -32,8 +35,8 @@ describe('Test des users routes', () => {
 
   it('Doit créer une nouvel utilisateur', async () => {
     const response = await request(app).post('/api/users/signup').send({
-      email: 'test1@example.com',
-      pass: 'password123',
+      email: email,
+      pass: pswd,
     });
 
     expect(response.status).toBe(201);
@@ -42,12 +45,17 @@ describe('Test des users routes', () => {
   
   it('Doit authentifier un utlisateur et renvoyer un cookie', async () => {
     const response = await request(app).post('/api/users/login').send({
-      email: 'test@example.com',
-      pass: 'password123',
+      email: email,
+      pass: pswd,
     });
     
+    // récupère le cookie et le jeton
     cookie = response.headers['set-cookie'];
-
+    const cookieArray = cookie[0].split(';');
+    let access_token = cookieArray[0];
+    accessToken = access_token.substring('access_token='.length);  
+    jeton = await jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
+    
     expect(response.status).toBe(200);
     expect(cookie).toBeDefined();
     expect(response.text).toContain('Utilisateur connecté !');
@@ -57,7 +65,7 @@ describe('Test des users routes', () => {
     const response = await request(app).get('/api/users/me').set('Cookie', cookie);
     
     expect(response.status).toBe(200);
-    expect(response.body.email).toBe('test@example.com');
+    expect(response.body.email).toBe(email);
     expect(response.body.win).toBeDefined();
     expect(response.body.loose).toBeDefined();
   });
@@ -68,31 +76,42 @@ describe('Test des users routes', () => {
     expect(response.status).toBe(200);
     expect(response.text).toContain('Mon profil');
   });
-
-  /*
+  
   it('Doit incrémenter le nombre de victoires de l\'utilisateur authentifié', async () => {
-    await request(app).get('/api/users/incrementWin').set('Cookie', cookie);
+    const response = await request(app).put('/api/users/incrementWin').set('Cookie', cookie);
 
-    const cookieArray = cookie[0].split(';');
-    let access_token = cookieArray[0];
-    accessToken = access_token.substring('access_token='.length);  
-    const decoded = await jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
-    const id = await User.findById({_id: decoded.userId});
+    expect(response.status).toBe(200);
+  });
+
+  it('Attente mise à jour du nombre de victoires...', (done) => {
+    setTimeout(() => {
+      done();
+    }, 3000); // attendre 3 secondes (ajuster si nécessaire)
+  });
+  
+  it('Vérifie l\'incrémentation du nombre de victoires de l\'utilisateur authentifié', async () => {
+    id = await User.findById({_id: jeton.userId});
 
     expect(id.win).toBe(1);
   });
 
   it('Doit incrémenter le nombre de défaites de l\'utilisateur authentifié', async () => {
-    await request(app).get('/api/users/incrementLoose').set('Cookie', cookie);
-    const cookieArray = cookie[0].split(';');
-    let access_token = cookieArray[0];
-    accessToken = access_token.substring('access_token='.length);  
-    const decoded = await jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
-    const id = await User.findById({_id: decoded.userId});
-    
+    const response = await request(app).put('/api/users/incrementLoose').set('Cookie', cookie);
+
+    expect(response.status).toBe(200);
+  });
+  
+  it('Attente mise à jour du nombre de défaites...', (done) => {
+    setTimeout(() => {
+      done();
+    }, 3000); // attendre 3 secondes (ajuster si nécessaire)
+  });
+  
+  it('Vérifie l\'incrémentation du nombre de défaites de l\'utilisateur authentifié', async () => {
+    id = await User.findById({_id: jeton.userId});
+
     expect(id.loose).toBe(1);
   });
-  */
 
   it('Doit mettre à jour un mot de passe', async() => {
     const response = await request(app).put('/api/users/updatePSWD').send({pass: 'newpassword123'}).set('Cookie', cookie);
@@ -108,7 +127,7 @@ describe('Test des users routes', () => {
   
   it('Doit se connecter avec le nouveau mot de passe', async () => {
     const response = await request(app).post('/api/users/login').send({
-      email: 'test@example.com',
+      email: email,
       pass: 'newpassword123',
     });
 
@@ -125,7 +144,7 @@ describe('Test des users routes', () => {
 
   it('Doit authentifier un utlisateur avec un mot de passe faux et renvoyer un message d\'erreur', async () => {
     const response = await request(app).post('/api/users/login').send({
-      email: 'test@example.com',
+      email: email,
       pass: 'fakePassword',
     });
 
@@ -158,7 +177,7 @@ describe('Test des users routes', () => {
 
   it('Doit authentifier un utlisateur inconnu et renvoyer un message d\'erreur', async () => {
     const response = await request(app).post('/api/users/login').send({
-      email: 'test@example.com',
+      email: email,
       pass: 'password123',
     });
 
