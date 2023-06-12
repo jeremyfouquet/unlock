@@ -26,6 +26,7 @@ Georges Miot
     ├── models                  # 
     ├── public                  # Assets and Javascript and Css files (Frontend/Client)
     ├── routes                  #
+    ├── tests                   #
     ├── views                   # Html elements
     ├── .gitignore              # File specifies intentionally untracked files that Git should ignore
     ├── .env                    # config to mongodb ignoring by git
@@ -51,6 +52,8 @@ For development, you will only need Node.js and a node global package installed 
 
       $ sudo apt install nodejs
       $ sudo apt install npm
+      
+  But it is recommended to use nvm to have the latest versions : https://github.com/nvm-sh/nvm
 
 - #### Other Operating Systems
   You can find more information about the installation on the [official Node.js website](https://nodejs.org/) and the [official NPM website](https://npmjs.org/).
