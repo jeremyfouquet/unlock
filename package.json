@@ -6,6 +6,7 @@
   "scripts": {
     "run": "node ./server.js",
     "dev": "NODE_ENV=development nodemon --trace-warnings server.js"
+    "test": "npx jest --detectOpenHandles"
   },
   "author": "",
   "license": "ISC",
