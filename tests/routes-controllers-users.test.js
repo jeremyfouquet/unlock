@@ -18,10 +18,19 @@ describe('Test des users routes', () => {
   let cookie;
   let jeton;
 
-  // attente du chargement de mongoose
+  // attente du chargement de mongoose et suppression de tous les utilisateurs
   beforeAll((done) => {
     setTimeout(() => {
-      User.deleteMany();  // supprime tous les utilisateurs
+
+      // supprime tous les utilisateurs
+      User.deleteMany({})
+        .then(() => {
+          console.log('Tous les utilisateurs ont été supprimés avec succès.');
+        })
+        .catch((err) => {
+          console.error('Erreur lors de la suppression des utilisateurs :', err);
+        });
+    
       done();
     }, 3000); // attendre 3 secondes (ajuster si nécessaire)
   });
