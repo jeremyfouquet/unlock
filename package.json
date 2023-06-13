@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "run": "node ./server.js",
-    "dev": "NODE_ENV=development nodemon --trace-warnings server.js"
+    "dev": "NODE_ENV=development nodemon --trace-warnings server.js",
     "test": "npx jest --detectOpenHandles"
   },
   "author": "",
@@ -13,7 +13,7 @@
   "devDependencies": {
     "jest": "^29.5.0",
     "jsdom": "^22.1.0",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
     "supertest": "^6.3.3"
   },
   "dependencies": {
@@ -29,6 +29,6 @@
     "mongoose-unique-validator": "^4.0.0",
     "popper.js": "^1.16.1",
     "socket.io": "^4.5.2",
-    "socket.io-client": "^4.5.2",
+    "socket.io-client": "^4.5.2"
   }
 }

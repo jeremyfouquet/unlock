@@ -86,12 +86,3 @@ async function api(api, method, body) {
     const respJson = await response.json();
     return respJson;
 }
-
-module.exports = {
-    verification_password,
-    change_button,
-    inscription,
-    login,
-    submitLoginForm,
-    api
-  };

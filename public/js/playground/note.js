@@ -5,5 +5,3 @@ function Note (message, avatar, id, pseudo, date) {
     this.pseudo = pseudo;
     this.date = date;
 }
-
-module.exports = Note;

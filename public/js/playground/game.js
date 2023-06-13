@@ -1,5 +1,3 @@
-const Clue = require('./clue');
-
 function Game (name, chronoStart, chrono, clues, deck, code, ended) {
     this.name = name;
     this.chronoStart = chronoStart;
@@ -65,5 +63,3 @@ function Game (name, chronoStart, chrono, clues, deck, code, ended) {
     this.setClues(clues);
     this.setDeck(deck);
 }
-
-module.exports = Game;
