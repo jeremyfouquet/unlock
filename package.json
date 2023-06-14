@@ -5,12 +5,16 @@
   "main": "server.js",
   "scripts": {
     "run": "node ./server.js",
-    "dev": "NODE_ENV=development nodemon --trace-warnings server.js"
+    "dev": "NODE_ENV=development nodemon --trace-warnings server.js",
+    "test": "npx jest --detectOpenHandles"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "jest": "^29.5.0",
+    "jsdom": "^22.1.0",
+    "nodemon": "^2.0.22",
+    "supertest": "^6.3.3"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
