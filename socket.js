@@ -16,7 +16,7 @@ module.exports = (io) => {
      * @param { Object } player
     */
     socket.on('addOrUpdatePlayer', (player) => {
-      const playerIndex = getPlayerIndex(players, player.id)
+      const playerIndex = getPlayerIndex(players, player.id);
       // Si player.id existe en BDD alors met à jours le Player de la BDD avec les info reçu en parametre de la fonction sinon ajoute celui ci en BDD
       if(!players[playerIndex]) players.push(player);
       else players[playerIndex] = player;
@@ -263,7 +263,7 @@ module.exports = (io) => {
     }
     rooms.push(room);
   }
-
+  
   /**
    * Permet d'envoyer au Client le chrono mis à jour toutes les secondes tant que celui ci n'est pas inférieur à 0
    * Appelle la fonction back() si le chrono === 0 et Team.length === 1

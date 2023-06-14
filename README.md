@@ -26,6 +26,7 @@ Georges Miot
     ├── models                  # 
     ├── public                  # Assets and Javascript and Css files (Frontend/Client)
     ├── routes                  #
+    ├── tests                   #
     ├── views                   # Html elements
     ├── .gitignore              # File specifies intentionally untracked files that Git should ignore
     ├── .env                    # config to mongodb ignoring by git
@@ -54,6 +55,8 @@ This project requires Npm version >=8.11.0 <=9.5.0 and Node version >=16.15.1 <=
 
       $ sudo apt install nodejs
       $ sudo apt install npm
+      
+  But it is recommended to use nvm to have the latest versions : https://github.com/nvm-sh/nvm
 
 - #### Other Operating Systems
   You can find more information about the installation on the [official Node.js website](https://nodejs.org/) and the [official NPM website](https://npmjs.org/).
