@@ -50,7 +50,7 @@ This project requires Npm version >=8.11.0 <=9.5.0 and Node version >=16.15.1 <=
 
 - #### Node installation on Windows
 
-  Just go on [official Node.js website](https://nodejs.org/) and download the installer.
+  Just go [official Node.js website](https://nodejs.org/) and download the installer.
 
 - #### Node installation on Ubuntu
 
