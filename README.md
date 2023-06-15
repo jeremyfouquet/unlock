@@ -81,7 +81,7 @@ If the installation was successful, you should be able to run the following comm
 
 ## Create config
 
-For connected the mongodb you need to create .env file on root project and place the personnal information like .env.example
+For connected the mongodb you need to create .env file on root project and place the personal information like .env.example
 
 ## Running the project
 
