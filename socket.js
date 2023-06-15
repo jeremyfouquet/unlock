@@ -1,3 +1,11 @@
+/****************************************************************************
+  Nom ......... : server.js
+  Rôle ........ : Fichier responsable de la gestion des communications en temps réel avec les clients via des WebSockets, définition des événements de socket et des actions correspondantes.
+  Auteurs ..... : Jeremy Fouquet
+  Version ..... : V1.0 du 28/04/2023
+  Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
+*****************************************************************************/
+
 const path = require('path');
 
 // DATABASE :
@@ -30,7 +38,6 @@ module.exports = (io) => {
     socket.on('createOrJoinRoom', (gameIndex) => {
       const gameInfo = {
         name : games[gameIndex].name,
-        chronoStart: games[gameIndex].chronoStart,
         chrono : games[gameIndex].chrono,
         clues : JSON.parse(JSON.stringify(games[gameIndex].clues)),
         deck : JSON.parse(JSON.stringify(games[gameIndex].deck)),

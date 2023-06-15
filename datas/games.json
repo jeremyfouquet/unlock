@@ -1,7 +1,6 @@
 {
   "0": {
     "name" : "Tutoriel",
-    "chronoStart": false,
     "chrono" : 600,
     "clues" : [
         {

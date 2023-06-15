@@ -1,3 +1,11 @@
+/****************************************************************************
+  Nom ......... : socket.js
+  Rôle ........ : fonctions d'ecoutes d'évènements socket pour le client
+  Auteur ...... : Jeremy Fouquet
+  Version ..... : V1.0 du 14/04/2023
+  Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
+*****************************************************************************/
+
 const socket = io(); // client socket connect to socket server
 const playground = new Playground(socket);
 

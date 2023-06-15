@@ -4,12 +4,20 @@
   "description": "application web d'un jeu d'escape game en temps réel",
   "main": "server.js",
   "scripts": {
-    "run": "node ./server.js",
-    "dev": "NODE_ENV=development nodemon --trace-warnings server.js",
+    "run": "node .",
+    "dev": "NODE_ENV=development nodemon --trace-warnings .",
     "test": "npx jest --detectOpenHandles"
   },
-  "author": "",
+  "contributors": [
+    "Jeremy Fouquet",
+    "George Miot",
+    "Thibaut Decressonniere"
+  ],
   "license": "ISC",
+  "engines": {
+    "npm": ">=8.11.0 <=9.5.0",
+    "node": ">=16.15.1 <=18.15.0"
+  },
   "devDependencies": {
     "jest": "^29.5.0",
     "jsdom": "^22.1.0",

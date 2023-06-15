@@ -49,12 +49,11 @@ describe('Game', () => {
       },
     ];
 
-    game = new Game('Test Game', 0, 0, clues, deck, '1234', false);
+    game = new Game('Test Game', 0, clues, deck, '1234', false);
   });
 
   it('Doit avoir les bonnes propriétés', () => {
     expect(game.name).toBe('Test Game');
-    expect(game.chronoStart).toBe(0);
     expect(game.chrono).toBe(0);
     expect(game.clues).toHaveLength(1);
     expect(game.deck).toHaveLength(1);

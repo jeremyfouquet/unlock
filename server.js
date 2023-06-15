@@ -1,7 +1,14 @@
+/****************************************************************************
+  Nom ......... : server.js
+  Rôle ........ : Fichier responsable de la création et de la gestion du serveur HTTP, définition du port d'écoute et gestion des erreurs.
+  Auteurs ..... : Jeremy Fouquet / Thibaut Decressonniere
+  Version ..... : V1.0 du 28/04/2023
+  Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
+*****************************************************************************/
+
 const http = require('http');
 const app = require('./app');
-require('dotenv').config()
-
+require('dotenv').config();
 
 const normalizePort = val => {
   const port = parseInt(val, 10);
@@ -40,6 +47,7 @@ const errorHandler = error => {
 const server = http.createServer(app);
 
 server.on('error', errorHandler);
+
 server.on('listening', () => {
   const address = server.address();
   const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
