@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const stdControllers = require('../controllers/standart');
+const stdControllers = require('../controllers/standard');
 
 router.get('/', stdControllers.getHome);
 router.all('/connection/?', stdControllers.getBuildPage);

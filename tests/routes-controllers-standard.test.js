@@ -1,6 +1,6 @@
 /****************************************************************************
   Nom ......... : routes-controllers-error.test.js
-  Rôle ........ : tests d'intégrations des routes standart
+  Rôle ........ : tests d'intégrations des routes standard
   Auteur ...... : Georges Miot
   Version ..... : V1.0 du 02/06/2023
   Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
@@ -10,7 +10,7 @@ const request = require('supertest');
 const app = require('../app');
 const mongoose = require('mongoose');
 
-describe('Test des standart routes', () => {
+describe('Test des standard routes', () => {
 
   // attente du chargement de mongoose
   beforeAll((done) => {

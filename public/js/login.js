@@ -103,7 +103,7 @@ async function submitLoginForm(e) {
     } else if (type == "signup") {
         const response = await api('/api/users/signup', 'POST', body);
         if(response.error){
-            message = response.error? response.error : "erreur inconnue";
+            message = response.error? response.error.message : "erreur inconnue";
         } else {
             message = response.message + " Vous pouvez vous connecter";
             form.reset();

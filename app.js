@@ -17,7 +17,7 @@ const app = express();
 
 const errorroutes = require('./routes/error')
 const usersroutes = require('./routes/users')
-const standartroutes = require('./routes/standart')
+const standardroutes = require('./routes/standard')
 
 
 mongoose.connect(process.env.MONGO_URI, //Secret URI from .env
@@ -41,7 +41,7 @@ app
     .use(express.static('public'))
     //Application des routes
     .use('/api/users', usersroutes)
-    .use('/', standartroutes)
+    .use('/', standardroutes)
     .use('*', errorroutes);
 
 module.exports = app;
