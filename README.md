@@ -1,41 +1,44 @@
 # Unlock (Escape Game en Ligne)
 
-Un projet d'application web reprenant le celebre jeux d'escape game Unlock. La réalisation est faite en NodeJs pour une programmation full stack et la communication se fait en temps réèl grâce à socket.io. Les modules d'interface sont eux réalisé en HTML CSS et JavaScript.
+Un projet d'application web reprenant le célèbre jeu d'escape game Unlock a été réalisé en utilisant Node.js pour une programmation full stack, avec une communication en temps réel grâce à Socket.IO. Les modules d'interface ont été développés en HTML, CSS et JavaScript.
 
 ---
 
 ## Authors
 
-Jeremy Fouquet
-Thibaut Decressonniere
-Georges Miot
+- Jeremy Fouquet
+- Thibaut Decressonniere
+- Georges Miot
 
 ## Technologies
 - Javascript
 - CSS
 - Html
 - Node.js
-- socket.io
+- Socket.io
+- Mongoose
+- Express
 
 ### A typical top-level directory layout
 
     .
-    ├── datas                   # Json files for data base
-    ├── controllers             # 
-    ├── middlewares             # 
-    ├── models                  # 
-    ├── public                  # Assets and Javascript and Css files (Frontend/Client)
-    ├── routes                  #
-    ├── tests                   #
-    ├── views                   # Html elements
+    ├── controllers             # Controller function files directory for HTTP request handling and application-specific functionalities
+    ├── datas                   # Directory containing Json files for the games datas
+    ├── middlewares             # Defines middleware functions for handling CORS (Cross-Origin Resource Sharing) headers in HTTP requests
+    ├── models                  # Directory containing the user model schema and methods for interacting with the user data in the database
+    ├── public                  # Directory containing assets, javascript and css files for the Frontend/Client
+    ├── routes                  # Directory containing files for defining and handling HTTP request routes in the application
+    ├── tests                   # Directory where test files and resources for validating the application's functionality are grouped
+    ├── views                   # Directory containing HTML files
     ├── .gitignore              # File specifies intentionally untracked files that Git should ignore
     ├── .env                    # config to mongodb ignoring by git
-    ├── .env.example            # sample config to to mongodb
-    ├── app.js                  
-    ├── socket.js               # Module constructor for socket.io with all functions
-    ├── server.js               # Application entry point (Backend/Server)
+    ├── .env.example            # sample config to mongodb
+    ├── .npmrc                  # A configuration file enforcing strict compatibility checks for the specified package's runtime engines.
+    ├── app.js                  # Main app file handling Express configuration, routes, and MongoDB connection
+    ├── socket.js               # File handling real-time client communication via WebSockets, defining socket events and actions
+    ├── server.js               # File managing the HTTP server, port definition, and error handling
     ├── package.json            # This file is used to give the project's dependencies to npm
-    └── README.md
+    └── README.md               # A concise document providing essential information and instructions about the project.
 
 ## Requirements
 
@@ -63,6 +66,7 @@ This project requires Npm version >=8.11.0 <=9.5.0 and Node version >=16.15.1 <=
 
 If the installation was successful, you should be able to run the following command.
 
+    # Sample output
     $ node --version
     v18.15.0
 
@@ -77,11 +81,19 @@ If the installation was successful, you should be able to run the following comm
 
 ## Create config
 
-For connected the mongodb you need to create .env file on root project and place your Secret URI like .env.example
+For connected the mongodb you need to create .env file on root project and place the personnal information like .env.example
 
 ## Running the project
 
-    $ npm start
+    $ npm run start
+
+## Running the project on development with nodemon
+
+    $ npm run dev
+
+## Running the tests
+
+    $ npm test
 
 ## See project on localhost development
 

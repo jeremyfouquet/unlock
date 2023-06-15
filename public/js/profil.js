@@ -1,3 +1,10 @@
+/****************************************************************************
+  Nom ......... : profil.js
+  Rôle ........ : fonctions liés de mise à jours et d'affichage du profil client pour la page profil.html
+  Auteur ...... : Jeremy Fouquet
+  Version ..... : V1.0 du 12/05/2023
+  Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
+*****************************************************************************/
 /**
  * Effectue un appel à l'API.
  * 

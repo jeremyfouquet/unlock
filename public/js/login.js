@@ -1,3 +1,10 @@
+/****************************************************************************
+  Nom ......... : login.js
+  Rôle ........ : fonctions liés à l'authentification client pour la page login.html
+  Auteur ...... : Jeremy Fouquet
+  Version ..... : V1.0 du 12/05/2023
+  Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
+*****************************************************************************/
 /**
  * Vérifie la correspondance des mots de passe lors de la création ou de la connexion d'un compte utilisateur.
  * 

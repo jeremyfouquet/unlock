@@ -1,3 +1,10 @@
+/****************************************************************************
+  Nom ......... : playground.js
+  Rôle ........ : Constructeur de l'objet Playground
+  Auteur ...... : Jeremy Fouquet
+  Version ..... : V1.0 du 31/03/2023
+  Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
+*****************************************************************************/
 function Playground (socketclient) {
     this.socketclient = socketclient;
     this.room = {};

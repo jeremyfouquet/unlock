@@ -1,3 +1,10 @@
+/****************************************************************************
+  Nom ......... : game.js
+  Rôle ........ : Constructeur de l'objet Game
+  Auteur ...... : Jeremy Fouquet
+  Version ..... : V1.0 du 31/03/2023
+  Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
+*****************************************************************************/
 function Game (name, chrono, clues, deck, code, ended) {
     this.name = name;
     this.chrono = chrono;

@@ -1,3 +1,10 @@
+/****************************************************************************
+  Nom ......... : clue.js
+  Rôle ........ : Constructeur de l'objet Clue
+  Auteur ...... : Jeremy Fouquet
+  Version ..... : V1.0 du 31/03/2023
+  Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
+*****************************************************************************/
 function Clue (id, name, description, img, numsClues, discard, type) {
     this.id = id;
     this.name = name;

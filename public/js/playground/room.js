@@ -1,3 +1,10 @@
+/****************************************************************************
+  Nom ......... : room.js
+  Rôle ........ : Constructeur de l'objet Room
+  Auteur ...... : Jeremy Fouquet
+  Version ..... : V1.0 du 31/03/2023
+  Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
+*****************************************************************************/
 function Room (chrono, game, id, notes, startGame) {
     this.chrono = chrono;
     this.game = new Game(game.name, game.chrono, game.clues, game.deck, game.code, game.ended);
