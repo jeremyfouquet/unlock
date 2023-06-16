@@ -96,14 +96,14 @@ async function submitLoginForm(e) {
     if (type == "signin") {
         const response = await api('/api/users/login', 'POST', body);
         if(response.error){
-            message = response.error? response.error : "erreur inconnue";
+            message = response.message ? response.message : "erreur inconnue";
         } else {
             window.location.href = '/api/users/profil';
         }
     } else if (type == "signup") {
         const response = await api('/api/users/signup', 'POST', body);
         if(response.error){
-            message = response.error? response.error.message : "erreur inconnue";
+            message = response.error.message ? response.error.message : "erreur inconnue";
         } else {
             message = response.message + " Vous pouvez vous connecter";
             form.reset();
