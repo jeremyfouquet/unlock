@@ -129,7 +129,7 @@
             "id": 85,
             "name": "Une Machine",
             "description": "Il s'agissait d'une Machine. En cliquant sur le bouton \"Utiliser\" vous pourrez choisir comment placer le fil sur les picots. Regardez bien dans toute la pièce il doit y avoir des indices sur son fonctionnement.",
-            "img": "choix3.png",
+            "img": "machine.png",
             "discard": [69],
             "numsClues": [],
             "type": "machine",
