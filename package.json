@@ -4,7 +4,7 @@
   "description": "application web d'un jeu d'escape game en temps réel",
   "main": "server.js",
   "scripts": {
-    "run": "node .",
+    "start": "node .",
     "dev": "NODE_ENV=development nodemon --trace-warnings .",
     "test": "npx jest --detectOpenHandles"
   },
