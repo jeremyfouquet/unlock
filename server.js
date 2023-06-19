@@ -1,7 +1,7 @@
 /****************************************************************************
   Nom ......... : server.js
   Rôle ........ : Fichier responsable de la création et de la gestion du serveur HTTP, définition du port d'écoute et gestion des erreurs.
-  Auteurs ..... : Jeremy Fouquet / Thibaut Decressonniere
+  Auteurs ..... : Jeremy Fouquet, Thibaut Decressonniere
   Version ..... : V1.0 du 28/04/2023
   Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
 *****************************************************************************/
@@ -51,7 +51,7 @@ server.on('error', errorHandler);
 server.on('listening', () => {
   const address = server.address();
   const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
-  console.log('Listening on ' + bind + ' => ' + 'http://localhost:' + port);
+  console.log('Listening on ' + bind);
 });
 
 const io = require('socket.io')(server, {
