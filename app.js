@@ -1,7 +1,7 @@
 /****************************************************************************
   Nom ......... : app.js
   Rôle ........ : Fichier principal de l'application, responsable de la configuration d'Express, de la gestion des routes et de la connexion à la base de données MongoDB.
-  Auteurs ..... : Thibaut Decressonniere
+  Auteurs ..... : Thibaut Decressonniere, Jeremy Fouquet
   Version ..... : V1.0 du 24/04/2023
   Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
 *****************************************************************************/
