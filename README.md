@@ -95,6 +95,11 @@ For connected the mongodb you need to create .env file on root project and place
 
     $ npm test
 
+## Generate documentation
+
+    # https://www.youtube.com/watch?v=FrUQnR4GTpQ
+    $ npm run doc
+
 ## See project on localhost development
 
 http://localhost:${port}
