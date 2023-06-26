@@ -10,6 +10,12 @@ const http = require('http');
 const app = require('./app');
 require('dotenv').config();
 
+/**
+ * Normalise le port en base 10
+ * @name normalizePort 
+ * @param {String} val : valeur entrée par l'utilisateur, le .env ou la valeur par défaut
+ * @returns 
+ */
 const normalizePort = val => {
   const port = parseInt(val, 10);
 
@@ -24,6 +30,11 @@ const normalizePort = val => {
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
+/**
+ * Gestionnaire d'erreurs
+ * @name errorHandler
+ * @param {Object} error : l'erreur levée
+ */
 const errorHandler = error => {
   if (error.syscall !== 'listen') {
     throw error;

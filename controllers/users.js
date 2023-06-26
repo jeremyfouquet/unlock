@@ -1,8 +1,10 @@
-/*TODO
-* - redirection
-* - temps de validité du JWT et du cookie ?
-* - Finir updatePSWD et deleteAccount
-*/
+/****************************************************************************
+  Nom ......... : user.js
+  Rôle ........ : Ficher contenant les controllers appelés par les routes '/routes/users.js'
+  Auteurs ..... : Thibaut Decressonniere
+  Version ..... : V1.0 du 24/04/2023
+  Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
+*****************************************************************************/
 
 const User = require('../models/user'); // Modèle mongoose
 const bcrypt = require('bcrypt');       // Chiffrement du MDP 
@@ -110,7 +112,7 @@ exports.signup = (req, res) => {
     catch (err) {res.status(500).json({ error: err})}
  };
 
-    /**
+/**
  * recoit une requette HTTP de type GET, contrôle le token d'authentification,
  * et renvoie si ce token existe les informations relative au joueur ou un générique
  * le cas échéant.
@@ -201,11 +203,11 @@ exports.deleteAccount = async (req, res) => {
 };
 
 /**
- * Renvoie vers la page de profil ou login.
+ * Renvoie vers la page de profil ou login après avoir contrôler avec succès ou non le token d'authentification.
  * @name getProfil
- * @param {object} req 
- * @param {object} res 
- */
+ * @param { object } req : la requête envoyé depuis le frontend
+ * @param { object } res : la reponse envoyé depuis le backend
+*/
 exports.getProfil = async (req , res) => {
     try{
         const decoded = jwt.verify(req.cookies.access_token, process.env.JWT_SECRET_KEY);
@@ -224,11 +226,11 @@ exports.getProfil = async (req , res) => {
 };
 
 /**
- * Increment Win
+ * Incremente la valeur Win du joueur enristré dans le token d'authentification
  * @name incrementWin
- * @param {object} req 
- * @param {object} res 
- */
+ * @param { object } req : la requête envoyé depuis le frontend
+ * @param { object } res : la reponse envoyé depuis le backend
+*/
 exports.incrementWin = async (req, res) => {
     try {
       const decoded = jwt.verify(req.cookies.access_token, process.env.JWT_SECRET_KEY);
@@ -243,11 +245,11 @@ exports.incrementWin = async (req, res) => {
   };
 
   /**
- * Increment Loose
+ * Incremente la valeur Loose du joueur enristré dans le token d'authentification.
  * @name incrementLoose
- * @param {object} req 
- * @param {object} res 
- */
+ * @param { object } req : la requête envoyé depuis le frontend
+ * @param { object } res : la reponse envoyé depuis le backend
+*/
 exports.incrementLoose = async (req, res) => {
     try {
       const decoded = jwt.verify(req.cookies.access_token, process.env.JWT_SECRET_KEY);
