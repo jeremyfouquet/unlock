@@ -6,6 +6,14 @@
   Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
 *****************************************************************************/
 
+/**
+ * @module routes/standard
+ * @description Ficher contenant les routes appelés par l'application
+ * @author Thibaut Decressonniere
+ * @requires express
+ * @requires /controllers/standard
+ */
+
 const express = require('express');
 const router = express.Router();
 

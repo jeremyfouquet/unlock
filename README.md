@@ -24,6 +24,7 @@ Un projet d'application web reprenant le célèbre jeu d'escape game Unlock a é
     .
     ├── controllers             # Controller function files directory for HTTP request handling and application-specific functionalities
     ├── datas                   # Directory containing Json files for the games datas
+    ├── docs                    # Directory containing the application's documentation
     ├── middlewares             # Defines middleware functions for handling CORS (Cross-Origin Resource Sharing) headers in HTTP requests
     ├── models                  # Directory containing the user model schema and methods for interacting with the user data in the database
     ├── public                  # Directory containing assets, javascript and css files for the Frontend/Client

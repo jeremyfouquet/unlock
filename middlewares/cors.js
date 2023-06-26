@@ -5,11 +5,17 @@
   Version ..... : V1.0 du 24/04/2023
   Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
 *****************************************************************************/
+/**
+ * @module middleware/cors
+ * @description Ficher contenant un middleware permettant de traité les erreurs CORS
+ * @author Thibaut Decressonniere
+ */
 
 /**
- * @param {*} req : requete venant du frontend
- * @param {*} res : requete venant du backend
- * @param {*} next: passe au prochain middleware
+ * @param {Object} req : requete venant du frontend
+ * @param {Object} res : requete venant du backend
+ * @param {Object} next: passe au prochain middleware
+ * @function
  */
 module.exports = (req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

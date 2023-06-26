@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>app.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-app.html">app</a></li><li><a href="module-controller_error.html">controller/error</a><ul class='methods'><li data-type='method'><a href="module-controller_error.html#~getHome">getHome</a></li></ul></li><li><a href="module-controller_standart.html">controller/standart</a><ul class='methods'><li data-type='method'><a href="module-controller_standart.html#~getHome">getHome</a></li><li data-type='method'><a href="module-controller_standart.html#~getPage">getPage</a></li><li data-type='method'><a href="module-controller_standart.html#~getPage">getPage</a></li></ul></li><li><a href="module-controllers_users.html">controllers/users</a><ul class='methods'><li data-type='method'><a href="module-controllers_users.html#~deleteAccount">deleteAccount</a></li><li data-type='method'><a href="module-controllers_users.html#~getMe">getMe</a></li><li data-type='method'><a href="module-controllers_users.html#~getPage">getPage</a></li><li data-type='method'><a href="module-controllers_users.html#~getProfil">getProfil</a></li><li data-type='method'><a href="module-controllers_users.html#~incrementLoose">incrementLoose</a></li><li data-type='method'><a href="module-controllers_users.html#~incrementWin">incrementWin</a></li><li data-type='method'><a href="module-controllers_users.html#~login">login</a></li><li data-type='method'><a href="module-controllers_users.html#~logout">logout</a></li><li data-type='method'><a href="module-controllers_users.html#~signup">signup</a></li><li data-type='method'><a href="module-controllers_users.html#~updatePSWD">updatePSWD</a></li></ul></li><li><a href="module-middleware_cors.html">middleware/cors</a></li><li><a href="module-models_user.html">models/user</a><ul class='methods'><li data-type='method'><a href="module-models_user.html#.incrementLoose">incrementLoose</a></li><li data-type='method'><a href="module-models_user.html#.incrementWin">incrementWin</a></li></ul></li><li><a href="module-routes_error.html">routes/error</a></li><li><a href="module-routes_standard.html">routes/standard</a></li><li><a href="module-routes_users.html">routes/users</a></li><li><a href="module-server.html">server</a><ul class='methods'><li data-type='method'><a href="module-server.html#~errorHandler">errorHandler</a></li><li data-type='method'><a href="module-server.html#~normalizePort">normalizePort</a></li></ul></li><li><a href="module-socket.html">socket</a><ul class='methods'><li data-type='method'><a href="module-socket.html#~addClue">addClue</a></li><li data-type='method'><a href="module-socket.html#~addOrUpdatePlayer">addOrUpdatePlayer</a></li><li data-type='method'><a href="module-socket.html#~back">back</a></li><li data-type='method'><a href="module-socket.html#~back">back</a></li><li data-type='method'><a href="module-socket.html#~createNote">createNote</a></li><li data-type='method'><a href="module-socket.html#~createOrJoinRoom">createOrJoinRoom</a></li><li data-type='method'><a href="module-socket.html#~createRoom">createRoom</a></li><li data-type='method'><a href="module-socket.html#~disconnect">disconnect</a></li><li data-type='method'><a href="module-socket.html#~getClueIndex">getClueIndex</a></li><li data-type='method'><a href="module-socket.html#~getDateHours">getDateHours</a></li><li data-type='method'><a href="module-socket.html#~getPlayerIndex">getPlayerIndex</a></li><li data-type='method'><a href="module-socket.html#~getRoomIndex">getRoomIndex</a></li><li data-type='method'><a href="module-socket.html#~getTeam">getTeam</a></li><li data-type='method'><a href="module-socket.html#~intervalChrono">intervalChrono</a></li><li data-type='method'><a href="module-socket.html#~intervalRoom">intervalRoom</a></li><li data-type='method'><a href="module-socket.html#~message">message</a></li><li data-type='method'><a href="module-socket.html#~newId">newId</a></li><li data-type='method'><a href="module-socket.html#~penalty">penalty</a></li><li data-type='method'><a href="module-socket.html#~refreshPlayer">refreshPlayer</a></li><li data-type='method'><a href="module-socket.html#~removePlayer">removePlayer</a></li><li data-type='method'><a href="module-socket.html#~removeRoom">removeRoom</a></li><li data-type='method'><a href="module-socket.html#~start">start</a></li><li data-type='method'><a href="module-socket.html#~talkToRobot">talkToRobot</a></li><li data-type='method'><a href="module-socket.html#~teamReady">teamReady</a></li><li data-type='method'><a href="module-socket.html#~winGame">winGame</a></li></ul></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">app.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/****************************************************************************
+  Nom ......... : app.js
+  Rôle ........ : Fichier principal de l'application, responsable de la configuration d'Express, de la gestion des routes et de la connexion à la base de données MongoDB.
+  Auteurs ..... : Thibaut Decressonniere, Jeremy Fouquet
+  Version ..... : V1.0 du 24/04/2023
+  Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
+*****************************************************************************/
+
+/**
+ * @module app
+ * @description Fichier principal de l'application, responsable de la configuration d'Express, de la gestion des routes et de la connexion à la base de données MongoDB.
+ * @author Thibaut Decressonniere, Jeremy Fouquet
+ * @requires express
+ * @requires path
+ * @requires mongoose
+ * @requires cookie-parser
+ * @requires dotenv
+ * @requires ./middlewares/cors
+ * @requires ./routes/*
+*/
+
+const express = require('express');
+const path = require('path');
+const cors = require('./middlewares/cors');
+const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+
+require('dotenv').config()
+const app = express();
+
+const errorroutes = require('./routes/error')
+const usersroutes = require('./routes/users')
+const standardroutes = require('./routes/standard')
+
+
+mongoose.connect(process.env.MONGO_URI, //Secret URI from .env
+  { useNewUrlParser: true,
+    useUnifiedTopology: true })
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch(() => console.log('Connexion à MongoDB échouée !'));
+
+app
+    //Traitement du corp et de l'URL de la requête
+    .use(express.urlencoded())
+    .use(express.json())
+    .use(cookieParser())
+    //Traitement des erreurs CORS
+    .use(cors)
+    //Traitement des dependances
+    .use('/bootstrap/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
+    .use('/jquery', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
+    .use('/popper.js', express.static(path.join(__dirname, 'node_modules/popper.js/dist')))
+    .use('/bootstrap/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')))
+    .use(express.static('public'))
+    //Application des routes
+    .use('/api/users', usersroutes)
+    .use('/', standardroutes)
+    .use('*', errorroutes);
+
+module.exports = app;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Mon Jun 26 2023 23:01:00 GMT+0200 (heure d’été d’Europe centrale) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+</body>
+</html>
