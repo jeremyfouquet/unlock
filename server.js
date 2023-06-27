@@ -6,6 +6,16 @@
   Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
 *****************************************************************************/
 
+/**
+ * @module server
+ * @description Fichier responsable de la création et de la gestion du serveur HTTP, définition du port d'écoute et gestion des erreurs.
+ * @author Jeremy Fouquet, Thibaut Decressonniere
+ * @requires http
+ * @requires dotenv
+ * @requires socketio
+ * @requires ./app
+ */
+
 const http = require('http');
 const app = require('./app');
 require('dotenv').config();
@@ -14,7 +24,7 @@ require('dotenv').config();
  * Normalise le port en base 10
  * @name normalizePort 
  * @param {String} val : valeur entrée par l'utilisateur, le .env ou la valeur par défaut
- * @returns 
+ * @function
  */
 const normalizePort = val => {
   const port = parseInt(val, 10);
@@ -34,6 +44,9 @@ app.set('port', port);
  * Gestionnaire d'erreurs
  * @name errorHandler
  * @param {Object} error : l'erreur levée
+ * @function
+ * @throws {EACCES} si l'utilisateur n'a pas les droits d'accès
+ * @throws {EADDRINUSE} si le port est déjà utilisé
  */
 const errorHandler = error => {
   if (error.syscall !== 'listen') {

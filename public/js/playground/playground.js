@@ -5,6 +5,12 @@
   Version ..... : V1.0 du 31/03/2023
   Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
 *****************************************************************************/
+
+/**
+ * @file playground 
+ *
+ */
+
 function Playground (socketclient) {
     this.socketclient = socketclient;
     this.room = {};

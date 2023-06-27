@@ -6,6 +6,19 @@
   Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
 *****************************************************************************/
 
+/**
+ * @module app
+ * @description Fichier principal de l'application, responsable de la configuration d'Express, de la gestion des routes et de la connexion à la base de données MongoDB.
+ * @author Thibaut Decressonniere, Jeremy Fouquet
+ * @requires express
+ * @requires path
+ * @requires mongoose
+ * @requires cookie-parser
+ * @requires dotenv
+ * @requires ./middlewares/cors
+ * @requires ./routes/*
+*/
+
 const express = require('express');
 const path = require('path');
 const cors = require('./middlewares/cors');

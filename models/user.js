@@ -5,6 +5,15 @@
   Version ..... : V1.0 du 24/04/2023
   Licence ..... : réalisé dans le cadre du projet 'réalisation de programme'
 *****************************************************************************/
+
+/**
+ * @module models/user
+ * @description Ficher contenant le modèle et methodes statique d'un utilisateur
+ * @author Thibaut Decressonniere
+ * @requires mongoose
+ * @requires mongoose-unique-validator
+ */
+
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
@@ -26,6 +35,8 @@ userSchema.plugin(uniqueValidator);
  * Methode statique permettant d'incrémenté la valeur de win d'un utilisateur
  * @name incrementWin 
  * @param {String} _id : l'id de l'utilisateur dont on souhaite incrémenter la valeur
+ * @function
+ * @static
  */
 userSchema.statics.incrementWin = async function(_id) {
   this.findOne({ _id})
@@ -41,6 +52,8 @@ userSchema.statics.incrementWin = async function(_id) {
  * Methode statique permettant d'incrémenté la valeur de win d'un utilisateur
  * @name incrementLoose 
  * @param {String} _id : l'id de l'utilisateur dont on souhaite incrémenter la valeur
+ * @function
+ * @static
  */
   userSchema.statics.incrementLoose = async function(_id) {
   this.findOne({ _id})
