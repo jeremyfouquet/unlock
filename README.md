@@ -47,7 +47,7 @@ For development, you will only need Node.js and a node global package installed 
 
 ### Node
 
-This project requires Npm version >=7.20.6 <=9.5.0 and Node version >=16.14.2 <=18.15.0
+This project requires Npm version >=7.20.6 and Node version >=16.10.0
 
 - #### Node installation on Windows
 
