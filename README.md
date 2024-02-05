@@ -104,6 +104,6 @@ http://localhost:3000
 
 ## See project on production
 
-[projet-unlock(dev)](https://pebble-scalloped-entrance.glitch.me/) (https://pebble-scalloped-entrance.glitch.me/)
+[projet-unlock(dev) sur glitch](https://pebble-scalloped-entrance.glitch.me/)
 
-[projet-unlock(prod)](https://82.165.185.167/) (https://82.165.185.167/)
+[projet-unlock(prod) sur serveur dédié](https://82.165.185.167/)
